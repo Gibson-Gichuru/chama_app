@@ -1,0 +1,102 @@
+version: '3.8'
+
+services:
+
+  nginx:
+
+    build: 
+
+      context: .
+
+    ports:
+
+      - "80:80"
+
+    depends_on:
+      - api
+
+    volumes:
+      - type: volume
+        source: nginxLog
+        target : /var/log/nginx
+
+      - type: bind
+
+        source: ./nginx/deployment/default.conf 
+
+        target: /etc/nginx/conf.d/default.conf
+
+
+  api:
+    build: 
+      context: ./api
+
+    # set up all the required environament  variables required by the api service
+    environment:
+    
+      SECRET_KEY: "${SECRET_KEY}"
+      MARIADB_ROOT_PASSWORD: "${DATABASE_PASSWORD}"
+
+    depends_on:
+      - database
+      - redis
+    volumes:
+
+      - type : bind
+        source: ./api
+        target: /api
+    # use gunicon to serve the  appication
+    # command: flask run
+
+    command: gunicorn --bind 0.0.0.0:5000 manage:app
+
+  database:
+
+    image: mariadb:latest
+    
+    restart : always
+    environment:  
+    #  Setting up environament variables 
+      MARIADB_ROOT_PASSWORD: "${DATABASE_ROOT_PASSWORD}"
+  
+    expose:
+
+      - 3160
+
+    volumes:
+
+      - type : volume
+        source : mysqlData
+        target: /var/lib/mysql  
+
+
+
+  redis:
+
+    image: redis
+
+    restart: always
+
+    volumes:
+
+      - type : volume
+        source: redisData
+        target : /data
+
+    
+volumes:
+
+  mysqlData:
+
+    driver: local
+
+  redisData:
+
+    driver: local
+
+  nginxLog:
+
+    driver: local
+
+
+
