@@ -25,7 +25,7 @@ jobs:
     steps:
 
       - name: Checking out the repository
-      - uses: actions/checkout@v2
+        uses: actions/checkout@v2
 
       - name: Building The application Images
 
@@ -46,8 +46,8 @@ jobs:
     steps:
 
       - name: Checking out the repository
-
-      - uses: actions/checkout@v2
+      
+        uses: actions/checkout@v2
 
       - name: Setting up node js
 
