@@ -26,7 +26,6 @@ jobs:
 
       MARIADB_ROOT_PASSWORD: ${{ secrets.DATABASE_ROOT_PASSWORD }}   
 
-      FLASK_APP: "manage.py"   
 
     steps:
 
@@ -54,7 +53,7 @@ jobs:
 
         run: | 
 
-          docker exec -i api-test flask test
+          docker exec -i api-test echo $FLASK_APP
 
   testingFrontEnd:
 
