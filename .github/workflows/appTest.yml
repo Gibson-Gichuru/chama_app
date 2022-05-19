@@ -22,6 +22,10 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env: 
+
+      MARIADB_ROOT_PASSWORD: ${{ secrets.DATABASE_ROOT_PASSWORD }}      
+
     steps:
 
       - name: Checking out the repository
