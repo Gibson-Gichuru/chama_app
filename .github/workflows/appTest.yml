@@ -46,7 +46,7 @@ jobs:
 
       - name: setting up the redis container on the test-net network
 
-        run: docker -run -itd --name redis --network redis
+        run: docker run -itd --name redis --network test-net redis
 
       - name: Running the Api unit tests
 
