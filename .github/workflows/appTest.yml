@@ -1,0 +1,54 @@
+# api test run workflow
+
+name: Application Testing Workflow
+
+on:
+
+  push:
+
+    branches:
+
+      - development
+
+  pull_request:
+
+    branches:
+
+      - development
+
+jobs:
+
+  testingApi:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checking out the repository
+      - uses: actions/checkout@v2
+
+      - name: Building The application Images
+
+        run: docker-compose build
+
+      - name: Building The Application Containers
+
+        run: docker-compose up
+
+      - name : Running Api Unit Tests
+
+        run: docker exec -i chama_app_api flask test
+
+  testingFrontEnd:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checking out the repository
+
+      - uses: actions/checkout@v2
+
+      - name: Setting up node js
+
+        run: echo "Nodejs will be set up Sooon!!"

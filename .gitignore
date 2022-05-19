@@ -15,7 +15,9 @@
 /api/env
 __pycache__/
 
+# sqlite files
 
+*.sqlite
 
 # misc
 .env
