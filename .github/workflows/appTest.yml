@@ -22,11 +22,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    env: 
-
-      MARIADB_ROOT_PASSWORD: ${{ secrets.DATABASE_ROOT_PASSWORD }}   
-
-
     steps:
 
       - name: Checking out the repository
@@ -43,17 +38,15 @@ jobs:
       - name : Adding the application container to the test-net network
 
 
-        run: docker run -id --name api-test --network test-net test_app
+        run: docker run -itd --name api-test --network test-net test_app
 
       - name: setting up the redis container on the test-net network
 
-        run: docker run -id --name redis --network test-net redis
+        run: docker run -itd --name redis --network test-net redis
 
       - name: Running the Api unit tests
 
-        run: | 
-
-          docker exec -i api-test flask test
+        run: docker exec -i api-test flask test
 
   testingFrontEnd:
 
