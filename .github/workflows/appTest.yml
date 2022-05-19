@@ -50,7 +50,11 @@ jobs:
 
       - name: Running the Api unit tests
 
-        run: docker exec -i api-test flask test 
+        run: | 
+
+          export FLASK_APP=manage.py
+          
+          docker exec -i api-test flask test 
 
   testingFrontEnd:
 
