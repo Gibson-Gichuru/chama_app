@@ -31,17 +31,26 @@ jobs:
       - name: Checking out the repository
         uses: actions/checkout@v2
 
-      - name: Building The application Images
+      - name: Building the application test network
 
-        run: docker-compose build
+        run: docker network create test-net
 
-      - name: Building The Application Containers
+      - name: Building the application image
 
-        run: docker-compose up
+        run: docker build $(pwd)/api -t test_app -f $(pwd)/api/Dockerfile
 
-      - name : Running Api Unit Tests
+      - name : Adding the application container to the test-net network
 
-        run: docker exec -i chama_app_api flask test
+
+        run: docker run -itd --name api-test --network test-net test_app
+
+      - name: setting up the redis container on the test-net network
+
+        run: docker -run -itd --name redis --network redis
+
+      - name: Running the Api unit tests
+
+        run: docker exec -i api-test flask test 
 
   testingFrontEnd:
 
