@@ -54,7 +54,7 @@ jobs:
 
           export FLASK_APP=manage.py
 
-          docker exec -i api-test flask test 
+          docker exec -i api-test ls 
 
   testingFrontEnd:
 
