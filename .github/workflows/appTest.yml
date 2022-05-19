@@ -53,7 +53,7 @@ jobs:
 
         run: | 
 
-          docker exec -t api-test flask test
+          docker exec -i api-test flask test
 
   testingFrontEnd:
 
