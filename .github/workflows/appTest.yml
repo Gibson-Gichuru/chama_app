@@ -53,7 +53,7 @@ jobs:
 
         run: | 
 
-          docker exec -i api-test echo $FLASK_APP
+          docker exec -i api-test cat manage.py
 
   testingFrontEnd:
 
