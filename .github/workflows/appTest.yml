@@ -43,11 +43,11 @@ jobs:
       - name : Adding the application container to the test-net network
 
 
-        run: docker run -d --name api-test --network test-net test_app
+        run: docker run -id --name api-test --network test-net test_app
 
       - name: setting up the redis container on the test-net network
 
-        run: docker run -d --name redis --network test-net redis
+        run: docker run -id --name redis --network test-net redis
 
       - name: Running the Api unit tests
 
