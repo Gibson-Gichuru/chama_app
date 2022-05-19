@@ -5,6 +5,8 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
 
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
     debug = True
 
     port = 5000
@@ -19,6 +21,8 @@ class Config:
 
 class Development(Config):
 
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL") or "sqlite:///"+ os.path.join(basedir, "dev-data.sqlite")
+
     @staticmethod
     def init_app(app):
 
@@ -26,6 +30,10 @@ class Development(Config):
 
 
 class Testing(Config):
+
+    TESTING = True
+
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL") or "sqlite:///"+ os.path.join(basedir, "test-data.sqlite")
 
     @staticmethod
     def init_app(app):
@@ -47,5 +55,5 @@ env_config = {
     "development": Development,
     "default": Development,
     "production": Production,
-
+    "testing":Testing
 }
