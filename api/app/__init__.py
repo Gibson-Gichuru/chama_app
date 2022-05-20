@@ -20,6 +20,7 @@ def create_app(config):
 
     db.init_app(app = app)
 
-    migrate.init_app(app = app, db = db)
+    # render_as_batch serves as a workaround for the alter error in sqlite databases
+    migrate.init_app(app = app, db = db, render_as_batch = True)
 
     return app
