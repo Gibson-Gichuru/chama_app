@@ -1,4 +1,5 @@
 from app import create_app
+from app.models import User, Role
 import click
 import os
 
@@ -9,7 +10,7 @@ app = create_app(os.environ.get("FLASK_ENV") or "default")
 @app.shell_context_processor
 def make_shell_context():
 
-    return dict(app = app)
+    return dict(app = app, User =User, Role = Role)
 
 
 # custom commands
