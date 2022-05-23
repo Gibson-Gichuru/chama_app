@@ -1,8 +1,8 @@
-"""User and Role Models setup
+"""Application Models Setup
 
-Revision ID: 350641cccdff
+Revision ID: 04fd4a03d194
 Revises: 
-Create Date: 2022-05-20 08:56:02.199407
+Create Date: 2022-05-23 13:16:34.044297
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '350641cccdff'
+revision = '04fd4a03d194'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -23,22 +23,22 @@ def upgrade():
     sa.Column('name', sa.String(length=60), nullable=False),
     sa.Column('default', sa.Boolean(), nullable=True),
     sa.Column('permissions', sa.Integer(), nullable=False),
-    sa.PrimaryKeyConstraint('role_id'),
-    sa.UniqueConstraint('name')
+    sa.PrimaryKeyConstraint('role_id', name=op.f('pk_roles')),
+    sa.UniqueConstraint('name', name=op.f('uq_roles_name'))
     )
     op.create_table('users',
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('username', sa.String(length=60), nullable=False),
     sa.Column('email', sa.String(length=100), nullable=False),
     sa.Column('role_id', sa.Integer(), nullable=True),
-    sa.Column('status_id', sa.Integer(), nullable=True),
+    sa.Column('active', sa.Boolean(), nullable=True),
     sa.Column('registration_date', sa.DateTime(), nullable=True),
     sa.Column('last_seen', sa.DateTime(), nullable=True),
     sa.Column('password_hash', sa.String(length=120), nullable=False),
-    sa.ForeignKeyConstraint(['role_id'], ['users.role_id'], ),
-    sa.PrimaryKeyConstraint('user_id'),
-    sa.UniqueConstraint('email'),
-    sa.UniqueConstraint('username')
+    sa.ForeignKeyConstraint(['role_id'], ['roles.role_id'], name=op.f('fk_users_role_id_roles')),
+    sa.PrimaryKeyConstraint('user_id', name=op.f('pk_users')),
+    sa.UniqueConstraint('email', name=op.f('uq_users_email')),
+    sa.UniqueConstraint('username', name=op.f('uq_users_username'))
     )
     # ### end Alembic commands ###
 

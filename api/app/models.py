@@ -1,4 +1,5 @@
 
+from email.policy import default
 from app import db
 
 from datetime import datetime
@@ -79,7 +80,7 @@ class User(db.Model):
 
     role_id = db.Column(db.Integer, db.ForeignKey('roles.role_id'))
 
-    status_id = db.Column(db.Integer)
+    active = db.Column(db.Boolean, default= False)
 
     registration_date = db.Column(db.DateTime, default = datetime.utcnow)
 
@@ -103,6 +104,10 @@ class User(db.Model):
             self.role = Role.query.filter_by(default=True).first()
 
 
+        # self.status = Status.query.filter_by(status_type="user", status_default = True).first()
+
+
+
     def can(self, permissions):
 
         return self.role is not None and (self.role.permissions & permissions) == permissions
@@ -110,5 +115,11 @@ class User(db.Model):
     def is_admin(self):
 
         return self.can(Permissions.ADMINISTRATOR)
-        
+
+    
+
+
+
+
+
 

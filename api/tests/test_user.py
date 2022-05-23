@@ -59,3 +59,14 @@ class UserRoleAndPermissionsTest(BaseTestConfig):
 
         self.assertFalse(user.is_admin())
 
+class TestUserAccount(BaseTestConfig):
+
+    def setUp(self):
+
+        super().setUp()
+
+        self.user = User()
+
+    def test_user_account_is_not_active_by_default(self):
+
+        self.assertFalse(self.user.active)
