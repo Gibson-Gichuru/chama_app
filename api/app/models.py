@@ -1,8 +1,15 @@
 
-from email.policy import default
 from app import db
 
 from datetime import datetime
+
+import datetime as DT
+
+from werkzeug.security import generate_password_hash, check_password_hash
+
+import jwt
+
+from flask import current_app
 
 class Permissions:
 
@@ -86,10 +93,13 @@ class User(db.Model):
 
     last_seen = db.Column(db.DateTime, default = datetime.utcnow)
 
-    password_hash = db.Column(db.String(120), nullable = False)
+    password_hash = db.Column(db.String(120))
 
 
-    def __init__(self, role=None):
+    def __init__(self, username, email,role=None):
+
+        self.username = username
+        self.email = email
 
         if role is not None and not isinstance(role, Role):
 
@@ -108,6 +118,22 @@ class User(db.Model):
 
 
 
+    @property
+    def password(self):
+
+        raise AttributeError("This attribute cannot be read")
+
+
+    @password.setter
+    def password(self, password):
+
+        self.password_hash = generate_password_hash(password=password, 
+        salt_length=16, method="pbkdf2:sha256")
+
+    def check_password(self, password):
+
+        return check_password_hash(self.password_hash, password=password)
+
     def can(self, permissions):
 
         return self.role is not None and (self.role.permissions & permissions) == permissions
@@ -115,6 +141,68 @@ class User(db.Model):
     def is_admin(self):
 
         return self.can(Permissions.ADMINISTRATOR)
+
+
+    
+
+
+    def generate_token(self, timestamp = 900):
+
+        if  not self.active:
+
+            try:
+
+                payload = {
+
+                    "exp": datetime.utcnow() + DT.timedelta(seconds=timestamp),
+                    "iat": datetime.utcnow(),
+                    "sub": self.user_id
+                }
+
+
+                return jwt.encode(
+                    payload=payload,
+                    key= current_app.config.get("SECRETE_KEY"),
+                    algorithm= "HS256",
+                )
+
+            except Exception:
+
+                return None
+
+        return None
+
+
+    @staticmethod
+    def activate(token):
+
+        try:
+
+            data = jwt.decode(
+                jwt=token,
+                key = current_app.config.get("SECRETE_KEY"),
+                algorithms="HS256"
+            )
+
+            user = User.query.get(data['sub'])
+
+            if user is not None:
+
+                user.active = True
+
+                db.session.add(user)
+                db.session.commit()
+
+            return True
+
+        except jwt.ExpiredSignatureError:
+
+            return False
+
+        except jwt.InvalidSignatureError:
+
+            return False
+
 
     
 

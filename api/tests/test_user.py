@@ -2,6 +2,11 @@ from tests import BaseTestConfig
 
 from app.models import User, Role, Permissions
 
+from app import db  
+
+import time
+
+
 class UserRoleAndPermissionsTest(BaseTestConfig):
 
     def setUp(self):
@@ -13,7 +18,7 @@ class UserRoleAndPermissionsTest(BaseTestConfig):
 
     def test_a_user_has_a_User_role_by_default(self):
 
-        user = User()
+        user =  User(username = "test_user", email = "test@test_user.com")
 
         self.assertEqual(user.role.name, "User")
 
@@ -21,7 +26,11 @@ class UserRoleAndPermissionsTest(BaseTestConfig):
 
         role = Role.query.filter_by(name = "Admin").first()
 
-        user = User(role)
+        user = User(
+            username = "test_user", 
+            email = "test@test_user.com",
+            role = role
+            )
 
         self.assertEqual(user.role, role)
 
@@ -29,17 +38,21 @@ class UserRoleAndPermissionsTest(BaseTestConfig):
 
         with self.assertRaises(TypeError):
 
-            user = User("some role")
+            user = User(
+                username = "test_user", 
+                email = "test@test_user.com",
+                role = "some role"
+                )
 
     def test_a_User_role_cannot_perform_admin_role(self):
 
-        user = User()
+        user =  User(username = "test_user", email = "test@test_user.com")
 
         self.assertFalse(user.can(Permissions.REVIEW_LOAN_REQUEST))
 
     def test_admin_role_can_perform_basic_user_tasks(self):
 
-        user = User()
+        user =  User(username = "test_user", email = "test@test_user.com")
 
         basic_tasks = [
 
@@ -55,7 +68,7 @@ class UserRoleAndPermissionsTest(BaseTestConfig):
 
     def test_basic_User_is_not_Admin(self):
 
-        user= User()
+        user=  User(username = "test_user", email = "test@test_user.com")
 
         self.assertFalse(user.is_admin())
 
@@ -65,8 +78,85 @@ class TestUserAccount(BaseTestConfig):
 
         super().setUp()
 
-        self.user = User()
+        self.user = User(username = "test_user", email = "test@test_user.com")
+
+        db.session.add(self.user)
+        db.session.commit()
 
     def test_user_account_is_not_active_by_default(self):
 
         self.assertFalse(self.user.active)
+
+    def test_user_password(self):
+
+        """
+            User password should raise an Attribute Error When accessed.
+            That is a user should be able to assign a value to the password
+            attribute but not access it
+        """
+
+        with self.assertRaises(AttributeError):
+
+            self.user.password
+
+    def test_user_password_check(self):
+
+        user =  User(username = "test_user", email = "test@test_user.com")
+
+        user.password = "goat"
+
+        self.assertFalse(user.check_password("cow"))
+
+    def test_password_hash_cannot_be_the_same(self):
+
+        """
+        Two user Password hashes cannot be the same
+        Even if they provided the same password
+        """
+
+        user1 = User(username = "test_user_one", email = "test@test_user_one.com")
+        user2 = User(username = "test_user_two", email = "test@test_user_two.com")
+
+        user1.password = "goat"
+
+        user2.password = "goat"
+
+        self.assertNotEqual(user1.password_hash, user2.password_hash)
+
+    def test_user_account_activation_with_a_token(self):
+
+        """
+            User account can only be activate by a token 
+        """
+
+        # Confirm that the user account is not active by default
+
+        self.assertFalse(self.user.active)
+
+        User.activate(self.user.generate_token())
+
+        user = User.query.filter_by(username= "test_user").first()
+
+        self.assertTrue(user.active)
+
+    def test_expired_tokens_cannot_be_used(self):
+
+        """Expired Tokens Cannot Activate a user Account"""
+
+        user = User(username="some username", email="some email")
+
+        db.session.add(user)
+
+        db.session.commit()
+
+        short_lived_token = user.generate_token(timestamp=1)
+
+        time.sleep(2)
+
+        User.activate(token=short_lived_token)
+
+        saved_user = User.query.filter_by(username = "some username").first()
+
+        self.assertFalse(saved_user.active)
+
+    
