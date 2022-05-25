@@ -1,12 +1,9 @@
-from email import message
-from ntpath import join
+
 from flask.views import MethodView
 from flask import request, jsonify
 
 from app.models import User
-from app.schema import RegiserSchema
-
-from app import db
+from app.schema import RegisterSchema
 
 class RegisterUser(MethodView):
 
@@ -14,7 +11,7 @@ class RegisterUser(MethodView):
 
         request_data = request.get_json()
 
-        schema = RegiserSchema()
+        schema = RegisterSchema()
 
         errors = schema.validate(request_data)
 
@@ -23,8 +20,9 @@ class RegisterUser(MethodView):
             return jsonify({
                 "message": {
                     "status": "fail",
-                    "text":"No data passed!"
-                }
+                },
+
+                "errors":errors
             }), 400
 
         user = User(
@@ -34,9 +32,7 @@ class RegisterUser(MethodView):
 
         user.password = request_data['password']
 
-        db.session.add(user)
-
-        db.session.commit()
+        user.add(user)
 
         tokens = user.get_access_refresh_token()
 
@@ -55,10 +51,5 @@ class RegisterUser(MethodView):
 
         }), 200
 
-
-        # data validation 
-
-        
-        return "something good  is cooking!"
 
 

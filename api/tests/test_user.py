@@ -80,8 +80,7 @@ class TestUserAccount(BaseTestConfig):
 
         self.user = User(username = "test_user", email = "test@test_user.com")
 
-        db.session.add(self.user)
-        db.session.commit()
+        self.user.add(self.user)
 
     def test_user_account_is_not_active_by_default(self):
 
@@ -133,7 +132,7 @@ class TestUserAccount(BaseTestConfig):
 
         self.assertFalse(self.user.active)
 
-        User.activate(self.user.generate_token())
+        User.activate(self.user.generate_activation_token())
 
         user = User.query.filter_by(username= "test_user").first()
 
@@ -145,11 +144,9 @@ class TestUserAccount(BaseTestConfig):
 
         user = User(username="some username", email="some email")
 
-        db.session.add(user)
+        user.add(user)
 
-        db.session.commit()
-
-        short_lived_token = user.generate_token(timestamp=1)
+        short_lived_token = user.generate_activation_token(timestamp=1)
 
         time.sleep(2)
 
@@ -159,14 +156,3 @@ class TestUserAccount(BaseTestConfig):
 
         self.assertFalse(saved_user.active)
 
-
-class TestAuthenticationRoutes(BaseTestConfig):
-
-    def setUp(self):
-
-        super().setUp()
-
-
-    def test_user_registration(self):
-
-        pass

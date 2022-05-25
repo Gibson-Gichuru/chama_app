@@ -9,11 +9,9 @@ class Config:
 
     SECRETE_KEY = os.environ.get("SECRETE_KEY")
 
+    TOKEN_ALGO = os.environ.get("TOKEN_ALGO")
+
     debug = True
-
-    port = 5000
-
-    host = "0.0.0.0"
 
     @staticmethod
     def init_app(app):

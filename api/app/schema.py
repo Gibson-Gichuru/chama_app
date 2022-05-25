@@ -5,7 +5,7 @@ from marshmallow import Schema , fields , validates, ValidationError
 
 from app.models import User 
 
-class RegiserSchema(ma.Schema):
+class RegisterSchema(ma.Schema):
 
     username = fields.String(required = True)
     email = fields.Email(required = True)

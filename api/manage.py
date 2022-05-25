@@ -16,7 +16,7 @@ def make_shell_context():
         app = app, 
         User =User, 
         Role = Role, 
-        RegiserSchema = RegiserSchema
+        RegisterSchema = RegisterSchema
         
         )
 

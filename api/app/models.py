@@ -1,4 +1,5 @@
 
+from lib2to3.pgen2.tokenize import generate_tokens
 from app import db
 
 from datetime import datetime
@@ -31,7 +32,29 @@ class Permissions:
 
     ADMINISTRATOR = 0XFFFF
 
-class Role(db.Model):
+
+class DatabaseActions:
+
+    def add(self, resource):
+
+        db.session.add(resource)
+
+        return db.session.commit()
+
+
+    def update(self):
+
+        return db.commit()
+
+    def delete(self, resource):
+
+        db.sesson.delete(resource)
+
+        return db.session.commit()
+
+
+
+class Role(db.Model, DatabaseActions):
 
     __tablename__ = "roles"
 
@@ -75,7 +98,7 @@ class Role(db.Model):
 
                 db.session.commit()
 
-class User(db.Model):
+class User(db.Model, DatabaseActions):
 
     __tablename__ = "users"
 
@@ -143,47 +166,63 @@ class User(db.Model):
         return self.can(Permissions.ADMINISTRATOR)
 
 
-    
+    def generate_activation_token(self, timestamp = 900):
 
+        if not self.active:
 
-    def generate_token(self, timestamp = 900):
+            payload = dict(
+                exp = datetime.utcnow() + DT.timedelta(seconds=timestamp),
+                iat = datetime.utcnow(),
+                sub = self.user_id
+            )
 
-        if  not self.active:
-
-            try:
-
-                payload = {
-
-                    "exp": datetime.utcnow() + DT.timedelta(seconds=timestamp),
-                    "iat": datetime.utcnow(),
-                    "sub": self.user_id
-                }
-
-
-                return jwt.encode(
-                    payload=payload,
-                    key= current_app.config.get("SECRETE_KEY"),
-                    algorithm= "HS256",
-                )
-
-            except Exception:
-
-                return None
+            return User.generate_token(payload = payload)
 
         return None
+
+    @staticmethod
+    def generate_token(payload):
+
+        try:
+
+            return jwt.encode(
+
+                payload=payload,
+                key=current_app.config.get("SECRETE_KEY"),
+                algorithm= current_app.config.get("TOKEN_ALGO")
+            )
+
+        except Exception as error:
+
+            # log the error
+            raise error
+
+    @staticmethod
+    def validate_token(token):
+
+        try:
+
+            return jwt.decode(
+                token,
+                key=current_app.config.get('SECRETE_KEY'),
+                algorithms= current_app.config.get("TOKEN_ALGO")
+            )
+
+        except jwt.ExpiredSignatureError:
+
+            return False
+
+        except jwt.InvalidTokenError:
+
+            return False
 
 
     @staticmethod
     def activate(token):
 
-        try:
+        data = User.validate_token(token=token)
 
-            data = jwt.decode(
-                jwt=token,
-                key = current_app.config.get("SECRETE_KEY"),
-                algorithms="HS256"
-            )
-
+        if data:
             user = User.query.get(data['sub'])
 
             if user is not None:
@@ -191,44 +230,35 @@ class User(db.Model):
                 user.active = True
 
                 db.session.add(user)
+
                 db.session.commit()
 
-            return True
+                return True 
 
-        except jwt.ExpiredSignatureError:
+        return False
 
-            return False
-
-        except jwt.InvalidSignatureError:
-
-            return False
+            
 
     def get_access_refresh_token(self, timestamp = 900):
 
-        access_token = self.generate_token(timestamp=600)
+        access_token = User.generate_token(
+            {
 
-        payload = {
+                "exp": datetime.utcnow() + DT.timedelta(seconds=600),
+                "iat": datetime.utcnow(),
+                "sub": self.user_id,
+            }
+        )
+
+        refresh_token = User.generate_token({
 
                     "exp": datetime.utcnow() + DT.timedelta(seconds=timestamp),
                     "iat": datetime.utcnow(),
                     "sub": self.user_id,
                     "access": access_token
-                }
+                })
 
-        try:
-
-            refresh_token = jwt.encode(
-                payload=payload,
-                key=current_app.config.get("SECRETE_KEY"),
-                algorithm="HS256"
-            )
-
-            return access_token, refresh_token
-
-        except Exception as error:
-
-            raise error
-
+        return access_token, refresh_token
 
 
 
