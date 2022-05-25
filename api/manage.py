@@ -1,6 +1,6 @@
 from app import create_app
 from app.models import User, Role
-from app.schema import RegiserSchema
+from app.schema import RegisterSchema
 import click
 import os
 
