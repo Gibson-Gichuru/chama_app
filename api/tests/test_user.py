@@ -159,4 +159,14 @@ class TestUserAccount(BaseTestConfig):
 
         self.assertFalse(saved_user.active)
 
-    
+
+class TestAuthenticationRoutes(BaseTestConfig):
+
+    def setUp(self):
+
+        super().setUp()
+
+
+    def test_user_registration(self):
+
+        pass

@@ -203,6 +203,34 @@ class User(db.Model):
 
             return False
 
+    def get_access_refresh_token(self, timestamp = 900):
+
+        access_token = self.generate_token(timestamp=600)
+
+        payload = {
+
+                    "exp": datetime.utcnow() + DT.timedelta(seconds=timestamp),
+                    "iat": datetime.utcnow(),
+                    "sub": self.user_id,
+                    "access": access_token
+                }
+
+        try:
+
+            refresh_token = jwt.encode(
+                payload=payload,
+                key=current_app.config.get("SECRETE_KEY"),
+                algorithm="HS256"
+            )
+
+            return access_token, refresh_token
+
+        except Exception as error:
+
+            raise error
+
+
+
 
     
 
