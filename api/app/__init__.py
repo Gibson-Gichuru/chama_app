@@ -8,6 +8,9 @@ from config import env_config
 from flask_sqlalchemy  import SQLAlchemy
 from flask_marshmallow import Marshmallow
 
+
+from flask_mail import Mail
+
 from flask_migrate import Migrate
 from sqlalchemy import MetaData
 
@@ -27,6 +30,7 @@ ma = Marshmallow()
 
 migrate = Migrate()
 
+mail = Mail()
 
 def create_app(config):
 
@@ -42,6 +46,8 @@ def create_app(config):
     migrate.init_app(app = app, db = db, render_as_batch = True)
 
     ma.init_app(app=app)
+
+    mail.init_app(app = app)
     # Registering Application BluePrints
 
     from .auth import auth_blueprint

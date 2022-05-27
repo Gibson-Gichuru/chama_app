@@ -1,5 +1,4 @@
 
-from lib2to3.pgen2.tokenize import generate_tokens
 from app import db
 
 from datetime import datetime
@@ -11,6 +10,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 
 from flask import current_app
+
+from sqlalchemy_events import listen_events, on
+
+from app.email import send_email
 
 class Permissions:
 
@@ -98,6 +101,7 @@ class Role(db.Model, DatabaseActions):
 
                 db.session.commit()
 
+@listen_events
 class User(db.Model, DatabaseActions):
 
     __tablename__ = "users"
@@ -136,10 +140,11 @@ class User(db.Model, DatabaseActions):
 
             self.role = Role.query.filter_by(default=True).first()
 
+    
+    @on("after_insert")
+    def send_a_confirmation_token(mapper, conn, self):
 
-        # self.status = Status.query.filter_by(status_type="user", status_default = True).first()
-
-
+        send_email(self.email, "Account Confirmation", "confirm")
 
     @property
     def password(self):
@@ -259,13 +264,3 @@ class User(db.Model, DatabaseActions):
                 })
 
         return access_token, refresh_token
-
-
-
-    
-
-
-
-
-
-

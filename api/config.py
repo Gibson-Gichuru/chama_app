@@ -11,6 +11,23 @@ class Config:
 
     TOKEN_ALGO = os.environ.get("TOKEN_ALGO")
 
+    MAIL_SUBJECT_PREFIX = "Chama App"
+
+    MAIL_SENDER = os.environ.get("MAIL_SENDER")
+
+    MAIL_SERVICE = os.environ.get("MAIL_SERVICE")
+
+    MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
+
+    MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
+
+    MAIL_PORT = os.environ.get("MAIL_PORT")
+
+    MAIL_USE_TLS = True 
+
+    
+
+
     debug = True
 
     @staticmethod
