@@ -19,6 +19,8 @@ __pycache__/
 
 *.sqlite
 
+logs.txt
+
 # misc
 .env
 .DS_Store

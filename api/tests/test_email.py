@@ -33,26 +33,10 @@ class TestEmail(BaseTestConfig):
         self.assertTrue(
             all(
                 map(search_func, requred_keys)
+           
             )
         )
 
-    def test_email_construction(self):
-        """
-            Test That an email Message is constructed Properly
-
-            The send_email runs on another thread but we need to make sure that 
-            all the neccessary dependencies are set for a success execution
-
-        """
-        #make sure that  the current application object is stored
-        #the current app object will provide a context to run the 
-        #email thread on
-
-        with patch("app.email.current_app") as app_mock:
-
-            send_email("test@test.com", "Testing Mocking", "email")
-            
-        app_mock._get_current_object.assert_called()
 
     def test_email_message_construction(self):
 
@@ -84,25 +68,7 @@ class TestEmail(BaseTestConfig):
 
         thread_mock.assert_called()
 
-
-    def test_mail_thread_runs_in_current_app_context(self):
-
-        with patch('app.email.current_app') as context_mock:
-
-            app = current_app._get_current_object()
-
-            send_async_email(app=app, msg="testing")
-
-
-        context_mock.app_context.assert_called()
-
-    def test_mail_sent(self):
-
-        with patch("app.email.Mail") as mail_mock:
-
-            send_email('test@test', 'Testing', "email")
-
-        mail_mock.send.assert_called()
+        
 
         
 

@@ -14,6 +14,8 @@ from flask_mail import Mail
 from flask_migrate import Migrate
 from sqlalchemy import MetaData
 
+from redis import Redis
+
 conventions = {
 
     "ix": 'ix_%(column_0_label)s',
@@ -39,6 +41,14 @@ def create_app(config):
     app.config.from_object(env_config[config])
 
     env_config[config].init_app(app)
+    
+
+    app.redis = Redis(
+        
+        host = app.config.get("REDIS_HOST"),
+        port = app.config.get("REDIS_PORT"),
+        password= app.config.get("REDIS_PASSWORD")
+    )
 
     db.init_app(app = app)
 

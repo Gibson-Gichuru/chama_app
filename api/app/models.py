@@ -1,11 +1,10 @@
-
 from app import db
 
 from datetime import datetime
 
 import datetime as DT
 
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash, secrets
 
 import jwt
 
@@ -144,7 +143,7 @@ class User(db.Model, DatabaseActions):
     @on("after_insert")
     def send_a_confirmation_token(mapper, conn, self):
 
-        send_email(self.email, "Account Confirmation", "confirm")
+        send_email(self.email, "Account Confirmation", "email")
 
     @property
     def password(self):
@@ -181,19 +180,22 @@ class User(db.Model, DatabaseActions):
                 sub = self.user_id
             )
 
-            return User.generate_token(payload = payload)
+            return User.generate_token(
+                payload = payload,
+                key= current_app.config.get("ACTIVATION_KEY")
+                )
 
         return None
 
     @staticmethod
-    def generate_token(payload):
+    def generate_token(payload, key):
 
         try:
 
             return jwt.encode(
 
                 payload=payload,
-                key=current_app.config.get("SECRETE_KEY"),
+                key=key,
                 algorithm= current_app.config.get("TOKEN_ALGO")
             )
 
@@ -203,13 +205,13 @@ class User(db.Model, DatabaseActions):
             raise error
 
     @staticmethod
-    def validate_token(token):
+    def validate_token(token, key):
 
         try:
 
             return jwt.decode(
                 token,
-                key=current_app.config.get('SECRETE_KEY'),
+                key=key,
                 algorithms= current_app.config.get("TOKEN_ALGO")
             )
 
@@ -225,7 +227,12 @@ class User(db.Model, DatabaseActions):
     @staticmethod
     def activate(token):
 
-        data = User.validate_token(token=token)
+        data = User.validate_token(
+
+            token=token,
+            key=current_app.config.get('ACTIVATION_KEY')
+            
+            )
 
         if data:
             user = User.query.get(data['sub'])
@@ -242,25 +249,46 @@ class User(db.Model, DatabaseActions):
 
         return False
 
-            
 
-    def get_access_refresh_token(self, timestamp = 900):
+    def get_access_token(self, timestamp = 600):
 
         access_token = User.generate_token(
-            {
+            payload={
 
-                "exp": datetime.utcnow() + DT.timedelta(seconds=600),
+                "exp": datetime.utcnow() + DT.timedelta(seconds=timestamp),
                 "iat": datetime.utcnow(),
                 "sub": self.user_id,
-            }
+                "sign": secrets.token_urlsafe()
+            },
+
+            key = current_app.config.get("ACCESS_KEY")
         )
 
-        refresh_token = User.generate_token({
+        return access_token
 
-                    "exp": datetime.utcnow() + DT.timedelta(seconds=timestamp),
+
+    def get_refresh_token(self, timestamp = 86400):
+
+        refresh_token = User.generate_token(
+
+            payload = {
+
+                    "exp": datetime.utcnow() + DT.timedelta(seconds=86400),
                     "iat": datetime.utcnow(),
                     "sub": self.user_id,
-                    "access": access_token
-                })
+                },
+            key= current_app.config.get("REFRESH_KEY")
+                
+                
+            )
+
+        return refresh_token        
+            
+
+    def get_access_refresh_token(self):
+
+        access_token = self.get_access_token()
+
+        refresh_token = self.get_refresh_token()
 
         return access_token, refresh_token
