@@ -86,6 +86,10 @@ class Login(MethodView):
 
         current_user = basic_auth.current_user()
 
+        if not  current_user.active:
+
+            return abort(401)
+
         tokens = current_user.get_access_refresh_token()
 
         current_app.redis.hmset(
@@ -117,6 +121,10 @@ class Tokens(MethodView):
     def post(self):
 
         current_user = token_auth.current_user()
+
+        if not current_user.active:
+
+            return abort(401)
 
         request_data = request.get_json()
 

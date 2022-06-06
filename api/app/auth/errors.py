@@ -1,6 +1,6 @@
-from views import basic_auth, token_auth
+from .views import basic_auth, token_auth
 
-from auth import auth_blueprint
+from app.auth import auth_blueprint
 
 from flask import jsonify
 

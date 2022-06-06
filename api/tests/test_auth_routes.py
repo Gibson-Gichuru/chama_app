@@ -121,6 +121,8 @@ class TestLoginRoute(BaseTestConfig):
 
         user.password = "testing"
 
+        user.active = True
+
         user.add(user)
 
 
@@ -208,4 +210,12 @@ class TestLoginRoute(BaseTestConfig):
 
         self.assertNotEqual(response_data['tokens']['access'], new_access_token['access'])
 
-       
+    def test_inactive_user_cannot_login(self):
+
+        self.user.active =False 
+
+        self.user.update()
+
+        response = self.make_request()
+
+        self.assertEqual(response.status_code, 401)

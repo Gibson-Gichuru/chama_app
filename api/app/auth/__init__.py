@@ -2,7 +2,7 @@ from flask import Blueprint
 
 auth_blueprint = Blueprint("auth", __name__,)
 
-from . import views
+from . import views, errors
 
 auth_blueprint.add_url_rule(
     "/register", 

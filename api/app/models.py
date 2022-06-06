@@ -46,7 +46,7 @@ class DatabaseActions:
 
     def update(self):
 
-        return db.commit()
+        return db.session.commit()
 
     def delete(self, resource):
 
