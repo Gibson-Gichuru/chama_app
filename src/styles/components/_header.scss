@@ -1,0 +1,146 @@
+.header {
+
+    position: fixed;
+    top: 0;
+    width: 100%;
+    box-shadow: $main-box-shadow;
+    
+
+    .nav {
+
+        min-height: 8vh;
+        align-items: center;
+
+        .brand-logo {
+            width: 10rem;
+        }
+
+        .cta-btn{
+            padding: .5rem;
+            color: #fff;
+            font-weight: 700;
+            box-shadow: $main-box-shadow;
+    
+        }
+
+        .primary{
+            background-color: $primary-color;
+            margin-right: .6rem;
+            border-radius: 10px 0 0 10px;
+        }
+
+        .secondary {
+            background-color: $accent-color;
+            border-radius: 0px 10px 10px 0px;
+        }
+
+        &--toggle {
+
+            font-size: $extra-large-font-size;
+
+        }
+
+        &-content{
+
+            position: fixed;
+            width: 60%;
+            max-width: 250px;
+            right: -100%;
+            top: 8vh;
+            margin-top: 1.5rem;
+            flex-direction: column;
+            box-shadow: $mobile-nav-shadow;
+            padding: 1rem;
+            border-radius: 10px 0 0 10px;
+            overflow: hidden;
+            transition: all 450ms ease-in;
+        }
+
+        &-links {
+
+            .nav--cta {
+
+                background-color: $accent-color;
+                color: #fff;
+            }
+
+            flex-direction: column;
+            row-gap: 1rem;
+        }
+    }
+}
+
+.toggle--on{
+    right: 0 !important;
+}
+
+.link-text {
+    position: relative;
+    width: 100%;
+}
+
+.link-text::before {
+    content: "";
+    position: absolute;
+    width: calc(100% + 2rem);
+    height: calc(100% + 2rem);
+    left: -1rem;
+    background-color:$accent-color;
+    z-index: -1;
+    transform: scaleX(0);
+    transform-origin: left;
+
+    transition: all 250ms ease-in;
+}
+
+.active {
+    color: #fff;
+
+    &::before {
+        transition: all 100ms ease-in;
+        transform: scaleX(1);
+    }
+}
+
+@media screen and (min-width: 35rem) {
+
+    .nav {
+        .cta-btn{
+           display: none;
+        }
+
+        &--toggle {
+            display: none;
+        }
+        &-content{
+
+            all: unset !important;
+            width: 70% !important;
+           
+        }
+        &-links {
+
+            flex-direction: row !important;
+            flex-basis: 2;
+            justify-content: space-around;
+        }
+    }
+    .link-text {
+        position: relative;
+        width: 100%;
+    }
+
+    .link-text::before {   
+
+            width:100%;
+            left: 0;
+            height: .4rem;
+            top: 5.3vh;
+            border-radius: 2px;
+    }
+
+    .active {
+        color: $accent-color;
+    }
+        
+}
