@@ -70,6 +70,10 @@ h1, h2,h3,h4 {
 
 // containers
 
+.wrapper {
+    position: relative;
+}
+
 .container {
 
     max-width: 64rem;
@@ -97,5 +101,43 @@ h1, h2,h3,h4 {
     align-items: center;
     justify-content: center;
     color: inherit;
+    cursor: pointer;
 
+}
+
+.btn--submit {
+    font-size: $normal-font-size;
+    padding: .5rem;
+    color: #fff;
+    background-color: $primary-color;
+    border-radius: 10px;
+
+    transition: transform 200ms ease-in;
+    &:hover,
+    &:focus{
+        transform: scale(1.05);
+    }
+}
+
+
+.error {
+    font-size: $tiny-font-size;
+    color:$error-color;
+}
+
+.shadow {
+    position: fixed;
+    width: 100%;
+    height: 92vh;
+    background-color: rgba(0,0,0,0.25);
+
+    // define a clip-path wuth a circle shape 
+
+    
+}
+
+.shadow--on {
+
+    clip-path: circle(150% at 100% -10%);
+    transition: clip-path 350ms ease-in;
 }

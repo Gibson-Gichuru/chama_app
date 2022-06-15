@@ -1,0 +1,81 @@
+.main {
+    margin-top: 8vh;
+
+    .banner--form{
+        position: relative;
+        flex-direction: column;
+    }
+
+    .banner{
+        &--img{
+            width: 100%;
+        }
+    }
+
+    .card {
+        padding: 2.5rem;
+        width: 90%;
+        max-width: 25rem;
+        background-color: #fff;
+        box-shadow: $main-box-shadow;
+        border-radius: 10px;
+
+        &--title {
+            margin-bottom: 1rem;
+        }
+    }
+
+    .form--card{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        .form {
+            flex-direction: column;
+            gap: 1rem;
+
+            &--element {
+                flex-direction: column;
+                gap: .5rem;
+            }
+        }
+        
+    }
+}
+
+input {
+    color: inherit;
+    outline: $primary-color;
+    padding: .5rem;
+    border: 2px solid $primary-color;
+    border-radius: 10px;
+}
+
+@media screen and (min-width:46.25rem) {
+    
+    .banner--form{
+
+        flex-direction: row !important;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .form--card{
+        position: static !important;
+        top: 50%;
+        left: 50%;
+        transform: none !important;
+
+        }
+
+        .banner{
+            padding-top: 1rem;
+            &--img{
+                width: 100%;
+                max-width: 28.125rem;
+            }
+        }
+
+}
