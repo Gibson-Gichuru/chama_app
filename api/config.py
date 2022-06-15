@@ -31,7 +31,7 @@ class Config:
 
     MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
 
-    MAIL_PORT = int(os.environ.get("MAIL_PORT"))
+    MAIL_PORT = int(os.environ.get("MAIL_PORT")) or 587
 
     MAIL_USE_TLS = True
 
