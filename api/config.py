@@ -39,7 +39,7 @@ class Config:
     # Redis Configs SetUp
 
     REDIS_HOST = os.environ.get("REDIS_HOST") or "redis"
-    REDIS_PORT = int(os.environ.get("REDIS_PORT")) or 6379 
+    REDIS_PORT =  6379 
     REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD")
 
     
