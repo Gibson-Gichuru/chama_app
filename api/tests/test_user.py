@@ -2,9 +2,12 @@ from tests import BaseTestConfig
 
 from app.models import User, Role, Permissions
 
+from unittest.mock import patch
+
 from app import db  
 
 import time
+
 
 
 class UserRoleAndPermissionsTest(BaseTestConfig):
@@ -155,4 +158,25 @@ class TestUserAccount(BaseTestConfig):
         saved_user = User.query.filter_by(username = "some username").first()
 
         self.assertFalse(saved_user.active)
+
+    @patch("app.models.send_email")
+    def test_confirmation_email_send(self, email_mock):
+
+        "A confirmation Email Should be Sent once the user is registerd to the database"
+
+        user = User(username = "testusername", email = "test@test.com")
+
+        user.add(user)
+
+        email_mock.assert_called()
+
+        email_mock.assert_called_with(user.email, 'Account Confirmation', 'email')
+
+    
+
+
+
+
+
+
 

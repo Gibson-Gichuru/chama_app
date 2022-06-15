@@ -8,8 +8,13 @@ from config import env_config
 from flask_sqlalchemy  import SQLAlchemy
 from flask_marshmallow import Marshmallow
 
+
+from flask_mail import Mail
+
 from flask_migrate import Migrate
 from sqlalchemy import MetaData
+
+from redis import Redis
 
 conventions = {
 
@@ -27,6 +32,7 @@ ma = Marshmallow()
 
 migrate = Migrate()
 
+mail = Mail()
 
 def create_app(config):
 
@@ -35,6 +41,14 @@ def create_app(config):
     app.config.from_object(env_config[config])
 
     env_config[config].init_app(app)
+    
+
+    app.redis = Redis(
+        
+        host = app.config.get("REDIS_HOST"),
+        port = app.config.get("REDIS_PORT"),
+        password= app.config.get("REDIS_PASSWORD")
+    )
 
     db.init_app(app = app)
 
@@ -42,6 +56,8 @@ def create_app(config):
     migrate.init_app(app = app, db = db, render_as_batch = True)
 
     ma.init_app(app=app)
+
+    mail.init_app(app = app)
     # Registering Application BluePrints
 
     from .auth import auth_blueprint

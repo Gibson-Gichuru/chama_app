@@ -31,11 +31,24 @@ services:
     build: 
       context: ./api
 
+    env_file:
+      - .env
     # set up all the required environament  variables required by the api service
     environment:
     
       SECRET_KEY: "${SECRET_KEY}"
+      ACTIVATION_KEY: "${ACTIVATION_KEY}"
+      ACCESS_KEY: "${ACCESS_KEY}"
+      REFRESH_KEY: "${REFRESH_KEY}"
       MARIADB_ROOT_PASSWORD: "${DATABASE_PASSWORD}"
+      MAIL_PORT: "${MAIL_PORT}"
+      MAIL_SENDER: "${MAIL_SENDER}"
+      MAIL_SERVICE: "${MAIL_SERVICE}"
+      MAIL_USERNAME: "${MAIL_USERNAME}"
+      MAIL_PASSWORD: "${MAIL_PASSWORD}"
+      REDIS_HOST: "${REDIS_HOST}"
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: "${REDIS_PASSWORD}"
 
     depends_on:
       - database
@@ -73,9 +86,17 @@ services:
 
   redis:
 
-    image: redis
+    image: 'bitnami/redis:latest'
 
     restart: always
+
+    environment:
+
+      - REDIS_PASSWORD="${REDIS_PASSWORD}"
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL,CONFIG
+
+    expose:
+      - 6379
 
     volumes:
 
@@ -97,6 +118,8 @@ volumes:
   nginxLog:
 
     driver: local
+
+
 
 
 

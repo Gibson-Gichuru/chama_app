@@ -5,11 +5,45 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
 
+    # SQLAlchemy Config SetUp
+
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    SECRETE_KEY = os.environ.get("SECRETE_KEY")
+    SECRET_KEY = os.environ.get("SECRET_KEY")
+
+    ACTIVATION_KEY = os.environ.get("ACTIVATION_KEY")
+
+    ACCESS_KEY = os.environ.get("ACCESS_KEY")
+
+    REFRESH_KEY = os.environ.get("REFRESH_KEY")
 
     TOKEN_ALGO = os.environ.get("TOKEN_ALGO")
+
+    # Flask Mail Config Set Up
+
+    MAIL_SUBJECT_PREFIX = "Chama App"
+
+    MAIL_SENDER = os.environ.get("MAIL_SENDER") or "memehouseke@gmail.com"
+
+    MAIL_SERVICE = os.environ.get("MAIL_SERVICE")
+
+    MAIL_USERNAME = os.environ.get("MAIL_USERNAME") or "memehouseke@gmail.com"
+
+    MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
+
+    MAIL_PORT = 587
+
+    MAIL_USE_TLS = True
+
+
+    # Redis Configs SetUp
+
+    REDIS_HOST = os.environ.get("REDIS_HOST") or "redis"
+    REDIS_PORT =  6379 
+    REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD")
+
+    
+
 
     debug = True
 
