@@ -23,11 +23,11 @@ class Config:
 
     MAIL_SUBJECT_PREFIX = "Chama App"
 
-    MAIL_SENDER = os.environ.get("MAIL_SENDER")
+    MAIL_SENDER = os.environ.get("MAIL_SENDER") or "memehouseke@gmail.com"
 
     MAIL_SERVICE = os.environ.get("MAIL_SERVICE")
 
-    MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
+    MAIL_USERNAME = os.environ.get("MAIL_USERNAME") or "memehouseke@gmail.com"
 
     MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
 
