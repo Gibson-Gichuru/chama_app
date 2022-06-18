@@ -2,38 +2,29 @@ import "./styles/App.css";
 
 import {Routes, Route} from "react-router-dom"
 import Nav from "./components/Navigation";
-import LoginForm from "./components/Login";
-import {ShadowContextProvider} from "./context/ShadowContext";
-import { ViewPortContextProvider } from "./context/ViewPort";
-
-import { useViewport } from "./context/ViewPort";
+import Login from "./pages/Login";
+import SignUp from "./pages/Signup";
+import {Header} from "./components/Utils";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Contacts from "./pages/Contacts";
+import Faqs from "./pages/Faqs";
 
 function App() {
-
-
-  const {width} = useViewport()
 
   return (
   
       <>
-      <ViewPortContextProvider>
-        <ShadowContextProvider>
-        <header className="header">
-          <Nav/>
-        </header>
-          <main className="main">
-            <div className="banner--form flex">
-              <div className="banner">
-                  <img src={width < 846 ?"mobile-bg.svg": "big-bg.svg"} alt="savings" className="banner--img" />
-              </div>
-              <LoginForm/>  
-            </div>   
-          </main>
-          
-        </ShadowContextProvider>
-      </ViewPortContextProvider>
+      <Header>
+        <Nav/>
+      </Header>
       <Routes>
-        <Route path = "/"/>
+        <Route path = "/" element = {<Home/>}/>
+        <Route path="login" element = {<Login/>}/>
+        <Route path="signup" element = {<SignUp/>}/>
+        <Route path="about" element = {<About/>}/>
+        <Route path="contacts" element = {<Contacts/>}/>
+        <Route path="faqs" element = {<Faqs/>}/>
       </Routes>
       </>
   );

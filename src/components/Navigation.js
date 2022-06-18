@@ -1,14 +1,12 @@
-import { NavLinksData } from "./NavbarData";
+import { NavLinksData } from "../utilities/NavbarData";
 import {IoGrid} from "react-icons/io5";
 import { NavLink } from "react-router-dom";
 
 import { useState, useContext} from "react";
 
-import { IconContext } from "react-icons";
-
 import { ShadowContext } from "../context/ShadowContext";
 
-import Shadow from "./Shadow";
+import {Shadow} from "./Utils";
 
 const Nav = ()=> {
 
@@ -25,12 +23,11 @@ const Nav = ()=> {
     return (
         
         <div className="container">
-        <IconContext.Provider value={"#00204C"}>
             <nav className="nav flex">
                 <img src="brand.svg" alt="chama app Logo" className="brand-logo" />
                 <div className="cta-group ">
-                    <button className="cta-btn primary btn">Sign In</button>
-                    <button className="cta-btn secondary btn">Sign Up</button>
+                    <NavLink to = "login" className="cta-btn primary btn">Sign In</NavLink>
+                    <NavLink to = "signup"className="cta-btn secondary btn">Sign Up</NavLink>
                 </div>
 
                 <button className="btn nav--toggle" onClick={showNavBar}>
@@ -44,7 +41,7 @@ const Nav = ()=> {
 
                                 return(
                                 <li className="nav-link" key = {index}>
-                                    <NavLink to = {item.path} className = {`${item.cName} flex--inline`}>
+                                    <NavLink to = {item.path} className = {`${item.cName} flex--inline`} onClick ={showNavBar}>
                                             {item.icon}
                                             {item.title}
                                     </NavLink>
@@ -55,7 +52,6 @@ const Nav = ()=> {
                     </div>
                 </Shadow>
             </nav>
-            </IconContext.Provider>
         </div>
        
     )
