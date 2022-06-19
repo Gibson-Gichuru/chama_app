@@ -9,7 +9,8 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Contacts from "./pages/Contacts";
 import Faqs from "./pages/Faqs";
-
+import { ProtectedComponent } from "./components/Utils";
+import Notify from "./components/Notify";
 function App() {
 
   return (
@@ -18,8 +19,13 @@ function App() {
       <Header>
         <Nav/>
       </Header>
+      <Notify/>
       <Routes>
-        <Route path = "/" element = {<Home/>}/>
+        <Route path = "/" element = {
+          <ProtectedComponent>
+              <Home/>
+          </ProtectedComponent>
+        }/>
         <Route path="login" element = {<Login/>}/>
         <Route path="signup" element = {<SignUp/>}/>
         <Route path="about" element = {<About/>}/>

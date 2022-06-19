@@ -1,7 +1,11 @@
 import { useFormik } from "formik";
-import * as Yup from "yup"
+import * as Yup from "yup";
+import axios from "axios";
+import { useNotification } from "../context/NotificationContext";
 const LoginForm = () =>{
     
+    const {showNotification} = useNotification()
+
     const formik = useFormik({
 
         initialValues: {
@@ -21,11 +25,35 @@ const LoginForm = () =>{
             }
         ),
 
-        onSubmit: values => {
+        onSubmit: async values => {
 
-            // Login the user via the auth context
+            await axios.get(
+                "api/auth/login",
+                {
+                    auth:{
+                        username:values.email,
+                        password:values.password
+                    }
+                }
+            ).then(data=>{
+                // setup the logged in user and redirect to the home page
+                console.log(data)
+            }).catch(error=>{
+                
+                switch (error.response.status) {
+                    case 401:
+                        showNotification("Invalid username or password", "warning")
+                        break;
+                    case 403:
+                        showNotification("Account not yet Activated", "warning")
+                        break;
+                    default:
+                        break;
+                }
+            })
         }
     })
+
 
     return (
 
@@ -62,7 +90,15 @@ const LoginForm = () =>{
                 </div>
 
                 <div className="form--element flex">
-                    <button className="btn btn--submit">Login</button>
+                    <button className="btn btn--submit" type="submit">Login</button>
+                </div>
+
+                <div className="form--texts flex">
+                    <p className="text">
+                        Don't have an account?
+                        <span className="accent--text">Sign up</span>
+                    </p>
+                    <span className="accent--text">Forgot Password!</span>
                 </div>
 
             </form>

@@ -1,4 +1,4 @@
-import { NavLinksData } from "../utilities/NavbarData";
+import { NavLinksData } from "./NavbarData";
 import {IoGrid} from "react-icons/io5";
 import { NavLink } from "react-router-dom";
 
@@ -25,10 +25,15 @@ const Nav = ()=> {
         <div className="container">
             <nav className="nav flex">
                 <img src="brand.svg" alt="chama app Logo" className="brand-logo" />
-                <div className="cta-group ">
+
+                {/* 
+                    Have the notificaions and user profile icons.
+                    icons should be displayed ony if we have a user logged in
+                */}
+                {/* <div className="cta-group ">
                     <NavLink to = "login" className="cta-btn primary btn">Sign In</NavLink>
                     <NavLink to = "signup"className="cta-btn secondary btn">Sign Up</NavLink>
-                </div>
+                </div> */}
 
                 <button className="btn nav--toggle" onClick={showNavBar}>
                     <IoGrid/>

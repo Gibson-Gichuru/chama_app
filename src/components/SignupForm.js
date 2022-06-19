@@ -1,19 +1,24 @@
 import { useFormik } from "formik";
 import * as Yup from 'yup';
-
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Signup = ()=>{
+
+    const navigate = useNavigate();
 
     const form = useFormik({
     
         initialValues:{
+            username:"",
             email:"",
             password:"",
             confirmPassword: "",
         },
 
         validationSchema: Yup.object(
-            {
+            {   
+                username:Yup.string().required("required").min(3,"have to be 3 chars or more"),
                 email: Yup.string().email("Invalid Email").required("required"),
                 password: Yup.string().required("required")
                 .min(8, "Password is too short-should be 8 char min")
@@ -21,11 +26,31 @@ const Signup = ()=>{
                         "password should contain atleast one number and one special character"),
 
                 confirmPassword: Yup.string()
+                                .oneOf([Yup.ref('password'), null], 'Passwords must match')
+                                .required("need to confirm your password")
             }
         ),
 
-        onSubmit : values =>{
+        onSubmit : async values =>{
 
+            await axios.post(
+                "api/auth/register",
+                {
+                    email:values.email,
+                    password:values.password,
+                    username:values.username
+                }
+            ).then(
+                response=>{
+                    // Show the success message 
+                    // navigate to the login page
+                    navigate("login")
+                }
+            ).catch(
+                error=>{
+                    console.log(error)
+                }
+            )
         }
     
     })
@@ -36,6 +61,21 @@ const Signup = ()=>{
         <div className="card form--card">
             <h2 className="card--title">Sign Up</h2>
             <form onSubmit={form.handleSubmit} className = "form flex">
+
+                <div className="form--element flex">
+                    <label htmlFor="username">Username</label>
+                    <input 
+                    id="username"
+                    type="text"
+                    placeholder="your prefered profile username"
+                    {...form.getFieldProps('username')}
+
+                    />
+
+                    {form.touched.username && form.errors.username? (
+                        <span className="error">{form.errors.username}</span>
+                    ) :null}
+                </div>  
 
                 <div className="form--element flex">
                     <label htmlFor="email">Email</label>
@@ -78,9 +118,15 @@ const Signup = ()=>{
                 </div>
 
                 <div className="form--element flex">
-                    <button className="btn btn--submit">Sign up</button>
+                    <button className="btn btn--submit" type="submit">Sign up</button>
                 </div>
 
+                <div className="form--texts flex">
+                    <p className="text">
+                        Aready have an account?
+                        <span className="accent--text">Login</span>
+                    </p>
+                </div>
             </form>
         </div>
     </>

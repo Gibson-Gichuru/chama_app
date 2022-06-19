@@ -39,6 +39,18 @@
                 flex-direction: column;
                 gap: .5rem;
             }
+            &--texts{
+                font-size: .875rem;
+                flex-direction: column;
+                gap: .3rem;
+                align-items: center;
+
+                .text {
+                    display: flex;
+                    gap: .2rem;
+                }
+            }
+
         }
         
     }

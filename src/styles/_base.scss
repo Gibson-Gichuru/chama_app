@@ -124,20 +124,40 @@ h1, h2,h3,h4 {
     font-size: $tiny-font-size;
     color:$error-color;
 }
-
+.accent--text {
+    color: $accent-color;
+}
 .shadow {
     position: fixed;
     width: 100%;
     height: 92vh;
     background-color: rgba(0,0,0,0.25);
 
-    // define a clip-path wuth a circle shape 
-
-    
 }
 
 .shadow--on {
 
     clip-path: circle(150% at 100% -10%);
     transition: clip-path 350ms ease-in;
+}
+
+.notification {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: $small-font-size;
+    color: #fff;
+    padding: .8rem;
+    position: fixed;
+    top: 10vh;
+    left: 50%;
+    width: 80%;
+    max-width: 250px;
+    border-radius: 10px;
+    transform: translateX(-50%);
+    z-index: 90;
+}
+
+.warning{
+    background-color: $error-color;
 }
