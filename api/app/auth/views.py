@@ -53,11 +53,7 @@ class RegisterUser(MethodView):
 
         if errors:
 
-            return jsonify({
-                "message": {
-                    "status": "fail",
-                },
-
+            return jsonify({ 
                 "errors":errors
             }), 400
 
@@ -88,7 +84,7 @@ class Login(MethodView):
 
         if not  current_user.active:
 
-            return abort(401)
+            return abort(403, description = "Account not activated")
 
         tokens = current_user.get_access_refresh_token()
 
