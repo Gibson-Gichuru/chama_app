@@ -3,6 +3,7 @@ import { useViewport } from "../context/ViewPort";
 import { ShadowContext } from "../context/ShadowContext";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import * as BsIcons from "react-icons/bs"
 
 export const Shadow = ({styleClass,onClassName, children})=>{
 
@@ -59,4 +60,35 @@ export const ProtectedComponent = ({children})=> {
     }
 
     return children
+}
+
+
+export const NotificationSettings = (content)=>{
+
+    return {
+
+        content,
+        insert: "top",
+        container: "top-right",
+        animationIn: ["animate__animated", "animate__fadeIn"],
+        animationOut: ["animate__animated", "animate__fadeOut"],
+        dismiss: {
+            duration: 2000
+        }
+
+    }
+}
+
+
+export function Notify(message, styleClass){
+
+    return(
+
+        <div className={`notification ${styleClass}`}>
+            <BsIcons.BsFillBellFill/>
+            <p className="notification--text">
+                {message}
+            </p>
+        </div>
+    )
 }

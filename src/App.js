@@ -10,7 +10,9 @@ import About from "./pages/About";
 import Contacts from "./pages/Contacts";
 import Faqs from "./pages/Faqs";
 import { ProtectedComponent } from "./components/Utils";
-import Notify from "./components/Notify";
+import { ReactNotifications } from 'react-notifications-component'
+import 'react-notifications-component/dist/theme.css'
+
 function App() {
 
   return (
@@ -19,7 +21,7 @@ function App() {
       <Header>
         <Nav/>
       </Header>
-      <Notify/>
+      <ReactNotifications />
       <Routes>
         <Route path = "/" element = {
           <ProtectedComponent>

@@ -145,19 +145,25 @@ h1, h2,h3,h4 {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: $small-font-size;
+    gap:1rem;
+    font-size: $tiny-font-size;
     color: #fff;
     padding: .8rem;
     position: fixed;
     top: 10vh;
     left: 50%;
     width: 80%;
-    max-width: 250px;
+    max-width: 270px;
     border-radius: 10px;
     transform: translateX(-50%);
     z-index: 90;
+
 }
 
 .warning{
     background-color: $error-color;
+}
+
+.fadeOut {
+    left: -100%;
 }

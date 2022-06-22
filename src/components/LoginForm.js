@@ -1,10 +1,12 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import { useNotification } from "../context/NotificationContext";
+import { Store } from 'react-notifications-component';
+import { NotificationSettings } from "./Utils";
+import { Notify } from "./Utils";
 const LoginForm = () =>{
     
-    const {showNotification} = useNotification()
+ 
 
     const formik = useFormik({
 
@@ -42,10 +44,24 @@ const LoginForm = () =>{
                 
                 switch (error.response.status) {
                     case 401:
-                        showNotification("Invalid username or password", "warning")
+
+                    Store.addNotification(NotificationSettings(
+                        Notify(
+                            "invalid username or password",
+                            "warning"
+                        )
+                    ));
+                        
                         break;
                     case 403:
-                        showNotification("Account not yet Activated", "warning")
+
+                        Store.addNotification(NotificationSettings(
+                           Notify(
+                            "Account not Confirmed",
+                            "warning"
+                           )
+                        ));
+                        
                         break;
                     default:
                         break;

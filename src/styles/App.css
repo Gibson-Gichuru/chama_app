@@ -129,14 +129,15 @@ h1, h2, h3, h4 {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  font-size: 1rem;
+  gap: 1rem;
+  font-size: 0.75rem;
   color: #fff;
   padding: .8rem;
   position: fixed;
   top: 10vh;
   left: 50%;
   width: 80%;
-  max-width: 250px;
+  max-width: 270px;
   border-radius: 10px;
   -webkit-transform: translateX(-50%);
           transform: translateX(-50%);
@@ -145,6 +146,10 @@ h1, h2, h3, h4 {
 
 .warning {
   background-color: #A02724;
+}
+
+.fadeOut {
+  left: -100%;
 }
 
 .header {

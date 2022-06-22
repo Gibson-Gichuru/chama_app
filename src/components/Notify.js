@@ -1,24 +1,15 @@
-import { useEffect } from "react";
-import { useNotification } from "../context/NotificationContext";
+import * as BsIcons from "react-icons/bs"
 
-const Notify = ()=>{
+const Notify = (message, styleClass)=>{
 
-    const {message, category} = useNotification()
 
-    const fadeout = ()=>{
-        console.log("The compenent is unmounting")
-    }
+    return(
 
-    useEffect(
-        ()=>{
-            window.setTimeout(fadeout, 7500)
-        },[message]
-    )
-
-    return (
-
-        <div className={`notification ${category}`}>
-            {message}
+        <div className={`notification ${styleClass}`}>
+            <BsIcons.BsFillBellFill/>
+            <p className="notification--text">
+                {message}
+            </p>
         </div>
     )
 }

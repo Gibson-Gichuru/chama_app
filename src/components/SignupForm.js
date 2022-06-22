@@ -2,6 +2,8 @@ import { useFormik } from "formik";
 import * as Yup from 'yup';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Store } from "react-notifications-component";
+import { NotificationSettings } from "./Utils";
 
 const Signup = ()=>{
 
@@ -44,6 +46,13 @@ const Signup = ()=>{
                 response=>{
                     // Show the success message 
                     // navigate to the login page
+                    Store.addNotification(
+                        NotificationSettings(
+                            "Account",
+                            "Account Created!",
+                            "success"
+                        )
+                    )
                     navigate("login")
                 }
             ).catch(
