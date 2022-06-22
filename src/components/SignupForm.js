@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Store } from "react-notifications-component";
 import { NotificationSettings } from "./Utils";
+import { Notify } from "./Utils";
 
 const Signup = ()=>{
 
@@ -48,9 +49,10 @@ const Signup = ()=>{
                     // navigate to the login page
                     Store.addNotification(
                         NotificationSettings(
-                            "Account",
-                            "Account Created!",
-                            "success"
+                            Notify(
+                                "Account Created",
+                                "success"
+                            )
                         )
                     )
                     navigate("login")
