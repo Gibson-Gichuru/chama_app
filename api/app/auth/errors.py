@@ -23,6 +23,12 @@ def method_not_allowed(error):
         }
     ), 405
 
+
+@auth_blueprint.errorhandler(403)
+def forbidden(error):
+
+    return jsonify(error = str(error)), 403
+
 @basic_auth.error_handler
 def basic_auth_error(status):
 
