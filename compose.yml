@@ -65,7 +65,7 @@ services:
 
   database:
 
-    image: mariadb:latest
+    image: mariadb:10.7.4
     
     restart : always
     environment:  
