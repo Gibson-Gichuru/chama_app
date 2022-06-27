@@ -143,7 +143,13 @@ class User(db.Model, DatabaseActions):
     @on("after_insert")
     def send_a_confirmation_token(mapper, conn, self):
 
-        send_email(self.email, "Account Confirmation", "email")
+        send_email(
+            self.email, 
+            "Account Confirmation",
+            "email", 
+            username = self.username,
+            token = self.generate_activation_token()
+            )
 
     @property
     def password(self):
