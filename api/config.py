@@ -23,17 +23,19 @@ class Config:
 
     MAIL_SUBJECT_PREFIX = "Chama App"
 
-    MAIL_SENDER = os.environ.get("MAIL_SENDER") or "memehouseke@gmail.com"
+    MAIL_SENDER = os.environ.get("MAIL_SENDER") 
 
-    MAIL_SERVICE = os.environ.get("MAIL_SERVICE")
+    MAIL_SERVER = os.environ.get("MAIL_SERVER")
 
-    MAIL_USERNAME = os.environ.get("MAIL_USERNAME") or "memehouseke@gmail.com"
+    MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
 
     MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
 
     MAIL_PORT = 587
 
     MAIL_USE_TLS = True
+
+    MAIL_USE_SSL=False
 
 
     # Redis Configs SetUp

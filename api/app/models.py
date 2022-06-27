@@ -50,7 +50,7 @@ class DatabaseActions:
 
     def delete(self, resource):
 
-        db.sesson.delete(resource)
+        db.session.delete(resource)
 
         return db.session.commit()
 
