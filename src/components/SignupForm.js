@@ -1,10 +1,11 @@
 import { useFormik } from "formik";
 import * as Yup from 'yup';
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Store } from "react-notifications-component";
 import { NotificationSettings } from "./Utils";
 import { Notify } from "./Utils";
+
 
 const Signup = ()=>{
 
@@ -135,7 +136,7 @@ const Signup = ()=>{
                 <div className="form--texts flex">
                     <p className="text">
                         Aready have an account?
-                        <span className="accent--text">Login</span>
+                        <Link to="/login" className="accent--text">Login</Link>
                     </p>
                 </div>
             </form>

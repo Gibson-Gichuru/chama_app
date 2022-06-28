@@ -4,9 +4,10 @@ import axios from "axios";
 import { Store } from 'react-notifications-component';
 import { NotificationSettings } from "./Utils";
 import { Notify } from "./Utils";
+import { Link } from "react-router-dom";
 const LoginForm = () =>{
     
- 
+   
 
     const formik = useFormik({
 
@@ -112,9 +113,10 @@ const LoginForm = () =>{
                 <div className="form--texts flex">
                     <p className="text">
                         Don't have an account?
-                        <span className="accent--text">Sign up</span>
+                        <Link to="/signup" className="accent--text" replace={true}>Sign up</Link>
                     </p>
-                    <span className="accent--text">Forgot Password!</span>
+                    <Link to="/forgot_password" className="accent--text" replace={true}>Forgot Password</Link>
+                
                 </div>
 
             </form>

@@ -68,15 +68,3 @@ class TestEmail(BaseTestConfig):
 
         thread_mock.assert_called()
 
-
-
-
-        
-
-        
-
-        
-
-        
-
-
