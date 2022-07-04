@@ -21,7 +21,7 @@ class TestEmail(BaseTestConfig):
 
             "MAIL_SUBJECT_PREFIX",
             "MAIL_SENDER",
-            "MAIL_SERVICE",
+            "MAIL_SERVER",
             "MAIL_USERNAME",
             "MAIL_PASSWORD",
             "MAIL_PORT",

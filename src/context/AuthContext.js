@@ -1,21 +1,70 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useEffect} from "react";
 
 const AuthContext = createContext()
 
+
 const AuthContextProvider = ({children}) =>{
 
-    const [jwt, setJwt] = useState(null)
+    // get the  access Authentication tokens object from the sessionStorage
+    let [refreshToken, setRefreshToken] = useState(
 
-    const logIn = (refresh, access) => setJwt(
-        jwt.access  = access,
-        jwt.refresh = refresh
+        ()=> sessionStorage.getItem("tokens")? JSON.parse(sessionStorage.getItem('tokens')): null
     )
 
-    const logOut = () => setJwt({})
+    
+    let [access, setAccess] = useState(
+        ()=> {
 
+            let tokens = refreshToken?.access
+
+            return tokens
+        }
+    )
+
+
+
+    let logIn = (refresh, access) => {
+
+        sessionStorage.setItem(
+            "tokens", 
+            JSON.stringify(
+                {
+                    "refresh":refresh,
+                    "access":access
+                }
+            )
+        )
+        
+        setAccess(access)
+
+    }
+
+    let logOut = () => {
+        sessionStorage.removeItem("tokens")
+        setRefreshToken(null)
+        setAccess(null)
+       
+    }
+
+    let contextData = {
+        access:access,
+        refreshToken:refreshToken,
+        setRefreshToken:setRefreshToken,
+        setAccess:setAccess,
+        logIn:logIn,
+        logOut:logOut
+    }
+
+    useEffect(
+        ()=>{
+            if(refreshToken){
+                setAccess(refreshToken.access)
+        }
+        },[refreshToken]
+    )
     return (
 
-        <AuthContext.Provider value={{ logIn, logOut, jwt}}>
+        <AuthContext.Provider value={contextData}>
             {children}
         </AuthContext.Provider>
     )

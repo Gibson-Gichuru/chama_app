@@ -4,11 +4,15 @@ import axios from "axios";
 import { Store } from 'react-notifications-component';
 import { NotificationSettings } from "./Utils";
 import { Notify } from "./Utils";
-import { Link } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
+
+import { useAuth } from "../context/AuthContext";
 const LoginForm = () =>{
     
-   
 
+    const navigate = useNavigate()
+   
+    const {logIn} = useAuth()
     const formik = useFormik({
 
         initialValues: {
@@ -40,7 +44,9 @@ const LoginForm = () =>{
                 }
             ).then(data=>{
                 // setup the logged in user and redirect to the home page
-                console.log(data)
+                let tokens = data.data.tokens
+                logIn(tokens.refresh, tokens.access)
+                navigate("/")
             }).catch(error=>{
                 
                 switch (error.response.status) {
@@ -55,14 +61,7 @@ const LoginForm = () =>{
                         
                         break;
                     case 403:
-
-                        Store.addNotification(NotificationSettings(
-                           Notify(
-                            "Account not Confirmed",
-                            "warning"
-                           )
-                        ));
-                        
+                        navigate("/confirm")
                         break;
                     default:
                         break;

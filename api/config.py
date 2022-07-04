@@ -45,7 +45,7 @@ class Config:
     REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD")
 
     
-
+    HOST_NAME = os.environ.get("HOST_NAME") or "http://localhost:3000"
 
     debug = True
 
@@ -59,6 +59,10 @@ class Development(Config):
 
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL") or "sqlite:///"+ os.path.join(basedir, "dev-data.sqlite")
 
+    REDIS_HOST = "127.0.0.1"
+    REDIS_PORT =  6379 
+    REDIS_PASSWORD = os.environ.get("DEV_REDIS_PASSWORD")
+
     @staticmethod
     def init_app(app):
 
@@ -69,7 +73,15 @@ class Testing(Config):
 
     TESTING = True
 
+    REDIS_HOST = "127.0.0.1"
+    REDIS_PORT =  6379 
+    REDIS_PASSWORD = os.environ.get("DEV_REDIS_PASSWORD")
+
+    MAIL_SUPPRESS_SEND = True
+    
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL") or "sqlite:///"+ os.path.join(basedir, "test-data.sqlite")
+
+    
 
     @staticmethod
     def init_app(app):

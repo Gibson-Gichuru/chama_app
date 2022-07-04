@@ -5,6 +5,7 @@ import Nav from "./components/Navigation";
 import Login from "./pages/Login";
 import SignUp from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
+import AccountConfirmed from "./pages/AccountConfirmed";
 import {Header} from "./components/Utils";
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -12,6 +13,7 @@ import Contacts from "./pages/Contacts";
 import Faqs from "./pages/Faqs";
 import { ProtectedComponent } from "./components/Utils";
 import { ReactNotifications } from 'react-notifications-component'
+import Confirm from "./pages/Confirm";
 import 'react-notifications-component/dist/theme.css'
 
 function App() {
@@ -36,6 +38,8 @@ function App() {
         <Route path="contacts" element = {<Contacts/>}/>
         <Route path="faqs" element = {<Faqs/>}/>
         <Route path ="forgot_password" element = {<ForgotPassword/>}/>
+        <Route path ="confirm" element = {<Confirm/>}/>
+        <Route path ="account/confirm/:userToken" element = {<AccountConfirmed/>}/>
       </Routes>
       </>
   );

@@ -18,5 +18,10 @@ auth_blueprint.add_url_rule(
 
     "/token/renew",
     view_func= views.Tokens.as_view('token')
+
 )
 
+auth_blueprint.add_url_rule(
+    "/account/confirmation/<string:token>",
+    view_func = views.ConfirmAccount.as_view("account_confirmation")
+)

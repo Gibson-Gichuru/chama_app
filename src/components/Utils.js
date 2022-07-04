@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext} from "react";
 import { useViewport } from "../context/ViewPort";
 import { ShadowContext } from "../context/ShadowContext";
 import { Navigate } from "react-router-dom";
@@ -52,9 +52,11 @@ export const Main = ({children})=>{
 
 export const ProtectedComponent = ({children})=> {
 
-    const {jwt} = useAuth()
+    const {access} = useAuth()
 
-    if(jwt === null){
+    
+
+    if(!access){
 
         return <Navigate to= "login"/>
     }

@@ -170,8 +170,6 @@ class TestUserAccount(BaseTestConfig):
 
         email_mock.assert_called()
 
-        email_mock.assert_called_with(user.email, 'Account Confirmation', 'email')
-
     
 
 

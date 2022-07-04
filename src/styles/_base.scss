@@ -105,6 +105,14 @@ h1, h2,h3,h4 {
 
 }
 
+.btn--primary{
+
+    background-color: $primary-color;
+    color: #fff;
+    padding: 1.5rem;
+    border-radius: 10px;
+}
+
 .btn--submit {
     font-size: $normal-font-size;
     padding: .5rem;

@@ -148,7 +148,8 @@ class User(db.Model, DatabaseActions):
             "Account Confirmation",
             "email", 
             username = self.username,
-            token = self.generate_activation_token()
+            token = self.generate_activation_token(),
+            host_name = current_app.config['HOST_NAME']
             )
 
     @property

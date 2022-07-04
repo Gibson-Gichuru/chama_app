@@ -1,6 +1,4 @@
-
-
-
+from unittest import skip
 from urllib import response
 from tests import BaseTestConfig
 import json
@@ -133,7 +131,7 @@ class TestLoginRoute(BaseTestConfig):
         return self.client.get(url, headers = self.headers) \
             if headers is None else \
             self.client.get(url, headers = headers)
-        
+    
     def test_login_auth_return_tokens(self):
 
         """
@@ -165,6 +163,7 @@ class TestLoginRoute(BaseTestConfig):
 
         self.assertEqual(response.status_code, 401)
 
+    
     def test_token_are_cached_on_login(self):
 
         response = self.make_request()
@@ -218,4 +217,44 @@ class TestLoginRoute(BaseTestConfig):
 
         response = self.make_request()
 
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 403)
+
+class TestUserAccountConfirmation(BaseTestConfig):
+
+
+    def setUp(self):
+
+        super().setUp()
+
+        self.client = self.app.test_client()
+
+        self.user = User(
+            username = "testUser",
+            email = "testuser@test.com"
+        )
+
+        self.user.add(self.user)
+
+
+    def tearDown(self):
+
+        user = User.query.filter_by(username = "testUser").first()
+
+        user.delete(user)
+
+        super().tearDown()
+
+    def test_user_account_confirmation(self):
+
+        response = self.client.get(
+            f"/api/auth/account/confirmation/{self.user.generate_activation_token()}"
+            
+        )
+        
+        user = User.query.filter_by(username = "testUser").first()
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(user.active)
+
+

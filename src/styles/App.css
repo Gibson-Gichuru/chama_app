@@ -2,8 +2,7 @@
 *, *::before, *::after {
   padding: 0;
   margin: 0;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
@@ -42,56 +41,44 @@ h1, h2, h3, h4 {
 }
 
 .flex {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  justify-content: space-between;
 }
 
 .flex--inline {
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  gap: .6rem;
+  align-items: center;
+  gap: 0.6rem;
 }
 
 .btn {
   background: none;
-  padding: .2rem;
+  padding: 0.2rem;
   border: none;
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  align-items: center;
+  justify-content: center;
   color: inherit;
   cursor: pointer;
 }
 
+.btn--primary {
+  background-color: #00204C;
+  color: #fff;
+  padding: 1.5rem;
+  border-radius: 10px;
+}
+
 .btn--submit {
   font-size: 1.125rem;
-  padding: .5rem;
+  padding: 0.5rem;
   color: #fff;
   background-color: #00204C;
   border-radius: 10px;
-  -webkit-transition: -webkit-transform 200ms ease-in;
-  transition: -webkit-transform 200ms ease-in;
   transition: transform 200ms ease-in;
-  transition: transform 200ms ease-in, -webkit-transform 200ms ease-in;
 }
-
 .btn--submit:hover, .btn--submit:focus {
-  -webkit-transform: scale(1.05);
-          transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 .error {
@@ -113,34 +100,26 @@ h1, h2, h3, h4 {
 .shadow--on {
   -webkit-clip-path: circle(150% at 100% -10%);
           clip-path: circle(150% at 100% -10%);
-  -webkit-transition: -webkit-clip-path 350ms ease-in;
   transition: -webkit-clip-path 350ms ease-in;
   transition: clip-path 350ms ease-in;
   transition: clip-path 350ms ease-in, -webkit-clip-path 350ms ease-in;
 }
 
 .notification {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  justify-content: center;
+  align-items: center;
   gap: 1rem;
   font-size: 0.75rem;
   color: #fff;
-  padding: .8rem;
+  padding: 0.8rem;
   position: fixed;
   top: 10vh;
   left: 50%;
   width: 80%;
   max-width: 270px;
   border-radius: 10px;
-  -webkit-transform: translateX(-50%);
-          transform: translateX(-50%);
+  transform: translateX(-50%);
   z-index: 90;
 }
 
@@ -156,57 +135,39 @@ h1, h2, h3, h4 {
   position: fixed;
   top: 0;
   width: 100%;
-  -webkit-box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-          box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   z-index: 100;
   background-color: #fff;
 }
-
 .header .nav {
   min-height: 8vh;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
 }
-
 .header .nav .brand-logo {
   width: 10rem;
 }
-
 .header .nav .cta-btn {
-  padding: .3rem;
+  padding: 0.3rem;
   color: #fff;
   font-weight: 700;
-  -webkit-box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-          box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
-
 .header .nav .primary {
   background-color: #00204C;
-  margin-right: .6rem;
+  margin-right: 0.6rem;
   border-radius: 10px 0 0 10px;
 }
-
 .header .nav .secondary {
   background-color: #31A592;
   border-radius: 0px 10px 10px 0px;
 }
-
 .header .nav--toggle {
   font-size: 1.5rem;
 }
-
 .header .nav-barshadow {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: end;
-      -ms-flex-align: end;
-          align-items: flex-end;
+  flex-direction: column;
+  align-items: flex-end;
   position: fixed;
   left: 0;
   width: 100%;
@@ -215,42 +176,28 @@ h1, h2, h3, h4 {
   background-color: rgba(49, 165, 146, 0.81);
   -webkit-clip-path: circle(0% at 100% 0%);
           clip-path: circle(0% at 100% 0%);
-  -webkit-transition: -webkit-clip-path 600ms  ease-in;
-  transition: -webkit-clip-path 600ms  ease-in;
-  transition: clip-path 600ms  ease-in;
-  transition: clip-path 600ms  ease-in, -webkit-clip-path 600ms  ease-in;
+  transition: -webkit-clip-path 600ms ease-in;
+  transition: clip-path 600ms ease-in;
+  transition: clip-path 600ms ease-in, -webkit-clip-path 600ms ease-in;
 }
-
 .header .nav-barshadow_on {
   -webkit-clip-path: circle(120% at 100% 0%);
           clip-path: circle(120% at 100% 0%);
-  -webkit-transition: -webkit-clip-path 600ms  ease-in;
-  transition: -webkit-clip-path 600ms  ease-in;
-  transition: clip-path 600ms  ease-in;
-  transition: clip-path 600ms  ease-in, -webkit-clip-path 600ms  ease-in;
+  transition: -webkit-clip-path 600ms ease-in;
+  transition: clip-path 600ms ease-in;
+  transition: clip-path 600ms ease-in, -webkit-clip-path 600ms ease-in;
 }
-
 .header .nav-content {
   width: 100%;
   margin-top: 1.5rem;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: column;
+  align-items: center;
   padding: 1rem;
 }
-
 .header .nav-links {
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   row-gap: 3rem;
 }
-
 .header .nav-links .nav--cta {
   background-color: #31A592;
   color: #fff;
@@ -269,12 +216,9 @@ h1, h2, h3, h4 {
 .active {
   color: #fff;
 }
-
 .active::before {
-  -webkit-transition: all 100ms ease-in;
   transition: all 100ms ease-in;
-  -webkit-transform: scaleX(1);
-          transform: scaleX(1);
+  transform: scaleX(1);
 }
 
 @media screen and (min-width: 36rem) {
@@ -293,133 +237,97 @@ h1, h2, h3, h4 {
     width: 70% !important;
   }
   .nav-links {
-    -webkit-box-orient: horizontal !important;
-    -webkit-box-direction: normal !important;
-        -ms-flex-direction: row !important;
-            flex-direction: row !important;
-    -ms-flex-preferred-size: 2;
-        flex-basis: 2;
-    -ms-flex-pack: distribute;
-        justify-content: space-around;
+    flex-direction: row !important;
+    flex-basis: 2;
+    justify-content: space-around;
   }
+
   .link-text {
     position: relative;
     width: 100%;
   }
+
   .link-text::before {
     width: 100%;
     left: 0;
-    height: .4rem;
+    height: 0.4rem;
     top: 5.3vh;
     border-radius: 2px;
   }
+
   .active {
     color: #31A592;
   }
 }
-
 .main {
   margin-top: 8vh;
 }
-
 .main .banner--form {
   position: relative;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
 }
-
 .main .banner--img {
   width: 100%;
 }
-
 .main .card {
   padding: 2.5rem;
   width: 90%;
   max-width: 25rem;
   background-color: #fff;
-  -webkit-box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-          box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
 }
-
 .main .card--title {
   margin-bottom: 1rem;
 }
-
 .main .form--card {
   position: absolute;
   top: 50%;
   left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
-
 .main .form--card .form {
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   gap: 1rem;
 }
-
 .main .form--card .form--element {
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  gap: .5rem;
+  flex-direction: column;
+  gap: 0.5rem;
 }
-
 .main .form--card .form--texts {
-  font-size: .875rem;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  gap: .3rem;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  font-size: 0.875rem;
+  flex-direction: column;
+  gap: 0.3rem;
+  align-items: center;
 }
-
 .main .form--card .form--texts .text {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  gap: .2rem;
+  gap: 0.2rem;
 }
 
 input {
   color: inherit;
   outline: #00204C;
-  padding: .5rem;
+  padding: 0.5rem;
   border: 2px solid #00204C;
   border-radius: 10px;
 }
 
 @media screen and (min-width: 46.25rem) {
   .banner--form {
-    -webkit-box-orient: horizontal !important;
-    -webkit-box-direction: normal !important;
-        -ms-flex-direction: row !important;
-            flex-direction: row !important;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
+    flex-direction: row !important;
+    align-items: center;
+    justify-content: center;
     gap: 1rem;
   }
+
   .form--card {
     position: static !important;
     top: 50%;
     left: 50%;
-    -webkit-transform: none !important;
-            transform: none !important;
+    transform: none !important;
   }
+
   .banner {
     padding-top: 1rem;
   }
@@ -428,4 +336,22 @@ input {
     max-width: 28.125rem;
   }
 }
-/*# sourceMappingURL=App.css.map */
+.confirm--container {
+  padding-top: 20%;
+}
+
+.confirm--text {
+  text-align: center;
+  line-height: 3;
+  max-width: 24rem;
+  width: 90%;
+  flex-direction: column;
+  gap: 2rem;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 10px;
+}
+.confirm--text .btn {
+  max-width: 170px;
+  align-self: center;
+}/*# sourceMappingURL=App.css.map */

@@ -1,10 +1,14 @@
+import { Main } from "../components/Utils"
+
 const Home = ()=> {
 
     return (
 
-        <div className="Home">
-            Welcome home
-        </div>
+        <Main>
+            <div className="Home">
+                Welcome home
+            </div>
+        </Main> 
     )
 }
 
