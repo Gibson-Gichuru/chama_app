@@ -73,7 +73,7 @@ class Testing(Config):
 
     TESTING = True
 
-    REDIS_HOST = "127.0.0.1"
+    REDIS_HOST = "redis"
     REDIS_PORT =  6379 
     REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD")
 
