@@ -59,7 +59,6 @@ services:
         source: ./api
         target: /api
     # use gunicon to serve the  appication
-    # command: flask run
 
     command: gunicorn --bind 0.0.0.0:5000 manage:app
 
