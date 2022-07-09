@@ -51,6 +51,13 @@ h1, h2, h3, h4 {
   gap: 0.6rem;
 }
 
+.flex--text {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  justify-content: space-between;
+}
+
 .btn {
   background: none;
   padding: 0.2rem;
@@ -60,6 +67,22 @@ h1, h2, h3, h4 {
   justify-content: center;
   color: inherit;
   cursor: pointer;
+}
+
+.floating--btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  height: 50px;
+  width: 50px;
+  color: #fff;
+  background-color: #00204C;
+  border: 0.25rem solid #31A592;
+  border-radius: 100px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
 .btn--primary {
@@ -354,4 +377,98 @@ input {
 .confirm--text .btn {
   max-width: 170px;
   align-self: center;
+}
+
+.home {
+  padding: 1.75rem 1rem;
+}
+.home .card--wrapper {
+  gap: 0.5rem;
+}
+.home .card--wrapper .card--cash {
+  position: relative;
+  color: #fff;
+  cursor: pointer;
+  width: 50%;
+  transition: transform 200ms ease-in;
+}
+.home .card--wrapper .card--cash_text {
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+.home .card--wrapper .card--cash_text .currency {
+  font-size: 0.75rem;
+}
+.home .card--wrapper .card--cash:hover, .home .card--wrapper .card--cash:focus {
+  transform: scale(0.99);
+}
+.home .card--wrapper .card--cash::after, .home .card--wrapper .card--cash::before {
+  content: "";
+  position: absolute;
+  font-size: 0.75rem;
+}
+.home .card--wrapper .card--cash::after {
+  content: url("/public/add.svg");
+  background-color: transparent;
+  bottom: -1rem;
+  right: -0.7rem;
+}
+.home .card--wrapper .card--cash::before {
+  background-color: #fff;
+  width: 50px;
+  padding: 0.1rem 0.2rem;
+  top: 0;
+  right: -0.2rem;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+.home .card--wrapper .savings {
+  background-color: #02AB31;
+}
+.home .card--wrapper .savings::before {
+  content: "Savings";
+  color: #02AB31;
+}
+.home .card--wrapper .loan {
+  background-color: #A02724;
+}
+.home .card--wrapper .loan::before {
+  content: "Loan";
+  color: #A02724;
+}
+.home .transactions {
+  margin-top: 4rem;
+  position: relative;
+}
+.home .transactions--deco {
+  position: absolute;
+  top: -30px;
+  left: 0;
+  align-items: center;
+  padding: 0.3rem 0.5rem;
+  width: 13.75rem;
+  background-color: #31A592;
+  color: #fff;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+.home .transactions--card {
+  margin-bottom: 1rem;
+  position: relative;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.3rem;
+  background-color: #fff;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+.home .transactions--card::after {
+  content: "";
+  position: absolute;
+  width: 30px;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background-color: #02AB31;
+}
+.home .transactions--amount {
+  margin-right: 30px;
 }/*# sourceMappingURL=App.css.map */

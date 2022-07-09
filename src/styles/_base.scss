@@ -91,7 +91,12 @@ h1, h2,h3,h4 {
     align-items: center;
     gap: .6rem;
 }
-
+.flex--text{
+    display: flex;
+    align-items: baseline;
+    gap: .5rem;
+    justify-content: space-between;
+}
 .btn {
     
     background:none;
@@ -103,6 +108,22 @@ h1, h2,h3,h4 {
     color: inherit;
     cursor: pointer;
 
+}
+
+.floating--btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    height: 50px;
+    width: 50px;
+    color: #fff;
+    background-color: $primary-color;
+    border: .25rem solid $accent-color;
+    border-radius: 100px;
+    box-shadow: $main-box-shadow;
 }
 
 .btn--primary{

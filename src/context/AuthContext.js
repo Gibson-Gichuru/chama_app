@@ -21,6 +21,8 @@ const AuthContextProvider = ({children}) =>{
         }
     )
 
+    let [isExpired, setIsExpired] = useState(true)
+
 
 
     let logIn = (refresh, access) => {
@@ -36,14 +38,14 @@ const AuthContextProvider = ({children}) =>{
         )
         
         setAccess(access)
-
+        setIsExpired(!isExpired)
     }
 
     let logOut = () => {
         sessionStorage.removeItem("tokens")
         setRefreshToken(null)
         setAccess(null)
-       
+        setIsExpired(!isExpired)
     }
 
     let contextData = {
@@ -52,7 +54,9 @@ const AuthContextProvider = ({children}) =>{
         setRefreshToken:setRefreshToken,
         setAccess:setAccess,
         logIn:logIn,
-        logOut:logOut
+        logOut:logOut,
+        isExpired:isExpired,
+        setIsExpired:setIsExpired
     }
 
     useEffect(
