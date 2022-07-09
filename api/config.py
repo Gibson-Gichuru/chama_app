@@ -75,7 +75,7 @@ class Testing(Config):
 
     REDIS_HOST = "127.0.0.1"
     REDIS_PORT =  6379 
-    REDIS_PASSWORD = os.environ.get("DEV_REDIS_PASSWORD")
+    REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD")
 
     MAIL_SUPPRESS_SEND = True
     
