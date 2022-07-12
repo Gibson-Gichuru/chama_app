@@ -38,7 +38,7 @@ jobs:
       - name : Adding the application container to the test-net network
 
 
-        run: docker run -itd --name api-test --network test-net test_app
+        run: docker run -itd -e FLASK_TEST_ENV='remote_testing' --name api-test --network test-net test_app
 
       - name: setting up the redis container on the test-net network
 

@@ -95,6 +95,11 @@ class RemoteTesting(Testing):
     REDIS_HOST = "redis"
     REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD")
 
+    @staticmethod
+    def init_app(app):
+        
+        pass
+
 
 class Production(Config):
 
