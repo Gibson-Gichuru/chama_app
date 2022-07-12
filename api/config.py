@@ -63,6 +63,8 @@ class Development(Config):
     REDIS_PORT =  6379 
     REDIS_PASSWORD = os.environ.get("DEV_REDIS_PASSWORD")
 
+    MAIL_SUPPRESS_SEND= False
+
     @staticmethod
     def init_app(app):
 
@@ -81,7 +83,7 @@ class Testing(Config):
     
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL") or "sqlite:///"+ os.path.join(basedir, "test-data.sqlite")
 
-    
+    MAIL_DEFAULT_SENDER = "testing@testing.com"
 
     @staticmethod
     def init_app(app):

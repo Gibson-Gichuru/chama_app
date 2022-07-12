@@ -5,39 +5,14 @@ from threading import Thread
 from app.email import send_async_email, send_email
 
 from  flask import current_app
+
 class TestEmail(BaseTestConfig):
 
     def setUp(self):
 
         super().setUp()
 
-    def test_email_requred_settings(self):
-
-        """
-            Testing that all the required Keys are available
-        """
-
-        requred_keys = [
-
-            "MAIL_SUBJECT_PREFIX",
-            "MAIL_SENDER",
-            "MAIL_SERVER",
-            "MAIL_USERNAME",
-            "MAIL_PASSWORD",
-            "MAIL_PORT",
-            "MAIL_USE_TLS",
-        ]
-
-        search_func = lambda item: item in current_app.config
-
-        self.assertTrue(
-            all(
-                map(search_func, requred_keys)
-           
-            )
-        )
-
-
+    
     def test_email_message_construction(self):
 
         """
@@ -67,4 +42,6 @@ class TestEmail(BaseTestConfig):
 
 
         thread_mock.assert_called()
+
+
 
