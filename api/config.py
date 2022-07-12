@@ -75,13 +75,13 @@ class Testing(Config):
 
     TESTING = True
 
-    REDIS_HOST = "redis"
+    REDIS_HOST = "127.0.0.1"
     REDIS_PORT =  6379 
-    REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD")
+    REDIS_PASSWORD = os.environ.get("DEV_REDIS_PASSWORD")
 
     MAIL_SUPPRESS_SEND = True
     
-    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL") or "sqlite:///"+ os.path.join(basedir, "test-data.sqlite")
+    SQLALCHEMY_DATABASE_URI = "sqlite:///"+ os.path.join(basedir, "test-data.sqlite")
 
     MAIL_DEFAULT_SENDER = "testing@testing.com"
 
@@ -89,6 +89,11 @@ class Testing(Config):
     def init_app(app):
 
         pass
+
+class RemoteTesting(Testing):
+
+    REDIS_HOST = "redis"
+    REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD")
 
 
 class Production(Config):
@@ -105,5 +110,6 @@ env_config = {
     "development": Development,
     "default": Development,
     "production": Production,
-    "testing":Testing
+    "testing":Testing,
+    "remote_testing":RemoteTesting,
 }
