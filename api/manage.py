@@ -4,6 +4,8 @@ from app.schema import RegisterSchema
 import click
 import os
 
+import sys
+
 app = create_app(os.environ.get("FLASK_ENV") or "default")
 
 # application shell context
@@ -29,5 +31,8 @@ def test():
     import unittest
 
     tests = unittest.TestLoader().discover('tests')
-    unittest.TextTestRunner(verbosity = 2).run(tests)
+    results = unittest.TextTestRunner(verbosity = 2).run(tests)
 
+    if not results.wasSuccessful():
+
+        sys.exit(1)

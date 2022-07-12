@@ -46,7 +46,7 @@ jobs:
 
       - name: Running the Api unit tests
 
-        run: docker exec -i api-test flask test || exit 1
+        run: docker exec -i api-test flask test 
 
   testingFrontEnd:
 
