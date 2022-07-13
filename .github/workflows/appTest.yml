@@ -37,9 +37,7 @@ jobs:
 
       - name : Adding the application container to the test-net network
 
-        run: |
-        
-          docker run -e FLASK_TEST_ENV='remote_testing' -e SECRET_KEY= ${{ secrets.SECRET_KEY }} -e ACTIVATION_KEY = ${{ secrets.ACTIVATION_KEY }} -e ACCESS_KEY = ${{ secrets.ACCESS_KEY }} -e REFRESH_KEY = ${{ secrets.REFRESH_KEY }} -e TOKEN_ALGO = ${{ secrets.REFRESH_KEY }}  -e REDIS_PASSWORD = ${{ secrets.REDIS_PASSWORD }} -itd  --name api-test --network test-net test_app
+        run: docker run -e FLASK_TEST_ENV='remote_testing' -itd -e SECRET_KEY=${{secrets.SECRET_KEY}} -e ACTIVATION_KEY=${{secrets.ACTIVATION_KEY}} -e ACCESS_KEY=${{secrets.ACCESS_KEY}} -e REFRESH_KEY=${{ secrets.REFRESH_KEY}} -e TOKEN_ALGO=${{secrets.TOKEN_ALGO}}--name api-test --network test-net test_app
 
       - name: setting up the redis container on the test-net network
 
