@@ -1,6 +1,6 @@
 
 from flask.views import MethodView
-from flask import request, jsonify, current_app, abort
+from flask import request, jsonify, current_app, abort, render_template
 
 from app.models import User
 from app.schema import RegisterSchema
@@ -32,7 +32,7 @@ def verify_user_password(email, password):
 @token_auth.verify_token
 def verify_user_token(token):
 
-    jwt = User.validate_token(token)
+    jwt = User.validate_token(token, current_app.config['REFRESH_KEY'])
     if not jwt:
 
         return None
@@ -53,11 +53,7 @@ class RegisterUser(MethodView):
 
         if errors:
 
-            return jsonify({
-                "message": {
-                    "status": "fail",
-                },
-
+            return jsonify({ 
                 "errors":errors
             }), 400
 
@@ -88,7 +84,7 @@ class Login(MethodView):
 
         if not  current_user.active:
 
-            return abort(401)
+            return abort(403, description = "Account not activated")
 
         tokens = current_user.get_access_refresh_token()
 
@@ -118,6 +114,7 @@ class Login(MethodView):
 
 class Tokens(MethodView):
 
+    @token_auth.login_required
     def post(self):
 
         current_user = token_auth.current_user()
@@ -162,3 +159,30 @@ class Tokens(MethodView):
                 "access": new_access_token
             }
         )
+
+
+class ConfirmAccount(MethodView):
+
+    def get(self, token):
+
+        if User.activate(token= token):
+
+            return jsonify(
+
+                {
+                    'message':{
+                        "status":"success",
+                        "text":"account now confirmed"
+                    }
+                }
+            )
+
+        return jsonify(
+
+                {
+                    'message':{
+                        "status":"fail",
+                        "text":"account not confirmedd"
+                    }
+                }
+            ), 400

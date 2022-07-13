@@ -1,11 +1,11 @@
 from unittest import TestCase
 from app import db, create_app
-
+import os
 class BaseTestConfig(TestCase):
 
     def setUp(self):
 
-        self.app = create_app('testing')
+        self.app = create_app(os.environ.get("FLASK_TEST_ENV") or "testing")
 
         self.app_context = self.app.app_context()
 

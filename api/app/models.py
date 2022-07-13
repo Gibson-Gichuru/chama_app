@@ -50,7 +50,7 @@ class DatabaseActions:
 
     def delete(self, resource):
 
-        db.sesson.delete(resource)
+        db.session.delete(resource)
 
         return db.session.commit()
 
@@ -143,7 +143,14 @@ class User(db.Model, DatabaseActions):
     @on("after_insert")
     def send_a_confirmation_token(mapper, conn, self):
 
-        send_email(self.email, "Account Confirmation", "email")
+        send_email(
+            self.email, 
+            "Account Confirmation",
+            "email", 
+            username = self.username,
+            token = self.generate_activation_token(),
+            host_name = current_app.config['HOST_NAME']
+            )
 
     @property
     def password(self):
