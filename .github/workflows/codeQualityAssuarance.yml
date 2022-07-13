@@ -31,13 +31,13 @@ jobs:
 
         uses: actions/checkout@v2
 
-      - name: Set up Python environment
+      - name: Setting up python environment
 
-          uses: actions/setup-python@v2
+        uses: actions/setup-python@v2
 
-          with:
+        with:
 
-            python-version: "3.8"
+          python-version: 3.8.10
 
       - name: Installinng Dependencies
 
