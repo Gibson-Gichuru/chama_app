@@ -1,0 +1,60 @@
+# Code quality assurance workflow checks for code syntax and best practice violation
+
+name: Code Quality Assuarance WorkFlow
+
+on:
+
+  push:
+
+    branches:
+
+      - development
+      - deployment
+
+  pull_request:
+
+    branches:
+
+      - development
+      - deployment
+
+
+jobs:
+
+  lintingApiCode:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checking out the repository
+
+        uses: actions/checkout@v2
+
+      - name: Set up Python environment
+
+          uses: actions/setup-python@v2
+
+          with:
+
+            python-version: "3.8"
+
+      - name: Installinng Dependencies
+
+        run: | 
+
+          python -m pip install --upgrade pip
+
+          pip install flake8
+
+      - name: Lint with flake 8
+
+        run: | 
+        
+          flake8 api --count --select E9,F63,F7,F82 --exclude __pycache__,migrations,env --show-source --statistics
+
+          flake8 api --count --max-complexity=10 --max-line-length=79  --exclude __pycache__,migrations,env --show-source --statistics
+
+      
+
+
