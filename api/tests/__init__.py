@@ -1,6 +1,10 @@
 from unittest import TestCase
+
 from app import db, create_app
+
 import os
+
+
 class BaseTestConfig(TestCase):
 
     def setUp(self):
@@ -19,6 +23,4 @@ class BaseTestConfig(TestCase):
 
         self.app_context.pop()
 
-        self.app = None 
-        
-
+        self.app = None

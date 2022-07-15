@@ -1,11 +1,12 @@
 from flask import Blueprint
 
+from . import views
+
 auth_blueprint = Blueprint("auth", __name__,)
 
-from . import views, errors
 
 auth_blueprint.add_url_rule(
-    "/register", 
+    "/register",
     view_func=views.RegisterUser.as_view('register')
     )
 
@@ -17,11 +18,11 @@ auth_blueprint.add_url_rule(
 auth_blueprint.add_url_rule(
 
     "/token/renew",
-    view_func= views.Tokens.as_view('token')
+    view_func=views.Tokens.as_view('token')
 
 )
 
 auth_blueprint.add_url_rule(
     "/account/confirmation/<string:token>",
-    view_func = views.ConfirmAccount.as_view("account_confirmation")
+    view_func=views.ConfirmAccount.as_view("account_confirmation")
 )
