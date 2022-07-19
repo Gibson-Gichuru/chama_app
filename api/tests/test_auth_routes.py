@@ -24,7 +24,7 @@ class TestUserRegisterRoute(BaseTestConfig):
             "email": "testuser@test.com",
             "password": "testuserpassword"
         }
-
+    
     def make_request(self, method, url, headers, data=None):
 
         if method.lower == "get":
@@ -101,7 +101,7 @@ class TestLoginRoute(BaseTestConfig):
 
             "Content-type": "application/json",
             "Authorization": "Basic " + base64.b64encode(
-                f"{self.user.email}: testing".encode('utf-8')
+                f"{self.user.email}:testing".encode('utf-8')
             ).decode('utf-8')}
 
     def register_user(self):
@@ -160,7 +160,7 @@ class TestLoginRoute(BaseTestConfig):
         response_data = response.get_json()
 
         cached_tokens = self.app.redis.hmget(
-            f'{self.user.username}: tokens',
+            f'{self.user.username}:tokens',
             ['refresh', 'access'])
 
         # Expect True if neither the refresh token nor the access token is none
@@ -176,16 +176,18 @@ class TestLoginRoute(BaseTestConfig):
 
         response_data = response.get_json()
 
+        self.assertIn('tokens', response_data)
+
         url = "/api/auth/token/renew"
 
         headers = {
 
-            "Content-type": "application/json",
-            "Authorization": "Bearer " + response_data['tokens']['refresh']
+            "Content-type":"application/json",
+            "Authorization":f"Bearer {response_data['tokens']['refresh']}"
         }
 
         payload = {
-            "access": response_data['tokens']['access']
+            "access":response_data['tokens']['access']
         }
 
         new_response = self.client.post(
@@ -239,8 +241,7 @@ class TestUserAccountConfirmation(BaseTestConfig):
     def test_user_account_confirmation(self):
 
         response = self.client.get(
-            f"/api/auth/account/confirmation/\
-            {self.user.generate_activation_token()}")
+            f"/api/auth/account/confirmation/{self.user.generate_activation_token()}")
 
         user = User.query.filter_by(username="testUser").first()
 

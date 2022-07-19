@@ -83,8 +83,7 @@ class Testing(Config):
     MAIL_SUPPRESS_SEND = True
 
     SQLALCHEMY_DATABASE_URI = (
-        "sqlite:///" + os.path.join(basedir, "test-data.sqlite")
-        )
+        "sqlite:///" + os.path.join(basedir, "test-data.sqlite"))
 
     MAIL_DEFAULT_SENDER = "testing@testing.com"
 

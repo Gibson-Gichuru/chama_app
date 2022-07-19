@@ -85,7 +85,7 @@ class Login(MethodView):
 
         current_app.redis.hmset(
 
-            f"{current_user.username}: tokens",
+            f"{current_user.username}:tokens",
             {
                 "refresh": tokens[1],
                 "access": tokens[0]

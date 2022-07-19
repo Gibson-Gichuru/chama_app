@@ -8,9 +8,6 @@ import sys
 app = create_app(os.environ.get("FLASK_ENV") or "default")
 
 
-# application shell context
-
-
 @app.shell_context_processor
 def make_shell_context():
 
@@ -18,8 +15,7 @@ def make_shell_context():
         app=app,
         User=User,
         Role=Role,
-        RegisterSchema=RegisterSchema
-        )
+        RegisterSchema=RegisterSchema)
 
 
 # custom commands
