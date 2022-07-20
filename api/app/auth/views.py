@@ -127,7 +127,7 @@ class Tokens(MethodView):
         )[0].decode('utf-8')
 
         refresh_exits = current_app.redis.hexists(
-            f"{current_user.username}: tokens", "refresh"
+            f"{current_user.username}:tokens", "refresh"
             )
 
         if not refresh_exits or cached_access_token != request_data['access']:
