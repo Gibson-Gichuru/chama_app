@@ -1,0 +1,13 @@
+Hello there {username}!
+
+Welcome to chama app.
+
+please do confirm your account be following the link below.
+
+{token}
+
+replies to this email are not monitored.
+
+Warm regards:
+
+Chama App Team.
