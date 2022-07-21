@@ -23,7 +23,7 @@ class Config:
 
     MAIL_SUBJECT_PREFIX = "Chama App"
 
-    MAIL_SENDER = os.environ.get("MAIL_SENDER") 
+    MAIL_SENDER = os.environ.get("MAIL_SENDER")
 
     MAIL_SERVER = os.environ.get("MAIL_SERVER")
 
@@ -35,16 +35,14 @@ class Config:
 
     MAIL_USE_TLS = True
 
-    MAIL_USE_SSL=False
-
-
-    # Redis Configs SetUp
+    MAIL_USE_SSL = False
 
     REDIS_HOST = os.environ.get("REDIS_HOST") or "redis"
-    REDIS_PORT =  6379 
+
+    REDIS_PORT = 6379
+
     REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD")
 
-    
     HOST_NAME = os.environ.get("HOST_NAME") or "http://localhost:3000"
 
     debug = True
@@ -57,13 +55,14 @@ class Config:
 
 class Development(Config):
 
-    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL") or "sqlite:///"+ os.path.join(basedir, "dev-data.sqlite")
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL") or \
+        "sqlite:///" + os.path.join(basedir, "dev-data.sqlite")
 
     REDIS_HOST = "127.0.0.1"
-    REDIS_PORT =  6379 
+    REDIS_PORT = 6379
     REDIS_PASSWORD = os.environ.get("DEV_REDIS_PASSWORD")
 
-    MAIL_SUPPRESS_SEND= False
+    MAIL_SUPPRESS_SEND = False
 
     @staticmethod
     def init_app(app):
@@ -76,12 +75,15 @@ class Testing(Config):
     TESTING = True
 
     REDIS_HOST = "127.0.0.1"
-    REDIS_PORT =  6379 
+
+    REDIS_PORT = 6379
+
     REDIS_PASSWORD = os.environ.get("DEV_REDIS_PASSWORD")
 
     MAIL_SUPPRESS_SEND = True
-    
-    SQLALCHEMY_DATABASE_URI = "sqlite:///"+ os.path.join(basedir, "test-data.sqlite")
+
+    SQLALCHEMY_DATABASE_URI = (
+        "sqlite:///" + os.path.join(basedir, "test-data.sqlite"))
 
     MAIL_DEFAULT_SENDER = "testing@testing.com"
 
@@ -90,14 +92,16 @@ class Testing(Config):
 
         pass
 
+
 class RemoteTesting(Testing):
 
     REDIS_HOST = "redis"
+
     REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD")
 
     @staticmethod
     def init_app(app):
-        
+
         pass
 
 
@@ -109,12 +113,11 @@ class Production(Config):
         pass
 
 
-
 env_config = {
 
     "development": Development,
     "default": Development,
     "production": Production,
-    "testing":Testing,
-    "remote_testing":RemoteTesting,
+    "testing": Testing,
+    "remote_testing": RemoteTesting,
 }

@@ -1,8 +1,9 @@
-
 from flask.views import MethodView
-from flask import request, jsonify, current_app, abort, render_template
+
+from flask import request, jsonify, current_app, abort
 
 from app.models import User
+
 from app.schema import RegisterSchema
 
 from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth
@@ -12,13 +13,10 @@ basic_auth = HTTPBasicAuth()
 token_auth = HTTPTokenAuth()
 
 
-
-# basic authentication callback function
-
-@basic_auth.verify_password
+@basic_auth.verify_password  # basic auth call back function
 def verify_user_password(email, password):
 
-    user = User.query.filter_by(email = email).first()
+    user = User.query.filter_by(email=email).first()
 
     if user is None or not user.check_password(password):
 
@@ -27,9 +25,7 @@ def verify_user_password(email, password):
     return user
 
 
-# token authentication callback function
-
-@token_auth.verify_token
+@token_auth.verify_token  # Auth authentication callback function
 def verify_user_token(token):
 
     jwt = User.validate_token(token, current_app.config['REFRESH_KEY'])
@@ -38,7 +34,6 @@ def verify_user_token(token):
         return None
 
     return User.query.get(jwt['sub'])
-
 
 
 class RegisterUser(MethodView):
@@ -53,13 +48,13 @@ class RegisterUser(MethodView):
 
         if errors:
 
-            return jsonify({ 
-                "errors":errors
+            return jsonify({
+                "errors": errors
             }), 400
 
         user = User(
             username=request_data['username'],
-            email = request_data['email'],
+            email=request_data['email'],
         )
 
         user.password = request_data['password']
@@ -67,13 +62,13 @@ class RegisterUser(MethodView):
         user.add(user)
 
         return jsonify({
-
-            "message":{
-                "status":"success",
-                "text":"account created!"
+            "message": {
+                "status": "success",
+                "text": "account created!"
             }
 
         }), 200
+
 
 class Login(MethodView):
 
@@ -82,9 +77,9 @@ class Login(MethodView):
 
         current_user = basic_auth.current_user()
 
-        if not  current_user.active:
+        if not current_user.active:
 
-            return abort(403, description = "Account not activated")
+            return abort(403, description="Account not activated")
 
         tokens = current_user.get_access_refresh_token()
 
@@ -92,25 +87,24 @@ class Login(MethodView):
 
             f"{current_user.username}:tokens",
             {
-                "refresh":tokens[1],
-                "access":tokens[0]
+                "refresh": tokens[1],
+                "access": tokens[0]
             }
         )
 
-
         return jsonify({
 
-            "message":{
-
-                "status":"success",
-                "text":f"Login sucessful {current_user.username}"
+            "message": {
+                "status": "success",
+                "text": f"Login sucessful {current_user.username}"
             },
 
-            "tokens":{
+            "tokens": {
                 "access": tokens[0],
-                "refresh":tokens[1]
+                "refresh": tokens[1]
             }
         })
+
 
 class Tokens(MethodView):
 
@@ -130,10 +124,13 @@ class Tokens(MethodView):
         cached_access_token = current_app.redis.hmget(
             f"{current_user.username}:tokens",
             ['access']
-        )
+        )[0].decode('utf-8')
 
-        if not current_app.redis.hexists(f"{current_user.username}:tokens", "refresh") or \
-            cached_access_token[0].decode('utf-8') != request_data['access']:
+        refresh_exits = current_app.redis.hexists(
+            f"{current_user.username}:tokens", "refresh"
+            )
+
+        if not refresh_exits or cached_access_token != request_data['access']:
 
             return abort(401)
 
@@ -142,7 +139,7 @@ class Tokens(MethodView):
         new_access_token = current_user.get_access_token()
 
         current_app.redis.hmset(
-            f"{current_user.username}:tokens",
+            f"{current_user.username}: tokens",
             {
                 "access": new_access_token
             }
@@ -152,8 +149,8 @@ class Tokens(MethodView):
 
             {
                 "message": {
-                    "status":"success",
-                    "text":"token generated"
+                    "status": "success",
+                    "text": "token generated"
                 },
 
                 "access": new_access_token
@@ -165,14 +162,14 @@ class ConfirmAccount(MethodView):
 
     def get(self, token):
 
-        if User.activate(token= token):
+        if User.activate(token=token):
 
             return jsonify(
 
                 {
-                    'message':{
-                        "status":"success",
-                        "text":"account now confirmed"
+                    'message': {
+                        "status": "success",
+                        "text": "account now confirmed"
                     }
                 }
             )
@@ -180,9 +177,9 @@ class ConfirmAccount(MethodView):
         return jsonify(
 
                 {
-                    'message':{
-                        "status":"fail",
-                        "text":"account not confirmedd"
+                    'message': {
+                        "status": "fail",
+                        "text": "account not confirmedd"
                     }
                 }
             ), 400
