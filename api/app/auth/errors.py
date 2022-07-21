@@ -14,31 +14,40 @@ def not_found(error):
         }
     ), 404
 
+
 @auth_blueprint.errorhandler(405)
 def method_not_allowed(error):
 
     return jsonify(
         {
-            "message":"method not allowed"
+            "message": "method not allowed"
         }
     ), 405
+
+
+@auth_blueprint.errorhandler(403)
+def forbidden(error):
+
+    return jsonify(error=str(error)), 403
+
 
 @basic_auth.error_handler
 def basic_auth_error(status):
 
     return jsonify({
-        "message":{
-            "status":"failed",
-            "text":"access denied"
+        "message": {
+            "status": "failed",
+            "text": "access denied"
         }
     }), status
+
 
 @token_auth.error_handler
 def token_auth_error(status):
 
     return jsonify({
-        "message":{
-            "status":"failed",
-            "text":"access denied"
+        "message": {
+            "status": "failed",
+            "text": "access denied"
         }
     }), status

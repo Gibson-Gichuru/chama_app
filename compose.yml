@@ -35,42 +35,59 @@ services:
       - .env
     # set up all the required environament  variables required by the api service
     environment:
-    
+      # Api Required Keys Configs
       SECRET_KEY: "${SECRET_KEY}"
       ACTIVATION_KEY: "${ACTIVATION_KEY}"
       ACCESS_KEY: "${ACCESS_KEY}"
       REFRESH_KEY: "${REFRESH_KEY}"
-      MARIADB_ROOT_PASSWORD: "${DATABASE_PASSWORD}"
+      # Database configs
+      MARIADB_USER: "${DATABASE_USER}"
+      MARIADB_PASSWORD: "${DATABASE_PASSWORD}"
+      MARIADB_DATABASE: "${DATABASE_NAME}"
+      # Mail server Configs
       MAIL_PORT: "${MAIL_PORT}"
       MAIL_SENDER: "${MAIL_SENDER}"
-      MAIL_SERVICE: "${MAIL_SERVICE}"
+      MAIL_SERVER: "${MAIL_SERVER}"
       MAIL_USERNAME: "${MAIL_USERNAME}"
       MAIL_PASSWORD: "${MAIL_PASSWORD}"
+      # Redis server Configs
       REDIS_HOST: "${REDIS_HOST}"
       REDIS_PORT: 6379
       REDIS_PASSWORD: "${REDIS_PASSWORD}"
 
     depends_on:
-      - database
-      - redis
+      # - database
+      database:
+        condition: service_healthy
+
     volumes:
 
       - type : bind
         source: ./api
         target: /api
     # use gunicon to serve the  appication
-    # command: flask run
 
     command: gunicorn --bind 0.0.0.0:5000 manage:app
 
   database:
 
-    image: mariadb:latest
-    
-    restart : always
+    build:
+
+      context: ./api/database
+
     environment:  
     #  Setting up environament variables 
       MARIADB_ROOT_PASSWORD: "${DATABASE_ROOT_PASSWORD}"
+      MYSQL_USER: "${DATABASE_USER}"
+      MYSQL_PASSWORD: "${DATABASE_PASSWORD}"
+      MYSQL_DATABASE: "${DATABASE_NAME}"
+    
+
+    healthcheck:
+      test: ["CMD","/usr/local/bin/healthcheck.sh", "--su=mysql", "--connect", "--innodb_initialized"]
+      
+    restart : always
+    
   
     expose:
 
@@ -81,8 +98,6 @@ services:
       - type : volume
         source : mysqlData
         target: /var/lib/mysql  
-
-
 
   redis:
 
@@ -118,8 +133,3 @@ volumes:
   nginxLog:
 
     driver: local
-
-
-
-
-

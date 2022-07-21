@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" />
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+  <head> </head>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="x-apple-disable-message-reformatting" />
+    <!--[if !mso]><!-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!--<![endif]-->
+    <style type="text/css">
+      * {
+        text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+        -moz-text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%;
+      }
+
+      html {
+        height: 100%;
+        width: 100%;
+      }
+
+      body {
+        height: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        mso-line-height-rule: exactly;
+      }
+
+      div[style*="margin: 16px 0"] {
+        margin: 0 !important;
+      }
+
+      table,
+      td {
+        mso-table-lspace: 0pt;
+        mso-table-rspace: 0pt;
+      }
+
+      img {
+        border: 0;
+        height: auto;
+        line-height: 100%;
+        outline: none;
+        text-decoration: none;
+        -ms-interpolation-mode: bicubic;
+      }
+
+      .ReadMsgBody,
+      .ExternalClass {
+        width: 100%;
+      }
+
+      .ExternalClass,
+      .ExternalClass p,
+      .ExternalClass span,
+      .ExternalClass td,
+      .ExternalClass div {
+        line-height: 100%;
+      }
+    </style>
+    <!--[if gte mso 9]>
+      <style type="text/css">
+      li { text-indent: -1em; }
+      table td { border-collapse: collapse; }
+      </style>
+      <![endif]-->
+    <title>Account Activation</title>
+    <!-- content -->
+    <!--[if !mso]><!-->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" type="text/css" />
+    <!--<![endif]-->
+    <!--[if gte mso 9]><xml>
+       <o:OfficeDocumentSettings>
+        <o:AllowPNG/>
+        <o:PixelsPerInch>96</o:PixelsPerInch>
+       </o:OfficeDocumentSettings>
+      </xml><![endif]-->
+  </head>
+  <body class="body" style="background-color: #F3F3F3; margin: 0; width: 100%;">
+    <table class="bodyTable" role="presentation" width="100%" align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; background-color: #F3F3F3; margin: 0;" bgcolor="#F3F3F3">
+      <tr>
+        <td class="body__content" align="left" width="100%" valign="top" style="font-size: 16px; line-height: 20px; color: #212120; font-family: 'Poppins';">
+          <div class="card container" style="max-width: 320px; width: 95%; background-color: #FFFFFF; border-radius: 10px; padding: 10px; margin: 20vh auto;"> <!--[if mso | IE]> <table class="container__table__ie" role="presentation" border="0" cellpadding="0" cellspacing="0" style=" margin-right: auto; margin-left: auto;width: 320px" width="320" align="center">
+              <tr>
+                <td> <![endif]--> <table class="container__table" role="presentation" border="0" align="center" cellpadding="0" cellspacing="0" width="100%">
+                    <tr class="container__row">
+                      <td class="container__cell" width="100%" align="left" valign="top" style="background-color: #FFFFFF; border-radius: 10px; padding: 10px;" bgcolor="#FFFFFF">
+                        <div class="card--header">
+                          <h2 class="card--title header h2" style="margin: 20px 0; line-height: 30px; color: #212120; font-family: 'Poppins'; font-size: 1rem;">Hi there {{username}}</h2>
+                        </div>
+                        <div class="card--body">
+                          <p class="card--text text p" style="display: block; margin: 14px 0; font-size: 16px; color: #212120; font-family: 'Poppins'; line-height: 2;">Welcome to Chama app</p>
+                          <p class="card--text text p" style="display: block; margin: 14px 0; font-size: 16px; color: #212120; font-family: 'Poppins'; line-height: 2;">please do confirm your account by Clicking the Button below.</p>
+                          <div class="button">
+                            <table role="presentation" width="100%" align="left" border="0" cellpadding="0" cellspacing="0">
+                              <tr>
+                                <td>
+                                  <table role="presentation" width="auto" align="center" border="0" cellspacing="0" cellpadding="0" class="button__table" style="margin: 0 auto;">
+                                    <tr>
+                                      <td align="center" class="button__cell" style="background-color: #2097E4; border-radius: 3px; padding: 6px 12px;" bgcolor="#2097E4"><a href="{{'{0}/account/confirm/{1}'.format(host_name, token)}}" class="button__link" style="background-color: #2097E4; color: #FFFFFF; text-decoration: none; display: inline-block;"><span class="button__text" style="color: #FFFFFF; text-decoration: none;">Activate Account</span></a></td>
+                                    </tr>
+                                  </table>
+                                </td>
+                              </tr>
+                            </table>
+                          </div>
+                          <p class="card--text text p" style="display: block; margin: 14px 0; font-size: 16px; color: #212120; font-family: 'Poppins'; line-height: 2;">Alternatively you could copy the link below to your browser</p>
+                          <p class="a">{{'{0}/account/confirm/{1}'.format(host_name, token)}}</p>
+                        </div>
+                        <div class="card--footer" style="margin-top: 1rem;">
+                          <p class="card--small text p" style="display: block; margin: 14px 0; font-family: 'Poppins'; line-height: 2; color: #E33232; font-size: .75rem;">replies to this email are not monitored.</p>
+                        </div>
+                      </td>
+                    </tr>
+                  </table> <!--[if mso | IE]> </td>
+              </tr>
+            </table> <![endif]--> </div>
+        </td>
+      </tr>
+    </table>
+    <div style="display:none; white-space:nowrap; font-size:15px; line-height:0;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </div>
+  </body>
+</html>

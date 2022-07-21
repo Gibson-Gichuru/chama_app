@@ -23,11 +23,11 @@ class Config:
 
     MAIL_SUBJECT_PREFIX = "Chama App"
 
-    MAIL_SENDER = os.environ.get("MAIL_SENDER") or "memehouseke@gmail.com"
+    MAIL_SENDER = os.environ.get("MAIL_SENDER")
 
-    MAIL_SERVICE = os.environ.get("MAIL_SERVICE")
+    MAIL_SERVER = os.environ.get("MAIL_SERVER")
 
-    MAIL_USERNAME = os.environ.get("MAIL_USERNAME") or "memehouseke@gmail.com"
+    MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
 
     MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
 
@@ -35,15 +35,15 @@ class Config:
 
     MAIL_USE_TLS = True
 
-
-    # Redis Configs SetUp
+    MAIL_USE_SSL = False
 
     REDIS_HOST = os.environ.get("REDIS_HOST") or "redis"
-    REDIS_PORT =  6379 
+
+    REDIS_PORT = 6379
+
     REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD")
 
-    
-
+    HOST_NAME = os.environ.get("HOST_NAME") or "http://localhost:3000"
 
     debug = True
 
@@ -55,7 +55,14 @@ class Config:
 
 class Development(Config):
 
-    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL") or "sqlite:///"+ os.path.join(basedir, "dev-data.sqlite")
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL") or \
+        "sqlite:///" + os.path.join(basedir, "dev-data.sqlite")
+
+    REDIS_HOST = "127.0.0.1"
+    REDIS_PORT = 6379
+    REDIS_PASSWORD = os.environ.get("DEV_REDIS_PASSWORD")
+
+    MAIL_SUPPRESS_SEND = False
 
     @staticmethod
     def init_app(app):
@@ -67,7 +74,30 @@ class Testing(Config):
 
     TESTING = True
 
-    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL") or "sqlite:///"+ os.path.join(basedir, "test-data.sqlite")
+    REDIS_HOST = "127.0.0.1"
+
+    REDIS_PORT = 6379
+
+    REDIS_PASSWORD = os.environ.get("DEV_REDIS_PASSWORD")
+
+    MAIL_SUPPRESS_SEND = True
+
+    SQLALCHEMY_DATABASE_URI = (
+        "sqlite:///" + os.path.join(basedir, "test-data.sqlite"))
+
+    MAIL_DEFAULT_SENDER = "testing@testing.com"
+
+    @staticmethod
+    def init_app(app):
+
+        pass
+
+
+class RemoteTesting(Testing):
+
+    REDIS_HOST = "redis"
+
+    REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD")
 
     @staticmethod
     def init_app(app):
@@ -83,11 +113,11 @@ class Production(Config):
         pass
 
 
-
 env_config = {
 
     "development": Development,
     "default": Development,
     "production": Production,
-    "testing":Testing
+    "testing": Testing,
+    "remote_testing": RemoteTesting,
 }
