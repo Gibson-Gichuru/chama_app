@@ -32,3 +32,18 @@ def test():
     if not results.wasSuccessful():
 
         sys.exit(1)
+
+
+@app.cli.command()
+def deploy():
+
+    from flask_migrate import upgrade
+
+    from app.models import Role
+    # Run all the database migrations
+    
+    upgrade()
+
+    Role.register_roles()
+
+
