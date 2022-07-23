@@ -111,9 +111,13 @@ class Production(Config):
 
     DATABASE_PASSWORD = os.environ.get("MARIADB_PASSWORD")
 
-    DATABASE_NAME= os.environ.get("MARIADB_DATABASE")
+    DATABASE_NAME = os.environ.get("MARIADB_DATABASE")
     
-    SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{DATABASE_USER}:{DATABASE_PASSWORD}@database/{DATABASE_NAME}"
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{0}:{1}@database/{2}".format(
+        DATABASE_USER,
+        DATABASE_PASSWORD,
+        DATABASE_NAME
+    )
 
     @staticmethod
     def init_app(app):

@@ -45,5 +45,3 @@ def deploy():
     upgrade()
 
     Role.register_roles()
-
-
