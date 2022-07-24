@@ -55,6 +55,8 @@ services:
       REDIS_PORT: 6379
       REDIS_PASSWORD: "${REDIS_PASSWORD}"
 
+      FLASK_ENV: "production"
+
     depends_on:
       # - database
       database:
@@ -67,7 +69,8 @@ services:
         target: /api
     # use gunicon to serve the  appication
 
-    command: gunicorn --bind 0.0.0.0:5000 manage:app
+    # command: gunicorn --bind 0.0.0.0:5000 manage:app
+    command: bash deploy.sh
 
   database:
 

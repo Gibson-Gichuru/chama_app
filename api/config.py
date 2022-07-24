@@ -107,6 +107,18 @@ class RemoteTesting(Testing):
 
 class Production(Config):
 
+    DATABASE_USER = os.environ.get("MARIADB_USER")
+
+    DATABASE_PASSWORD = os.environ.get("MARIADB_PASSWORD")
+
+    DATABASE_NAME = os.environ.get("MARIADB_DATABASE")
+    
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{0}:{1}@database/{2}".format(
+        DATABASE_USER,
+        DATABASE_PASSWORD,
+        DATABASE_NAME
+    )
+
     @staticmethod
     def init_app(app):
 
