@@ -70,7 +70,7 @@ services:
     # use gunicon to serve the  appication
 
     # command: gunicorn --bind 0.0.0.0:5000 manage:app
-    command: ./deploy.sh
+    command: bash deploy.sh
 
   database:
 
