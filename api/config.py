@@ -35,8 +35,6 @@ class Config:
 
     MAIL_USE_TLS = True
 
-    MAIL_USE_SSL = False
-
     REDIS_HOST = os.environ.get("REDIS_HOST") or "redis"
 
     REDIS_PORT = 6379
