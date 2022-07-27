@@ -3,104 +3,107 @@ import {useState} from "react";
 import { 
     AppBar,
     Toolbar,
-    List,
+    Menu,
+    MenuItem,
+    Container,
+    Avatar,
+    Tooltip,
     Button,
-    Drawer,
-    Box,
     Typography,
-    Divider,
-    ListItem,
-    ListItemButton,
-    ListItemText,
     IconButton,
-   } from "@mui/material";
-
+    Box,
+} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
+import {
+    useTheme
+} from "@mui/material/styles";
+
+const pages = ['Home', "About", "Contacts", "Faqs"]
+const settings = ["Profile", "Account", "Dashbord", "Logout"]
 
 const Nav = ()=> {
 
-    const drawerWidth =240;
+    const theme = useTheme()
+        // navigation anchor state
+    const [anchorNav, setAnchorNav] = useState(null) 
+    // user menu anchor state
+    const [anchorUser, setAnchorUser] = useState(null) 
 
-    const [toggle, setToggle] = useState(false)
-
-    const navItems = ["home", "about", "contacts"]
-    const handleDrawerToggle = () =>{
-
-        setToggle(!toggle)
-      
+    // menu open and close event handlers
+    const handleOpenNavMenu = (event)=>{
+        setAnchorNav(event.currentTarget)
     }
 
-    const drawer = (
+    const handleOpenUserMenu = (event)=>{
+        setAnchorUser(event.currentTarget)
+    }
 
-        <Box>
-            <Typography variant="h5" sx={{ my:2 }}>Chama App</Typography>
-            <Divider/>
-            <List>
-                {navItems.map((item) => (
-                <ListItem key={item} disablePadding>
-                    <ListItemButton sx={{ textAlign: 'center' }}>
-                    <ListItemText primary={item} />
-                    </ListItemButton>
-                </ListItem>
-                ))}
-            </List>
-        </Box>
-    )
-
-    const container = window !== undefined ? () => window.document.body : undefined;
+    const handleCloseNavMenu = ()=>{
+        setAnchorNav(null)
+    }
+    const handleCloseUserMenu = ()=>{
+        setAnchorUser(null)
+    }
 
     return (
 
-        <Box sx={{ display: 'flex' }}>
-            <AppBar component="nav">
-                <Toolbar>
-                <IconButton
-                    color="inherit"
-                    aria-label="open drawer"
-                    edge="end"
-                    onClick={handleDrawerToggle}
-                    sx={{ mr: 2, display: { sm: 'none' } }}
-                >
-                    <MenuIcon />
-                </IconButton>
+        <AppBar position="static">
+            <Container maxWidth="xl">
+                <Toolbar disableGutters>
+                    <Typography variant="h6" noWrap component="a" href="/"
+                        sx={{mr:2, display:{xs:'none', md:'flex'},fontWeight:700, letterSpacing: ".3rem",color:`${theme.secondary}`,textDecoration:"none"}}>
+                        Chama App
+                    </Typography>
+                    <Box sx={{flexGrow:1,display:{ xs:"flex", md:"none"}}}>
+                        <IconButton size="large" arial-label="Account for current user" arial-controls="menu-appbar" arial-haspopup="true" onClick={handleOpenNavMenu}>
+                            <MenuIcon/>
+                        </IconButton>
+                        <Menu id="menu-appbar" anchorEl={anchorNav} anchorOrigin={{vertical:"bottom",horizontal:"left"}} keepMounted open={Boolean(anchorNav)}
+                            transformOrigin={{vertical: 'top',horizontal: 'left',}}
+                            onClose={handleCloseNavMenu}
+                            sx={{
+                                display:{xs:"block", md:"none"}
+                            }}>
+                            {
+                                pages.map(
+                                    page=> (
+                                        <MenuItem key={page} onclick={handleCloseNavMenu}>
+                                            <Typography textAlign="center">{page}</Typography>
+                                        </MenuItem>
+                                    )
+                                )
+                            }
+                        </Menu>
+                    </Box>
 
-                <Typography
-                    variant="h6"
-                    component="div"
-                    sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-                >
-                    Chama App
-                </Typography>
-                <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-                    {navItems.map((item) => (
-                    <Button key={item} sx={{ color: '#fff' }}>
-                        {item}
-                    </Button>
-                    ))}
-                </Box>
+                    <Typography variant="h5" noWrap component="a" href=""
+                        sx={{mr:2, display:{xs:"flex", md:"none"}, flexGrow:1, fontWeight:700,letterSpacing:".3rem",textDecoration:"none",color:`${theme.secondary}`,}}>
+                        Chama App
+                    </Typography>
+                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                                    {pages.map((page) => (
+                                    <Button key={page} onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>{page}</Button>))}
+                                </Box>
+                                <Box sx={{ flexGrow: 0 }}>
+                        <Tooltip title="Open settings">
+                        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                            <Avatar alt="current user" src="/static/images/avatar/2.jpg" />
+                        </IconButton>
+                        </Tooltip>
+                        <Menu sx={{ mt: '45px' }} id="menu-appbar" anchorEl={anchorUser} anchorOrigin={{vertical: 'top',horizontal: 'right' }} keepMounted
+                        transformOrigin={{vertical: 'top', horizontal: 'right',}} open={Boolean(anchorUser)} onClose={handleCloseUserMenu}>
+                        {settings.map((setting) => (
+                            <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                            <Typography textAlign="center">{setting}</Typography>
+                            </MenuItem>
+                        ))}
+                        </Menu>
+                    </Box>
                 </Toolbar>
-            </AppBar>
-            <Box component="nav">
-                <Drawer
-                container={container}
-                variant="temporary"
-                open={toggle}
-                onClose={handleDrawerToggle}
-                ModalProps={{
-                    keepMounted: true, // Better open performance on mobile.
-                }}
-                sx={{
-                    display: { xs: 'block', sm: 'none' },
-                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-                }}
-                >
-                {drawer}
-                </Drawer>
-            </Box>
-        </Box>
+            </Container>
+        </AppBar>
         
     )
 }
-
 
 export default Nav;
