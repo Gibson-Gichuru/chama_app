@@ -1,18 +1,24 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
-import { Store } from 'react-notifications-component';
-import { NotificationSettings } from "./Utils";
-import { Notify } from "./Utils";
-import { Link, useNavigate} from "react-router-dom";
-
+import axios from "axios"
 import { useAuth } from "../context/AuthContext";
+import { useAlert } from "../context/AlertProvider";
+import {
+    Typography,
+    TextField,
+    Button,
+    Box,
+    Card,
+    CardContent,
+    CardHeader,
+
+} from "@mui/material";
 const LoginForm = () =>{
     
 
-    const navigate = useNavigate()
    
     const {logIn} = useAuth()
+    const {handlePushAlert} = useAlert()
     const formik = useFormik({
 
         initialValues: {
@@ -46,26 +52,12 @@ const LoginForm = () =>{
                 // setup the logged in user and redirect to the home page
                 let tokens = data.data.tokens
                 logIn(tokens.refresh, tokens.access)
-                navigate("/")
             }).catch(error=>{
-                
-                switch (error.response.status) {
-                    case 401:
-
-                    Store.addNotification(NotificationSettings(
-                        Notify(
-                            "invalid username or password",
-                            "warning"
-                        )
-                    ));
-                        
-                        break;
-                    case 403:
-                        navigate("/confirm")
-                        break;
-                    default:
-                        break;
-                }
+                handlePushAlert({
+                    id:"someID",
+                    message:"some testing message",
+                    severity:"error"
+                })
             })
         }
     })
@@ -74,52 +66,25 @@ const LoginForm = () =>{
     return (
 
         <>  
-           
-            <div className="card form--card">
-            <h2 className="card--title">Login</h2>
-            <form onSubmit={formik.handleSubmit} className = "form flex">
-
-                <div className="form--element flex">
-                    <label htmlFor="email">Email</label>
-                    <input 
-                    id="email"
-                    type="text"
-                    placeholder="name@example.com"
-                    {...formik.getFieldProps('email')}
-                    />
-
-                    {formik.touched.email && formik.errors.email? (
-                        <span className="error">{formik.errors.email}</span>
-                    ) :null}
-                </div>  
-
-                <div className="form--element flex">
-                    <label htmlFor="password">Password</label>
-                    <input type="password" 
-                        id="password"
-                        placeholder="enter your password"
-                        {...formik.getFieldProps('password')}
-                    />
-                    {formik.touched.password && formik.errors.password?(
-                        <span className="error">{formik.errors.password}</span>
-                    ):null}
-                </div>
-
-                <div className="form--element flex">
-                    <button className="btn btn--submit" type="submit">Login</button>
-                </div>
-
-                <div className="form--texts flex">
-                    <p className="text">
-                        Don't have an account?
-                        <Link to="/signup" className="accent--text" replace={true}>Sign up</Link>
-                    </p>
-                    <Link to="/forgot_password" className="accent--text" replace={true}>Forgot Password</Link>
-                
-                </div>
-
-            </form>
-        </div>
+           <Card variant="outlined" sx={{maxWidth:375, width:"90%", mx:"auto"}}>
+            <CardHeader title="Login"/>
+            <CardContent>
+                <form onSubmit={formik.handleSubmit} >
+                    <Box sx={{display:"flex",flexDirection:"column", gap:2}}>
+                        <TextField required id="email" type="email" placeholder="example@mail.com" label="Email Address" {...formik.getFieldProps('email')}/>
+                        <TextField required id="password" type="password" placeholder="password" label="Password" {...formik.getFieldProps('password')}/>
+                        <Button variant="contained" type="submit" sx={{ backgroundColor:"primary"}}>Login</Button>
+                        <Box component="div" sx={{ display:"flex", flexDirection:"column" ,justifyContent:"space-around", alignItems:"center"}}>
+                            <Typography variant="body2" component="div">
+                                Don't have an account?
+                                <Typography component="span" sx={{ml:1, fontSize:12, cursor:"pointer"}}>Sign Up</Typography>
+                            </Typography>
+                            <Typography component="span" sx={{fontSize:12, cursor:"pointer"}}>Forgot password</Typography>
+                        </Box>
+                    </Box>
+                </form>
+            </CardContent>
+           </Card>
         </>
     )
 }
