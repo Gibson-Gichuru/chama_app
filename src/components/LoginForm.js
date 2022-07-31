@@ -13,6 +13,7 @@ import {
     CardHeader,
 
 } from "@mui/material";
+import { v4 as uuid} from "uuid"
 const LoginForm = () =>{
     
 
@@ -54,7 +55,7 @@ const LoginForm = () =>{
                 logIn(tokens.refresh, tokens.access)
             }).catch(error=>{
                 handlePushAlert({
-                    id:"someID",
+                    id:uuid(),
                     message:"some testing message",
                     severity:"error"
                 })
@@ -71,8 +72,27 @@ const LoginForm = () =>{
             <CardContent>
                 <form onSubmit={formik.handleSubmit} >
                     <Box sx={{display:"flex",flexDirection:"column", gap:2}}>
-                        <TextField required id="email" type="email" placeholder="example@mail.com" label="Email Address" {...formik.getFieldProps('email')}/>
-                        <TextField required id="password" type="password" placeholder="password" label="Password" {...formik.getFieldProps('password')}/>
+                        <TextField  
+                        id="email" 
+                        type="email" 
+                        placeholder="example@mail.com" 
+                        label="Email Address" 
+                        value={formik.values.email}
+                        onChange={formik.handleChange}
+                        error={formik.touched.email && Boolean(formik.errors.email)}
+                        helperText={formik.touched.email && formik.errors.email}
+                        {...formik.getFieldProps('email')}/>
+
+                        <TextField
+                        id="password" 
+                        type="password" 
+                        placeholder="password" 
+                        label="Password"
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
+                        error={formik.touched.password && Boolean(formik.errors.password)}
+                        helperText={formik.touched.password && formik.errors.password}
+                        {...formik.getFieldProps('password')}/>
                         <Button variant="contained" type="submit" sx={{ backgroundColor:"primary"}}>Login</Button>
                         <Box component="div" sx={{ display:"flex", flexDirection:"column" ,justifyContent:"space-around", alignItems:"center"}}>
                             <Typography variant="body2" component="div">
