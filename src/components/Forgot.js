@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { v4 as uuid} from "uuid"
 
-const Forgot = ()=>{
+const Forgot = ({changeIndex})=>{
 
     const formik = useFormik(
         {
@@ -36,7 +36,7 @@ const Forgot = ()=>{
 
     return (
         <Card variant="outlined" sx={{ maxWidth:375, width:"90%", mx:"auto"}}>
-            <CardTitle title="Forgot Passswrd"/>
+            <CardHeader title="Forgot Passswrd"/>
             <CardContent>
                 <form onSubmit={formik.handleSubmit}>
                     <Box sx={{display:"flex", flexDirection:"column", gap:2}}>
@@ -55,7 +55,13 @@ const Forgot = ()=>{
                         <Box 
                         component="div" 
                         sx={{ display:"flex", flexDirection:"column",justifyContent:"space-around", alignItems:"center"}}>
-                            <Typography variant="body2" component="div" sx={{ml:1, fontSize:12, cursor:"pointer"}}>
+                            <Typography 
+                            variant="body2" 
+                            component="div" 
+                            sx={{ml:1, fontSize:12, cursor:"pointer"}}
+                            onClick={
+                                ()=>changeIndex(0)
+                            }>
                                 Back To Login
                             </Typography>
                         </Box>

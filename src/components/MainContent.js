@@ -4,7 +4,7 @@ import {
     Box,
     Container
 } from "@mui/material";
-import LoginForm from "./LoginForm";
+import Forms from "../pages/Forms";
 const Main = ()=>{
 
     const {access, isExpired} = useAuth()
@@ -16,14 +16,7 @@ const Main = ()=>{
                 {access || !isExpired? (
                     <Typography variant="body2">Main Content</Typography>
                 ): (
-                    <Box sx={{
-                        height:"100vh",
-                        display:"flex",
-                        justifyContent:"center",
-                        alignItems:"center"
-                    }}>
-                        <LoginForm/>
-                    </Box>  
+                    <Forms/>
                 )}
             </Container>
         </Box>

@@ -15,7 +15,7 @@ import {
 import { v4 as uuid} from "uuid"
 
 
-const Signup = ()=>{
+const Signup = ({changeIndex})=>{
 
     const {handlePushAlert} = useAlert()
 
@@ -132,7 +132,12 @@ const Signup = ()=>{
                         sx={{display:"flex", flexDirection:"column", justifyContent:"space-around", alignItems:"center"}}>
                             <Typography variant="body2" component="div">
                                 Have an Account?
-                                <Typography component="span" sx={{ml:1, fontSize:12, cursor:"pointer"}}>
+                                <Typography 
+                                component="span" 
+                                sx={{ml:1, fontSize:12, cursor:"pointer"}}
+                                onClick={
+                                    ()=>changeIndex(0)
+                                }>
                                     Log in
                                 </Typography>
                             </Typography>

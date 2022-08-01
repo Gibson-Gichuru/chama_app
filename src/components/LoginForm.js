@@ -14,7 +14,7 @@ import {
 
 } from "@mui/material";
 import { v4 as uuid} from "uuid"
-const LoginForm = () =>{
+const LoginForm = ({changeIndex}) =>{
     
 
    
@@ -97,9 +97,19 @@ const LoginForm = () =>{
                         <Box component="div" sx={{ display:"flex", flexDirection:"column" ,justifyContent:"space-around", alignItems:"center"}}>
                             <Typography variant="body2" component="div">
                                 Don't have an account?
-                                <Typography component="span" sx={{ml:1, fontSize:12, cursor:"pointer"}}>Sign Up</Typography>
+                                <Typography 
+                                component="span" 
+                                sx={{ml:1, fontSize:12, cursor:"pointer"}}
+                                onClick={
+                                    ()=>changeIndex(1)
+                                }>Sign Up</Typography>
                             </Typography>
-                            <Typography component="span" sx={{fontSize:12, cursor:"pointer"}}>Forgot password</Typography>
+                            <Typography 
+                            component="span" 
+                            sx={{fontSize:12, cursor:"pointer"}}
+                            onClick={
+                                ()=>changeIndex(2)
+                            }>Forgot password</Typography>
                         </Box>
                     </Box>
                 </form>
