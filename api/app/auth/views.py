@@ -25,6 +25,12 @@ def verify_user_password(email, password):
     return user
 
 
+@basic_auth.error_handler
+def basic_auth_error(status):
+
+    abort(status)
+
+
 @token_auth.verify_token  # Auth authentication callback function
 def verify_user_token(token):
 
@@ -34,6 +40,12 @@ def verify_user_token(token):
         return None
 
     return User.query.get(jwt['sub'])
+
+
+@token_auth.error_handler
+def token_auth_error(status):
+
+    abort(status)
 
 
 class RegisterUser(MethodView):

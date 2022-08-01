@@ -18,6 +18,10 @@ RUN npm run build
 
 FROM nginx:stable-alpine
 
+RUN groupadd -r chama && useradd -r -g chama chama
+
+RUN  chsh -s /usr/sbin/nologin root
+
 EXPOSE 80
 
 COPY --from=build-step /app/build /usr/share/nginx/html

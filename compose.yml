@@ -45,7 +45,6 @@ services:
       MARIADB_PASSWORD: "${DATABASE_PASSWORD}"
       MARIADB_DATABASE: "${DATABASE_NAME}"
       # Mail server Configs
-      MAIL_PORT: "${MAIL_PORT}"
       MAIL_SENDER: "${MAIL_SENDER}"
       MAIL_SERVER: "${MAIL_SERVER}"
       MAIL_USERNAME: "${MAIL_USERNAME}"
@@ -56,6 +55,8 @@ services:
       REDIS_PASSWORD: "${REDIS_PASSWORD}"
 
       FLASK_ENV: "production"
+
+    user: "chama"
 
     depends_on:
       # - database
