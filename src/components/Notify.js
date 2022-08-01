@@ -1,17 +1,42 @@
-import * as BsIcons from "react-icons/bs"
+import { 
+    Snackbar,
+    Alert,
 
-const Notify = (message, styleClass)=>{
+} from "@mui/material";
+
+import {useAlert} from "../context/AlertProvider";
+import {useState, useEffect} from "react";
+
+const Notifications = ()=>{
+
+    const {alerts,handlePopAlert} = useAlert()
+
+    const [show, setShow] = useState(false)
 
 
-    return(
-
-        <div className={`notification ${styleClass}`}>
-            <BsIcons.BsFillBellFill/>
-            <p className="notification--text">
-                {message}
-            </p>
-        </div>
+    useEffect(
+        ()=>{
+            if(alerts.length > 0){
+                setShow(true)
+            }
+        },[alerts]
     )
+    
+    return (
+        <>
+            {alerts.map(alert=>(
+                <Snackbar 
+                open={show} 
+                autoHideDuration={6000} 
+                key={alert.id} 
+                onClose={()=>handlePopAlert(alert.id)}
+                anchorOrigin={{vertical:"bottom", horizontal:"center"}}>
+                    <Alert severity={alert.severity}>{alert.message}</Alert>
+                </Snackbar>
+            ))}
+        </>
+    )
+
 }
 
-export default Notify
+export default Notifications

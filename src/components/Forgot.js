@@ -1,7 +1,19 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import {Link} from "react-router-dom";
-const Forgot = ()=>{
+import { useAlert } from "../context/AlertProvider";
+import {
+    Typography,
+    TextField,
+    Button,
+    Box,
+    Card,
+    CardContent,
+    CardHeader,
+
+} from "@mui/material";
+import { v4 as uuid} from "uuid"
+
+const Forgot = ({changeIndex})=>{
 
     const formik = useFormik(
         {
@@ -23,30 +35,40 @@ const Forgot = ()=>{
 
 
     return (
-        <div className="card form--card">
-            <h2 className="card--title">Forgot Password?</h2>
-            <form onSubmit={formik.handleSubmit} className= "form flex">
-            <div className="form--element flex">
-                    <label htmlFor="email">Email</label>
-                    <input 
-                    id="email"
-                    type="text"
-                    placeholder="Enter your registered email address"
-                    {...formik.getFieldProps('email')}
-                    />
-
-                    {formik.touched.email && formik.errors.email? (
-                        <span className="error">{formik.errors.email}</span>
-                    ) :null}
-                </div> 
-                <div className="form--element flex">
-                    <button className="btn btn--submit" type="submit">Reset</button>
-                </div>
-                <div className="form--texts flex">
-                    <Link to="/login" className="accent--text" replace={true}>Back to Login</Link>
-                </div>
-            </form> 
-        </div>
+        <Card variant="outlined" sx={{ maxWidth:375, width:"90%", mx:"auto"}}>
+            <CardHeader title="Forgot Passswrd"/>
+            <CardContent>
+                <form onSubmit={formik.handleSubmit}>
+                    <Box sx={{display:"flex", flexDirection:"column", gap:2}}>
+                        <TextField 
+                        id="email"
+                        type="email"
+                        value={formik.values.email}
+                        label="Email Address"
+                        placeholder="Enter your account email address"
+                        onChange={formik.handleChange}
+                        error={formik.touched.email && Boolean(formik.errors.email)}
+                        helperText={formik.touched.email && formik.errors.email}/>
+                        <Button 
+                        variant="contained" 
+                        type="submit" sx={{backgroundColor:"primary"}}>Send Reset Request</Button>
+                        <Box 
+                        component="div" 
+                        sx={{ display:"flex", flexDirection:"column",justifyContent:"space-around", alignItems:"center"}}>
+                            <Typography 
+                            variant="body2" 
+                            component="div" 
+                            sx={{ml:1, fontSize:12, cursor:"pointer"}}
+                            onClick={
+                                ()=>changeIndex(0)
+                            }>
+                                Back To Login
+                            </Typography>
+                        </Box>
+                    </Box>
+                </form>
+            </CardContent>
+        </Card>
     )
 }
 
