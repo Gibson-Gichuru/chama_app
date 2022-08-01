@@ -26,7 +26,7 @@ def verify_user_password(email, password):
 
 
 @basic_auth.error_handler
-def auth_error(status):
+def basic_auth_error(status):
 
     abort(status)
 
@@ -43,7 +43,7 @@ def verify_user_token(token):
 
 
 @token_auth.error_handler
-def auth_error(status):
+def token_auth_error(status):
 
     abort(status)
 

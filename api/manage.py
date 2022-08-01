@@ -8,7 +8,10 @@ import sys
 
 app = create_app(os.environ.get("FLASK_ENV") or "default")
 
+
 # Make all HTTPExceptions return json reponse
+
+
 @app.errorhandler(HTTPException)
 def handle_exception(e):
 
