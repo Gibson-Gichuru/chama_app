@@ -24,6 +24,7 @@ def verify_user_password(email, password):
 
     return user
 
+
 @basic_auth.error_handler
 def auth_error(status):
 
