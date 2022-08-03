@@ -1,6 +1,7 @@
+from pkg_resources import require
 from app import ma
 
-from marshmallow import fields, validates, ValidationError
+from marshmallow import fields, validates, ValidationError, validate
 
 from app.models import User
 
@@ -12,6 +13,11 @@ class RegisterSchema(ma.Schema):
     email = fields.Email(required=True)
 
     password = fields.String(required=True)
+
+    remote_url = fields.String(
+        required=True,
+        validate=validate.URL()
+    )
 
     @validates("username")
     def validate_username(self, username):

@@ -50,7 +50,8 @@ const Signup = ({changeIndex})=>{
                 {
                     email:values.email,
                     password:values.password,
-                    username:values.username
+                    username:values.username,
+                    remote_url:document.baseURI,
                 }
             ).then(
                 response=>{

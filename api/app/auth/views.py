@@ -71,7 +71,7 @@ class RegisterUser(MethodView):
 
         user.password = request_data['password']
 
-        user.origin_url = request.url_root
+        user.origin_url = request_data['remote_url']
 
         user.add(user)
 

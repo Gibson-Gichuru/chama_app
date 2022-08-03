@@ -56,7 +56,7 @@ const LoginForm = ({changeIndex}) =>{
             }).catch(error=>{
                 handlePushAlert({
                     id:uuid(),
-                    message:"some testing message",
+                    message:"Invalid Username or Password",
                     severity:"error"
                 })
             })
