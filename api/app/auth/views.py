@@ -28,7 +28,7 @@ def verify_user_password(email, password):
 @basic_auth.error_handler
 def basic_auth_error(status):
 
-    abort(status)
+    abort(status, description="Invalid username or password")
 
 
 @token_auth.verify_token  # Auth authentication callback function
@@ -45,7 +45,7 @@ def verify_user_token(token):
 @token_auth.error_handler
 def token_auth_error(status):
 
-    abort(status)
+    abort(status, description="Invalid or expired token used")
 
 
 class RegisterUser(MethodView):
@@ -70,6 +70,8 @@ class RegisterUser(MethodView):
         )
 
         user.password = request_data['password']
+
+        user.origin_url = request.url_root
 
         user.add(user)
 
@@ -127,7 +129,7 @@ class Tokens(MethodView):
 
         if not current_user.active:
 
-            return abort(401)
+            return abort(403, description="Account not activated")
 
         request_data = request.get_json()
 
@@ -144,7 +146,7 @@ class Tokens(MethodView):
 
         if not refresh_exits or cached_access_token != request_data['access']:
 
-            return abort(401)
+            return abort(401, description="Invalid or expired token used")
 
         # generate some new access token and update the cache
 

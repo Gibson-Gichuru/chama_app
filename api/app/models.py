@@ -154,7 +154,7 @@ class User(db.Model, DatabaseActions):
             "email",
             username=self.username,
             token=self.generate_activation_token(),
-            host_name=current_app.config['HOST_NAME']
+            host_name=self.origin_url
             )
 
     @property
