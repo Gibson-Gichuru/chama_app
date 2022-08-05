@@ -32,7 +32,6 @@ const Forms = ()=>{
 
     return (
         <Box sx={{
-            height:"100vh",
             display:"flex",
             justifyContent:"center",
             alignItems:"center"

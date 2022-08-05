@@ -1,6 +1,7 @@
 import { useFormik } from "formik";
 import * as Yup from 'yup';
 import axios from "axios";
+import {useState} from "react";
 import { useAlert } from "../context/AlertProvider";
 import {
     Typography,
@@ -10,14 +11,26 @@ import {
     Card,
     CardContent,
     CardHeader,
+    CircularProgress,
+    InputAdornment,
+    IconButton
 
 } from "@mui/material";
-import { v4 as uuid} from "uuid"
+import { green } from '@mui/material/colors';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { v4 as uuid} from "uuid";
 
 
 const Signup = ({changeIndex})=>{
 
     const {handlePushAlert} = useAlert()
+
+    const [loading, setLoading] = useState(false)
+    const handleLoading = (state)=> setLoading(loading => loading = state)
+
+    const [showPassword, setShowPassword] = useState(false)
+    const handleShowPassword = ()=> setShowPassword(!showPassword)
 
     const formik = useFormik({
     
@@ -43,8 +56,9 @@ const Signup = ({changeIndex})=>{
             }
         ),
 
-        onSubmit : async values =>{
+        onSubmit : async (values, {setErrors}) =>{
 
+            handleLoading(true)
             await axios.post(
                 "api/auth/register",
                 {
@@ -60,18 +74,14 @@ const Signup = ({changeIndex})=>{
                         message:"Account Created",
                         severity:"success"
                     })
-                    
+                    handleLoading(false)
                 }
-            ).catch(
-                error=>{
+            ).catch(({ response })=>{
+                    const errors = {...response.data.errors}
+                    setErrors(errors)
+                    handleLoading(false)
+                }
 
-                    handlePushAlert({
-                        id:uuid(),
-                        message:"Unable to process request at the moment try again leter!",
-                        severity:"error"
-                    })
-                    
-                }
             )
         }
     
@@ -86,61 +96,59 @@ const Signup = ({changeIndex})=>{
             <CardContent>
                 <form onSubmit={formik.handleSubmit}>
                     <Box sx={{ display:"flex", flexDirection:"column", gap:2}}>
-                        <TextField 
-                        id="username"
-                        type="text"
-                        placeholder="johnDoe"
-                        label="Username"
+                        <TextField autoComplete="off" id="username" type="text" placeholder="johnDoe" label="Username"
                         value={formik.values.username}
                         onChange={formik.handleChange}
                         error={formik.touched.username && Boolean(formik.errors.username)}
                         helperText={formik.touched.username && formik.errors.username}
                         {...formik.getFieldProps('username')}/>
                         
-                        <TextField 
-                        id="email"
-                        placeholder="johnDoe@example.com"
-                        label="Email Address"
+                        <TextField autoComplete="off" id="email" placeholder="johnDoe@example.com" label="Email Address"
                         value={formik.values.email}
                         onChange={formik.handleChange}
                         error={formik.touched.email && Boolean(formik.errors.email)}
                         helperText={formik.touched.email && formik.errors.email}
                         {...formik.getFieldProps('email')}/>
 
-                        <TextField 
-                        id="password"
-                        type="password"
-                        placeholder="Enter Your Password"
-                        label="Password"
+                        <TextField autoComplete="off" id="password" type={showPassword?"text":"password"} placeholder="Enter Your Password" label="Password"
                         value={formik.values.password}
                         onChange={formik.handleChange}
                         error={formik.touched.password && Boolean(formik.errors.password)}
-                        helperText={formik.touched.password && formik.errors.password}/>
+                        helperText={formik.touched.password && formik.errors.password}
+                        InputProps = {{
+                            endAdornment:<InputAdornment position="end">
+                                <IconButton arial-label="togge password visibility" onClick={handleShowPassword} edge="end">
+                                    {showPassword ? <VisibilityOff/>:<Visibility/>}
+                                </IconButton>
+                            </InputAdornment>
+                        }}/>
 
-                        <TextField 
-                        id="confirmPassword"
-                        type="password"
-                        placeholder="confirm your password"
-                        label="Confirm Password"
+                        <TextField autoComplete="off" id="confirmPassword" type={showPassword?"text":"password"} placeholder="confirm your password" label="Confirm Password"
                         value={formik.values.confirmPassword}
                         onChange={formik.handleChange}
                         error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
                         helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}/>
-
-                        <Button variant="contained" type="submit" sx={{backgroundColor:"primary"}}>Sign Up</Button>
+                        <Box sx = {{ position:"relative"}}>
+                            <Button variant="contained" disabled= {loading} type="submit" sx={{width:"100%"}}>Sign Up</Button>
+                            {
+                                 loading && (
+                                    <CircularProgress size={24} sx = {{
+                                        color:green[500],
+                                        position: 'absolute',
+                                        top: '50%',
+                                        left: '50%',
+                                        marginTop: '-12px',
+                                        marginLeft: '-12px',
+                                    }}/>
+                                )
+                            }
+                        </Box>
                         <Box 
                         component="div" 
                         sx={{display:"flex", flexDirection:"column", justifyContent:"space-around", alignItems:"center"}}>
                             <Typography variant="body2" component="div">
                                 Have an Account?
-                                <Typography 
-                                component="span" 
-                                sx={{ml:1, fontSize:12, cursor:"pointer"}}
-                                onClick={
-                                    ()=>changeIndex(0)
-                                }>
-                                    Log in
-                                </Typography>
+                                <Button variant="text" size="small"onClick={()=>changeIndex(0)}>Log in</Button>
                             </Typography>
                         </Box>
                     </Box>
