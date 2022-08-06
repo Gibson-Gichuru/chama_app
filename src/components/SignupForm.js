@@ -75,6 +75,7 @@ const Signup = ({changeIndex})=>{
                         severity:"success"
                     })
                     handleLoading(false)
+                    changeIndex(0)
                 }
             ).catch(({ response })=>{
                     const errors = {...response.data.errors}
