@@ -71,7 +71,7 @@ const Signup = ({changeIndex})=>{
                 response=>{
                     handlePushAlert({
                         id:uuid(),
-                        message:"Account Created",
+                        message:`Account created! Account activation link sent to ${formik.values.email}`,
                         severity:"success"
                     })
                     handleLoading(false)
