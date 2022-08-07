@@ -8,6 +8,7 @@ from app.models import User
 
 import base64
 
+from unittest.mock import patch
 
 class TestUserRegisterRoute(BaseTestConfig):
 
@@ -228,8 +229,26 @@ class TestUserAccountConfirmation(BaseTestConfig):
             email="testuser@test.com"
         )
 
+        self.user.password = "somerandompassword"
+
         self.user.add(self.user)
 
+        self.headers = {
+
+            "Content-type": "application/json",
+            "Authorization": "Basic " + base64.b64encode(
+                f"{self.user.email}:somerandompassword".encode('utf-8')
+            ).decode('utf-8')}
+
+    def make_request(self, payload, headers=None):
+
+        url = "/api/auth/activation_link"
+
+        return self.client.post(
+            url,
+            headers=self.headers,
+            data=json.dumps(payload))
+            
     def tearDown(self):
 
         user = User.query.filter_by(username="testUser").first()
@@ -248,3 +267,14 @@ class TestUserAccountConfirmation(BaseTestConfig):
         self.assertEqual(response.status_code, 200)
 
         self.assertTrue(user.active)
+
+    @patch("app.models.send_email")
+    def test_new_activation_link_request(self, email_mock):
+
+        """A user can request for a new activation link"""
+
+        response = self.make_request(payload={"remote_url":"/some/url"})
+
+        self.assertEqual(response.status_code, 200)
+
+        email_mock.assert_called()

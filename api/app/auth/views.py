@@ -12,6 +12,8 @@ basic_auth = HTTPBasicAuth()
 
 token_auth = HTTPTokenAuth()
 
+from app.email import send_email
+
 
 @basic_auth.verify_password  # basic auth call back function
 def verify_user_password(email, password):
@@ -197,3 +199,33 @@ class ConfirmAccount(MethodView):
                     }
                 }
             ), 400
+
+class NewActivationLink(MethodView):
+
+    @basic_auth.login_required
+    def post(self):
+
+        request_data =request.get_json()
+        status = 200
+        message = ""
+        current_user = basic_auth.current_user()
+
+        try:
+            send_email(
+                current_user.email,
+                "Account Confirmation",
+                "email",
+                username=current_user.username,
+                token=current_user.generate_activation_token(),
+                host_name=request_data['remote_url']
+            )
+            message="Activation link sent"
+
+        except:
+            status = 500
+            message = "Error Occured"
+        
+        return jsonify(message), status
+
+
+

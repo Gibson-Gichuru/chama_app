@@ -133,6 +133,8 @@ class User(db.Model, DatabaseActions):
 
         self.email = email
 
+        self.origin_url = ""
+
         if role is not None and not isinstance(role, Role):
 
             raise(TypeError("role passed is not of Type Role"))
