@@ -33,6 +33,35 @@ const LoginForm = ({changeIndex}) =>{
     const handleDownPassword = (e)=>{
         e.preventDefault()
     }
+    async function handleRequestActivationLink (){
+        // make request to the api
+        
+        await axios.get(
+            "api/auth/activation_link",
+            {
+                auth:{
+                    username:formik.values.email,
+                    password:formik.values.password
+                }
+            }
+
+        ).then(()=>{
+
+            handlePushAlert({
+                id:uuid(),
+                message: `Activation link Sent to ${formik.values.email}`,
+                severity:"success"
+            })
+
+        }).catch(()=>{
+            handlePushAlert({
+                id:uuid(),
+                message:"Unable to request Activation link, Contact your admin",
+                severity:"error"
+            })
+        })
+        
+    }
     const {logIn} = useAuth()
     const {handlePushAlert} = useAlert()
     const formik = useFormik({
@@ -77,7 +106,10 @@ const LoginForm = ({changeIndex}) =>{
                         handlePushAlert({
                             id:uuid(),
                             message:response.data.description,
-                            severity:"warning"
+                            severity:"warning",
+                            action:{
+                                callback:handleRequestActivationLink
+                            }
                         })
                         break;
                     case 401:

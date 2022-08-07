@@ -8,11 +8,11 @@ const Main = ({children})=>{
 
     return (
 
-        <Box sx={{ py:3}}>
-            <Container maxWidth="lg">
+        <Box>
+             <Notifications/> 
+            <Container sx={{py:3}} maxWidth="lg">
                {children}
             </Container>
-            <Notifications/> 
         </Box>
     )
 }
