@@ -248,7 +248,7 @@ class TestUserAccountConfirmation(BaseTestConfig):
             url,
             headers=self.headers,
             data=json.dumps(payload))
-            
+
     def tearDown(self):
 
         user = User.query.filter_by(username="testUser").first()
@@ -268,8 +268,7 @@ class TestUserAccountConfirmation(BaseTestConfig):
 
         self.assertTrue(user.active)
 
-    @patch("app.models.send_email")
-    def test_new_activation_link_request(self, email_mock):
+    def test_new_activation_link_request(self):
 
         """A user can request for a new activation link"""
 
@@ -277,4 +276,3 @@ class TestUserAccountConfirmation(BaseTestConfig):
 
         self.assertEqual(response.status_code, 200)
 
-        email_mock.assert_called()
