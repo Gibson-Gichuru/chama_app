@@ -36,8 +36,9 @@ const LoginForm = ({changeIndex}) =>{
     async function handleRequestActivationLink (){
         // make request to the api
         
-        await axios.get(
+        await axios.post(
             "api/auth/activation_link",
+            {remote_url:document.baseURI},
             {
                 auth:{
                     username:formik.values.email,
