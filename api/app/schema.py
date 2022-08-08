@@ -1,4 +1,3 @@
-from pkg_resources import require
 from app import ma
 
 from marshmallow import fields, validates, ValidationError, validate

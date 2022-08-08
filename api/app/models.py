@@ -137,7 +137,7 @@ class User(db.Model, DatabaseActions):
 
         if role is not None and not isinstance(role, Role):
 
-            raise(TypeError("role passed is not of Type Role"))
+            raise TypeError("role passed is not of Type Role")
 
         else:
 

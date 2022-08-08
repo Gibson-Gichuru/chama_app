@@ -8,13 +8,12 @@ from app.schema import RegisterSchema
 
 from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth
 
+from app.email import send_email
+
 basic_auth = HTTPBasicAuth()
 
 token_auth = HTTPTokenAuth()
 
-from app.email import send_email
-
-import pdb
 
 @basic_auth.verify_password  # basic auth call back function
 def verify_user_password(email, password):
@@ -201,12 +200,13 @@ class ConfirmAccount(MethodView):
                 }
             ), 400
 
+
 class NewActivationLink(MethodView):
 
     @basic_auth.login_required
     def post(self):
 
-        request_data =request.get_json()
+        request_data = request.get_json()
 
         current_user = basic_auth.current_user()
 
@@ -222,4 +222,3 @@ class NewActivationLink(MethodView):
         return jsonify({
             "message":"Success"
         }), 200
-

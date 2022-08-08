@@ -8,7 +8,6 @@ from app.models import User
 
 import base64
 
-from unittest.mock import patch
 
 class TestUserRegisterRoute(BaseTestConfig):
 
@@ -19,11 +18,10 @@ class TestUserRegisterRoute(BaseTestConfig):
         self.client = self.app.test_client()
 
         self.request_body = {
-
-
             "username": "testuser",
             "email": "testuser@test.com",
-            "password": "testuserpassword"
+            "password": "testuserpassword",
+            "remote_url": "http://testing.com"
         }
     
     def make_request(self, method, url, headers, data=None):
@@ -275,4 +273,3 @@ class TestUserAccountConfirmation(BaseTestConfig):
         response = self.make_request(payload={"remote_url":"/some/url"})
 
         self.assertEqual(response.status_code, 200)
-
