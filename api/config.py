@@ -76,8 +76,6 @@ class Testing(Config):
 
     REDIS_PASSWORD = os.environ.get("DEV_REDIS_PASSWORD")
 
-    MAIL_SUPPRESS_SEND = True
-
     SQLALCHEMY_DATABASE_URI = (
         "sqlite:///" + os.path.join(basedir, "test-data.sqlite"))
 

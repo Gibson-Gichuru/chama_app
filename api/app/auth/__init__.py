@@ -31,3 +31,10 @@ auth_blueprint.add_url_rule(
     "/activation_link",
     view_func=views.NewActivationLink.as_view("new_activation_token")
 )
+
+# password reset endpoint
+
+auth_blueprint.add_url_rule(
+    "/reset_password",
+    view_func=views.ResetPassword.as_view("reset_password")
+)

@@ -6,6 +6,10 @@ from app import db
 
 from app.models import User
 
+from unittest.mock import patch
+
+from flask import current_app
+
 import base64
 
 
@@ -273,3 +277,71 @@ class TestUserAccountConfirmation(BaseTestConfig):
         response = self.make_request(payload={"remote_url":"/some/url"})
 
         self.assertEqual(response.status_code, 200)
+
+
+class TestPasswordReset(BaseTestConfig):
+
+    def setUp(self):
+
+        super().setUp()
+
+        self.client = self.app.test_client()
+
+        self.user = User(
+            username="testuser",
+            email="testuser@test.com"
+        )
+
+        self.user.password = "testing"
+
+        self.user.add(self.user)
+
+    @patch("app.email.Message")
+    def test_request_password_reset_link(self, message_mock):
+
+        params = {"email":"testuser@test.com", "remote_url":""}
+
+        request = self.client.get(
+            "api/auth/reset_password",
+            query_string=params
+        )
+
+        # assert that the request was a success
+
+        self.assertEqual(request.status_code, 200)
+
+        #  assert that an email was sent to the  user
+
+        message_mock.assert_called()
+
+        # assert that the msessage obkect was called with our users email address
+        message_mock.assert_called_with(
+            subject=current_app.config['MAIL_SUBJECT_PREFIX'] +
+            " " + "Password reset",
+            sender=current_app.config['MAIL_SENDER'],
+            recipients=[self.user.email]
+        )
+
+    def test_user_password_reset(self):
+
+        headers = {"Content-type": "application/json"}
+
+        payload = {
+            "token":self.user.generate_password_reset_token(),
+            "password":"passwordChanged"
+            }
+
+        request = self.client.post(
+            "api/auth/reset_password",
+            headers=headers,
+            data=json.dumps(payload))
+
+        updated_user = User.query.filter_by(email=self.user.email).first()
+
+        # assert that  the request was a success
+
+        self.assertEqual(request.status_code, 200)
+
+        # assert that the user password was changed
+
+        self.assertTrue(updated_user.check_password("passwordChanged"))
