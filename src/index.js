@@ -4,15 +4,18 @@ import App from './App';
 import "./app.css"
 import {AuthContextProvider} from "./context/AuthContext";
 import { AlertContextProvider } from "./context/AlertProvider"; 
+import {BrowserRouter as Router} from "react-router-dom";
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
-    <AuthContextProvider>
-      <AlertContextProvider>
-        <App/>
-      </AlertContextProvider>
-    </AuthContextProvider>
+    <Router>
+      <AuthContextProvider>
+        <AlertContextProvider>
+          <App/>
+        </AlertContextProvider>
+      </AuthContextProvider>
+    </Router>
   </React.StrictMode>
 );
 

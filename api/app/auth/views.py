@@ -8,6 +8,8 @@ from app.schema import RegisterSchema
 
 from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth
 
+from app.email import send_email
+
 basic_auth = HTTPBasicAuth()
 
 token_auth = HTTPTokenAuth()
@@ -28,7 +30,7 @@ def verify_user_password(email, password):
 @basic_auth.error_handler
 def basic_auth_error(status):
 
-    abort(status)
+    abort(status, description="Invalid username or password")
 
 
 @token_auth.verify_token  # Auth authentication callback function
@@ -45,7 +47,7 @@ def verify_user_token(token):
 @token_auth.error_handler
 def token_auth_error(status):
 
-    abort(status)
+    abort(status, description="Invalid or expired token used")
 
 
 class RegisterUser(MethodView):
@@ -70,6 +72,8 @@ class RegisterUser(MethodView):
         )
 
         user.password = request_data['password']
+
+        user.origin_url = request_data['remote_url']
 
         user.add(user)
 
@@ -127,7 +131,7 @@ class Tokens(MethodView):
 
         if not current_user.active:
 
-            return abort(401)
+            return abort(403, description="Account not activated")
 
         request_data = request.get_json()
 
@@ -144,7 +148,7 @@ class Tokens(MethodView):
 
         if not refresh_exits or cached_access_token != request_data['access']:
 
-            return abort(401)
+            return abort(401, description="Invalid or expired token used")
 
         # generate some new access token and update the cache
 
@@ -195,3 +199,26 @@ class ConfirmAccount(MethodView):
                     }
                 }
             ), 400
+
+
+class NewActivationLink(MethodView):
+
+    @basic_auth.login_required
+    def post(self):
+
+        request_data = request.get_json()
+
+        current_user = basic_auth.current_user()
+
+        send_email(
+                current_user.email,
+                "Account Confirmation",
+                "email",
+                username=current_user.username,
+                token=current_user.generate_activation_token(),
+                host_name=request_data['remote_url']
+            )
+
+        return jsonify({
+            "message":"Success"
+        }), 200

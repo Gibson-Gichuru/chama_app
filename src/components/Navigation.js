@@ -13,7 +13,7 @@ const Nav = ()=> {
 
     return (
 
-        <AppBar component="header">
+        <AppBar position="static" component="header">
             <Container maxWidth="lg">
                 <Toolbar component="nav">
                     <Typography variant="body2" sx={{ letterSpacing:2, fontWeight:700, fontSize:18}}>Chama App</Typography>

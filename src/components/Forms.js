@@ -1,6 +1,6 @@
-import LoginForm from "../components/LoginForm";
-import SignupForm from "../components/SignupForm";
-import Forgot from "../components/Forgot"
+import LoginForm from "./LoginForm";
+import SignupForm from "./SignupForm";
+import Forgot from "./Forgot"
 import {useState, useEffect} from "react";
 import {Box} from "@mui/material";
 
@@ -32,7 +32,6 @@ const Forms = ()=>{
 
     return (
         <Box sx={{
-            height:"100vh",
             display:"flex",
             justifyContent:"center",
             alignItems:"center"

@@ -133,9 +133,11 @@ class User(db.Model, DatabaseActions):
 
         self.email = email
 
+        self.origin_url = ""
+
         if role is not None and not isinstance(role, Role):
 
-            raise(TypeError("role passed is not of Type Role"))
+            raise TypeError("role passed is not of Type Role")
 
         else:
 
@@ -154,7 +156,7 @@ class User(db.Model, DatabaseActions):
             "email",
             username=self.username,
             token=self.generate_activation_token(),
-            host_name=current_app.config['HOST_NAME']
+            host_name=self.origin_url
             )
 
     @property

@@ -41,8 +41,6 @@ class Config:
 
     REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD")
 
-    HOST_NAME = os.environ.get("HOST_NAME") or "http://localhost:3000"
-
     debug = True
 
     @staticmethod

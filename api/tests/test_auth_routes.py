@@ -18,11 +18,10 @@ class TestUserRegisterRoute(BaseTestConfig):
         self.client = self.app.test_client()
 
         self.request_body = {
-
-
             "username": "testuser",
             "email": "testuser@test.com",
-            "password": "testuserpassword"
+            "password": "testuserpassword",
+            "remote_url": "http://testing.com"
         }
     
     def make_request(self, method, url, headers, data=None):
@@ -228,7 +227,25 @@ class TestUserAccountConfirmation(BaseTestConfig):
             email="testuser@test.com"
         )
 
+        self.user.password = "somerandompassword"
+
         self.user.add(self.user)
+
+        self.headers = {
+
+            "Content-type": "application/json",
+            "Authorization": "Basic " + base64.b64encode(
+                f"{self.user.email}:somerandompassword".encode('utf-8')
+            ).decode('utf-8')}
+
+    def make_request(self, payload, headers=None):
+
+        url = "/api/auth/activation_link"
+
+        return self.client.post(
+            url,
+            headers=self.headers,
+            data=json.dumps(payload))
 
     def tearDown(self):
 
@@ -248,3 +265,11 @@ class TestUserAccountConfirmation(BaseTestConfig):
         self.assertEqual(response.status_code, 200)
 
         self.assertTrue(user.active)
+
+    def test_new_activation_link_request(self):
+
+        """A user can request for a new activation link"""
+
+        response = self.make_request(payload={"remote_url":"/some/url"})
+
+        self.assertEqual(response.status_code, 200)

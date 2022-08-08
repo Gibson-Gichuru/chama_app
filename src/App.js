@@ -1,15 +1,24 @@
 import Nav from "./components/Navigation";
-import Main from "./components/MainContent";
-import Notifications from "./components/Notify";
+import Protected from "./components/Protected";
+import Home from "./pages/Home";
+import ResetPassword from "./pages/ResetPassword";
 import {Box} from "@mui/material";
+import {
+  Route,
+  Routes,
+  Navigate
+} from "react-router-dom";
 function App() {
 
   return (
   
       <Box>
         <Nav/>
-        <Main></Main>
-        <Notifications/>
+        <Routes>
+          <Route path="/" element={<Protected><Home/></Protected>}/>
+          <Route path="/reset/password" element={<ResetPassword/>}/>
+          <Route path="*" element={<Navigate to="/" replace/>}/>
+        </Routes>
       </Box>
   );
 }
