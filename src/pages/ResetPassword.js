@@ -1,11 +1,11 @@
-import { Typography } from "@mui/material"
-
+import ResetPasswordForm from "../components/ResetPasswordForm";
+import MainContainer from "../components/MainContainer";
 const ResetPassword = ()=>{
 
     return (
-        <>
-            <Typography variant="h1">Welcome ResetPassword</Typography>
-        </>
+        <MainContainer>
+            <ResetPasswordForm/>
+        </MainContainer> 
     )
 }
 

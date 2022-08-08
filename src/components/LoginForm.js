@@ -78,7 +78,6 @@ const LoginForm = ({changeIndex}) =>{
             {
                 email : Yup.string().email("Invalid Email").required("required"),
                 password: Yup.string().required("required!")
-                            .min(8, "Password is too short - should be 8 chars minimum.")
                             .matches(/^[a-zA-Z0-9!@#$%^&*]{6,16}$/, 
                             "password should contain atleast one number and one special character")
             }
