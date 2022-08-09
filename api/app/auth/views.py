@@ -222,3 +222,56 @@ class NewActivationLink(MethodView):
         return jsonify({
             "message":"Success"
         }), 200
+
+
+class ResetPassword(MethodView):
+
+    def get(self):
+
+        user_email = request.args.get('email')
+
+        user = User.query.filter_by(email=user_email).first()
+
+        if user is None:
+
+            abort(404, description=f"No account regesterd with {user_email}")
+
+        send_email(
+            user.email,
+            "Password reset",
+            "email",
+            username=user.username,
+            token=user.generate_password_reset_token(),
+            host_name=request.args.get('remote_url')
+        )
+
+        return jsonify({
+            "message":f"Password reset link sent to {user_email}"
+        })
+
+    def post(self):
+
+        request_data = request.get_json()
+
+        if request_data is None:
+
+            abort(400)
+            
+        jwt = User.validate_token(
+            request_data['token'],
+            current_app.config.get("SECRET_KEY")
+        )
+
+        if jwt is None:
+
+            abort(401)
+
+        user = User.query.get(jwt['sub'])
+
+        user.password = request_data['password']
+
+        user.update()
+
+        return jsonify({
+            "Message":"Password reset successful"
+        }),200

@@ -204,6 +204,19 @@ class User(db.Model, DatabaseActions):
 
         return None
 
+    def generate_password_reset_token(self, timestamp=3600):
+
+        payload = dict(
+            exp=datetime.utcnow() + DT.timedelta(seconds=timestamp),
+            iat=datetime.utcnow(),
+            sub=self.user_id
+        )
+
+        return User.generate_token(
+            payload=payload,
+            key=current_app.config.get("SECRET_KEY")
+        )
+
     @staticmethod
     def generate_token(payload, key):
 
@@ -232,11 +245,11 @@ class User(db.Model, DatabaseActions):
 
         except jwt.ExpiredSignatureError:
 
-            return False
+            return None
 
         except jwt.InvalidTokenError:
 
-            return False
+            return None
 
     @staticmethod
     def activate(token):
