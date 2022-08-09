@@ -1,66 +1,30 @@
-import { NavLinksData } from "./NavbarData";
-import {IoGrid} from "react-icons/io5";
-import { NavLink } from "react-router-dom";
 
-import { useState, useContext} from "react";
+import { 
+    AppBar,
+    Toolbar,
+    Container,
+    Typography,
+    IconButton,
 
-import { ShadowContext } from "../context/ShadowContext";
-
-import {Shadow} from "./Utils";
+} from "@mui/material";
+import MenuIcon from '@mui/icons-material/Menu';
 
 const Nav = ()=> {
 
-    const [toggle, setToggle] = useState(false)
-
-    const {visibilityOn} = useContext(ShadowContext);
-
-    const showNavBar = () =>{
-
-        setToggle(!toggle)
-        visibilityOn()
-    }
-
     return (
+
+        <AppBar position="static" component="header">
+            <Container maxWidth="lg">
+                <Toolbar component="nav">
+                    <Typography variant="body2" sx={{ letterSpacing:2, fontWeight:700, fontSize:18}}>Chama App</Typography>
+                    <IconButton size="large" sx={{display:{xs:"flex", sm:"none"}, ml:"auto"}}>
+                        <MenuIcon/>
+                    </IconButton>
+                </Toolbar>
+            </Container>
+        </AppBar>
         
-        <div className="container">
-            <nav className="nav flex">
-                <img src="brand.svg" alt="chama app Logo" className="brand-logo" />
-
-                {/* 
-                    Have the notificaions and user profile icons.
-                    icons should be displayed ony if we have a user logged in
-                */}
-                {/* <div className="cta-group ">
-                    <NavLink to = "login" className="cta-btn primary btn">Sign In</NavLink>
-                    <NavLink to = "signup"className="cta-btn secondary btn">Sign Up</NavLink>
-                </div> */}
-
-                <button className="btn nav--toggle" onClick={showNavBar}>
-                    <IoGrid/>
-                </button>
-                <Shadow styleClass="nav-barshadow" onClassName= "nav-barshadow_on" offClassName="nav--barshadow_off">
-                    <div className={ toggle ? "nav-content flex toggle--on" : "nav-content flex"}>
-                    
-                        <ul className="nav-links flex">
-                            {NavLinksData.map((item, index)=>{
-
-                                return(
-                                <li className="nav-link" key = {index}>
-                                    <NavLink to = {item.path} className = {`${item.cName} flex--inline`} onClick ={showNavBar}>
-                                            {item.icon}
-                                            {item.title}
-                                    </NavLink>
-                                </li>
-                                )
-                            })}
-                        </ul>
-                    </div>
-                </Shadow>
-            </nav>
-        </div>
-       
     )
 }
-
 
 export default Nav;

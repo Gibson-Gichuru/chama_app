@@ -1,47 +1,27 @@
-import "./styles/App.css";
-
-import {Routes, Route} from "react-router-dom"
 import Nav from "./components/Navigation";
-import Login from "./pages/Login";
-import SignUp from "./pages/Signup";
-import ForgotPassword from "./pages/ForgotPassword";
-import AccountConfirmed from "./pages/AccountConfirmed";
-import {Header} from "./components/Utils";
+import Protected from "./components/Protected";
 import Home from "./pages/Home";
-import About from "./pages/About";
-import Contacts from "./pages/Contacts";
-import Faqs from "./pages/Faqs";
-import { ProtectedComponent } from "./components/Utils";
-import { ReactNotifications } from 'react-notifications-component'
-import Confirm from "./pages/Confirm";
-import 'react-notifications-component/dist/theme.css'
-
+import ResetPassword from "./pages/ResetPassword";
+import ConfirmAccount from "./pages/ConfirmAccount";
+import {Box} from "@mui/material";
+import {
+  Route,
+  Routes,
+  Navigate
+} from "react-router-dom";
 function App() {
 
   return (
   
-      <>
-      <Header>
+      <Box>
         <Nav/>
-      </Header>
-      <ReactNotifications />
-      <Routes>
-        <Route path = "/" element = {
-          <ProtectedComponent>
-              <Home/>
-          </ProtectedComponent>
-        }/>
-      
-        <Route path="login" element = {<Login/>}/>
-        <Route path="signup" element = {<SignUp/>}/>
-        <Route path="about" element = {<About/>}/>
-        <Route path="contacts" element = {<Contacts/>}/>
-        <Route path="faqs" element = {<Faqs/>}/>
-        <Route path ="forgot_password" element = {<ForgotPassword/>}/>
-        <Route path ="confirm" element = {<Confirm/>}/>
-        <Route path ="account/confirm/:userToken" element = {<AccountConfirmed/>}/>
-      </Routes>
-      </>
+        <Routes>
+          <Route path="/" element={<Protected><Home/></Protected>}/>
+          <Route path="/reset/password/:userToken" element={<ResetPassword/>}/>
+          <Route path="/account/confirm/:userToken" element={<ConfirmAccount/>}/>
+          <Route path="*" element={<Navigate to="/" replace/>}/>
+        </Routes>
+      </Box>
   );
 }
 

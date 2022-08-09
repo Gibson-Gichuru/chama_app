@@ -133,9 +133,11 @@ class User(db.Model, DatabaseActions):
 
         self.email = email
 
+        self.origin_url = ""
+
         if role is not None and not isinstance(role, Role):
 
-            raise(TypeError("role passed is not of Type Role"))
+            raise TypeError("role passed is not of Type Role")
 
         else:
 
@@ -154,7 +156,7 @@ class User(db.Model, DatabaseActions):
             "email",
             username=self.username,
             token=self.generate_activation_token(),
-            host_name=current_app.config['HOST_NAME']
+            host_name=self.origin_url
             )
 
     @property
@@ -202,6 +204,19 @@ class User(db.Model, DatabaseActions):
 
         return None
 
+    def generate_password_reset_token(self, timestamp=3600):
+
+        payload = dict(
+            exp=datetime.utcnow() + DT.timedelta(seconds=timestamp),
+            iat=datetime.utcnow(),
+            sub=self.user_id
+        )
+
+        return User.generate_token(
+            payload=payload,
+            key=current_app.config.get("SECRET_KEY")
+        )
+
     @staticmethod
     def generate_token(payload, key):
 
@@ -230,11 +245,11 @@ class User(db.Model, DatabaseActions):
 
         except jwt.ExpiredSignatureError:
 
-            return False
+            return None
 
         except jwt.InvalidTokenError:
 
-            return False
+            return None
 
     @staticmethod
     def activate(token):

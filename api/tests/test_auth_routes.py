@@ -6,6 +6,10 @@ from app import db
 
 from app.models import User
 
+from unittest.mock import patch
+
+from flask import current_app
+
 import base64
 
 
@@ -18,11 +22,10 @@ class TestUserRegisterRoute(BaseTestConfig):
         self.client = self.app.test_client()
 
         self.request_body = {
-
-
             "username": "testuser",
             "email": "testuser@test.com",
-            "password": "testuserpassword"
+            "password": "testuserpassword",
+            "remote_url": "http://testing.com"
         }
     
     def make_request(self, method, url, headers, data=None):
@@ -228,7 +231,25 @@ class TestUserAccountConfirmation(BaseTestConfig):
             email="testuser@test.com"
         )
 
+        self.user.password = "somerandompassword"
+
         self.user.add(self.user)
+
+        self.headers = {
+
+            "Content-type": "application/json",
+            "Authorization": "Basic " + base64.b64encode(
+                f"{self.user.email}:somerandompassword".encode('utf-8')
+            ).decode('utf-8')}
+
+    def make_request(self, payload, headers=None):
+
+        url = "/api/auth/activation_link"
+
+        return self.client.post(
+            url,
+            headers=self.headers,
+            data=json.dumps(payload))
 
     def tearDown(self):
 
@@ -248,3 +269,79 @@ class TestUserAccountConfirmation(BaseTestConfig):
         self.assertEqual(response.status_code, 200)
 
         self.assertTrue(user.active)
+
+    def test_new_activation_link_request(self):
+
+        """A user can request for a new activation link"""
+
+        response = self.make_request(payload={"remote_url":"/some/url"})
+
+        self.assertEqual(response.status_code, 200)
+
+
+class TestPasswordReset(BaseTestConfig):
+
+    def setUp(self):
+
+        super().setUp()
+
+        self.client = self.app.test_client()
+
+        self.user = User(
+            username="testuser",
+            email="testuser@test.com"
+        )
+
+        self.user.password = "testing"
+
+        self.user.add(self.user)
+
+    @patch("app.email.Message")
+    def test_request_password_reset_link(self, message_mock):
+
+        params = {"email":"testuser@test.com", "remote_url":""}
+
+        request = self.client.get(
+            "api/auth/reset_password",
+            query_string=params
+        )
+
+        # assert that the request was a success
+
+        self.assertEqual(request.status_code, 200)
+
+        #  assert that an email was sent to the  user
+
+        message_mock.assert_called()
+
+        # assert that the msessage obkect was called with our users email address
+        message_mock.assert_called_with(
+            subject=current_app.config['MAIL_SUBJECT_PREFIX'] +
+            " " + "Password reset",
+            sender=current_app.config['MAIL_SENDER'],
+            recipients=[self.user.email]
+        )
+
+    def test_user_password_reset(self):
+
+        headers = {"Content-type": "application/json"}
+
+        payload = {
+            "token":self.user.generate_password_reset_token(),
+            "password":"passwordChanged"
+            }
+
+        request = self.client.post(
+            "api/auth/reset_password",
+            headers=headers,
+            data=json.dumps(payload))
+
+        updated_user = User.query.filter_by(email=self.user.email).first()
+
+        # assert that  the request was a success
+
+        self.assertEqual(request.status_code, 200)
+
+        # assert that the user password was changed
+
+        self.assertTrue(updated_user.check_password("passwordChanged"))

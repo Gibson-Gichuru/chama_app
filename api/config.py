@@ -35,15 +35,11 @@ class Config:
 
     MAIL_USE_TLS = True
 
-    MAIL_USE_SSL = False
-
     REDIS_HOST = os.environ.get("REDIS_HOST") or "redis"
 
     REDIS_PORT = 6379
 
     REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD")
-
-    HOST_NAME = os.environ.get("HOST_NAME") or "http://localhost:3000"
 
     debug = True
 
@@ -79,8 +75,6 @@ class Testing(Config):
     REDIS_PORT = 6379
 
     REDIS_PASSWORD = os.environ.get("DEV_REDIS_PASSWORD")
-
-    MAIL_SUPPRESS_SEND = True
 
     SQLALCHEMY_DATABASE_URI = (
         "sqlite:///" + os.path.join(basedir, "test-data.sqlite"))

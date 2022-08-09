@@ -1,17 +1,38 @@
 import { useFormik } from "formik";
 import * as Yup from 'yup';
 import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
-import { Store } from "react-notifications-component";
-import { NotificationSettings } from "./Utils";
-import { Notify } from "./Utils";
+import {useState} from "react";
+import { useAlert } from "../context/AlertProvider";
+import {
+    Typography,
+    TextField,
+    Button,
+    Box,
+    Card,
+    CardContent,
+    CardHeader,
+    CircularProgress,
+    InputAdornment,
+    IconButton
+
+} from "@mui/material";
+import { green } from '@mui/material/colors';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { v4 as uuid} from "uuid";
 
 
-const Signup = ()=>{
+const Signup = ({changeIndex})=>{
 
-    const navigate = useNavigate();
+    const {handlePushAlert} = useAlert()
 
-    const form = useFormik({
+    const [loading, setLoading] = useState(false)
+    const handleLoading = (state)=> setLoading(loading => loading = state)
+
+    const [showPassword, setShowPassword] = useState(false)
+    const handleShowPassword = ()=> setShowPassword(!showPassword)
+
+    const formik = useFormik({
     
         initialValues:{
             username:"",
@@ -35,33 +56,33 @@ const Signup = ()=>{
             }
         ),
 
-        onSubmit : async values =>{
+        onSubmit : async (values, {setErrors}) =>{
 
+            handleLoading(true)
             await axios.post(
                 "api/auth/register",
                 {
                     email:values.email,
                     password:values.password,
-                    username:values.username
+                    username:values.username,
+                    remote_url:document.baseURI,
                 }
             ).then(
                 response=>{
-                    // Show the success message 
-                    // navigate to the login page
-                    Store.addNotification(
-                        NotificationSettings(
-                            Notify(
-                                "Account Created",
-                                "success"
-                            )
-                        )
-                    )
-                    navigate("/login")
+                    handlePushAlert({
+                        id:uuid(),
+                        message:`Account created! Account activation link sent to ${formik.values.email}`,
+                        severity:"success"
+                    })
+                    handleLoading(false)
+                    changeIndex(0)
                 }
-            ).catch(
-                error=>{
-                    console.log(error)
+            ).catch(({ response })=>{
+                    const errors = {...response.data.errors}
+                    setErrors(errors)
+                    handleLoading(false)
                 }
+
             )
         }
     
@@ -70,77 +91,71 @@ const Signup = ()=>{
     return (
     <>
 
-        <div className="card form--card">
-            <h2 className="card--title">Sign Up</h2>
-            <form onSubmit={form.handleSubmit} className = "form flex">
+        <Card variant="outlined" sx={{maxWidth:375, width:"90%", mx:"auto"}}>
 
-                <div className="form--element flex">
-                    <label htmlFor="username">Username</label>
-                    <input 
-                    id="username"
-                    type="text"
-                    placeholder="your prefered profile username"
-                    {...form.getFieldProps('username')}
+            <CardHeader title="Join us"/>
+            <CardContent>
+                <form onSubmit={formik.handleSubmit}>
+                    <Box sx={{ display:"flex", flexDirection:"column", gap:2}}>
+                        <TextField autoComplete="off" id="username" type="text" placeholder="johnDoe" label="Username"
+                        value={formik.values.username}
+                        onChange={formik.handleChange}
+                        error={formik.touched.username && Boolean(formik.errors.username)}
+                        helperText={formik.touched.username && formik.errors.username}
+                        {...formik.getFieldProps('username')}/>
+                        
+                        <TextField autoComplete="off" id="email" placeholder="johnDoe@example.com" label="Email Address"
+                        value={formik.values.email}
+                        onChange={formik.handleChange}
+                        error={formik.touched.email && Boolean(formik.errors.email)}
+                        helperText={formik.touched.email && formik.errors.email}
+                        {...formik.getFieldProps('email')}/>
 
-                    />
+                        <TextField autoComplete="off" id="password" type={showPassword?"text":"password"} placeholder="Enter Your Password" label="Password"
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
+                        error={formik.touched.password && Boolean(formik.errors.password)}
+                        helperText={formik.touched.password && formik.errors.password}
+                        InputProps = {{
+                            endAdornment:<InputAdornment position="end">
+                                <IconButton arial-label="togge password visibility" onClick={handleShowPassword} edge="end">
+                                    {showPassword ? <VisibilityOff/>:<Visibility/>}
+                                </IconButton>
+                            </InputAdornment>
+                        }}/>
 
-                    {form.touched.username && form.errors.username? (
-                        <span className="error">{form.errors.username}</span>
-                    ) :null}
-                </div>  
-
-                <div className="form--element flex">
-                    <label htmlFor="email">Email</label>
-                    <input 
-                    id="email"
-                    type="text"
-                    placeholder="name@example.com"
-                    {...form.getFieldProps('email')}
-
-                    />
-
-                    {form.touched.email && form.errors.email? (
-                        <span className="error">{form.errors.email}</span>
-                    ) :null}
-                </div>  
-
-                <div className="form--element flex">
-                    <label htmlFor="password">Password</label>
-                    <input type="password" 
-                        id="password"
-                        placeholder="enter your password"
-                        {...form.getFieldProps('password')}
-                    />
-                    {form.touched.password && form.errors.password?(
-                        <span className="error">{form.errors.password}</span>
-                    ):null}
-                </div>
-
-
-                <div className="form--element flex">
-                    <label htmlFor="confirmPassword">Confirm Password</label>
-                    <input type="password" 
-                        id="confirmPassword"
-                        placeholder="confirm your password"
-                        {...form.getFieldProps('confirmPassword')}
-                    />
-                    {form.touched.password && form.errors.confirmPassword?(
-                        <span className="error">{form.errors.confirmPassword}</span>
-                    ):null}
-                </div>
-
-                <div className="form--element flex">
-                    <button className="btn btn--submit" type="submit">Sign up</button>
-                </div>
-
-                <div className="form--texts flex">
-                    <p className="text">
-                        Aready have an account?
-                        <Link to="/login" className="accent--text">Login</Link>
-                    </p>
-                </div>
-            </form>
-        </div>
+                        <TextField autoComplete="off" id="confirmPassword" type={showPassword?"text":"password"} placeholder="confirm your password" label="Confirm Password"
+                        value={formik.values.confirmPassword}
+                        onChange={formik.handleChange}
+                        error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
+                        helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}/>
+                        <Box sx = {{ position:"relative"}}>
+                            <Button variant="contained" disabled= {loading} type="submit" sx={{width:"100%"}}>Sign Up</Button>
+                            {
+                                 loading && (
+                                    <CircularProgress size={24} sx = {{
+                                        color:green[500],
+                                        position: 'absolute',
+                                        top: '50%',
+                                        left: '50%',
+                                        marginTop: '-12px',
+                                        marginLeft: '-12px',
+                                    }}/>
+                                )
+                            }
+                        </Box>
+                        <Box 
+                        component="div" 
+                        sx={{display:"flex", flexDirection:"column", justifyContent:"space-around", alignItems:"center"}}>
+                            <Typography variant="body2" component="div">
+                                Have an Account?
+                                <Button variant="text" size="small"onClick={()=>changeIndex(0)}>Log in</Button>
+                            </Typography>
+                        </Box>
+                    </Box>
+                </form>
+            </CardContent>
+        </Card>
     </>
     
     )
