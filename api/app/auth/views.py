@@ -131,7 +131,7 @@ class Tokens(MethodView):
 
         if not current_user.active:
 
-            return abort(403, description="Account not activated")
+            abort(403, description="Account not activated")
 
         request_data = request.get_json()
 
@@ -148,7 +148,7 @@ class Tokens(MethodView):
 
         if not refresh_exits or cached_access_token != request_data['access']:
 
-            return abort(401, description="Invalid or expired token used")
+            abort(401, description="Invalid or expired token used")
 
         # generate some new access token and update the cache
 
@@ -180,25 +180,9 @@ class ConfirmAccount(MethodView):
 
         if User.activate(token=token):
 
-            return jsonify(
+            return jsonify({'message': "account now confirmed"})
 
-                {
-                    'message': {
-                        "status": "success",
-                        "text": "account now confirmed"
-                    }
-                }
-            )
-
-        return jsonify(
-
-                {
-                    'message': {
-                        "status": "fail",
-                        "text": "account not confirmedd"
-                    }
-                }
-            ), 400
+        abort(400, description="invalid or expired activation token")
 
 
 class NewActivationLink(MethodView):

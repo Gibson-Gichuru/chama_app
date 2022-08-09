@@ -36,8 +36,9 @@ const LoginForm = ({changeIndex}) =>{
     async function handleRequestActivationLink (){
         // make request to the api
         
-        await axios.get(
+        await axios.post(
             "api/auth/activation_link",
+            {remote_url:document.baseURI},
             {
                 auth:{
                     username:formik.values.email,
@@ -77,7 +78,6 @@ const LoginForm = ({changeIndex}) =>{
             {
                 email : Yup.string().email("Invalid Email").required("required"),
                 password: Yup.string().required("required!")
-                            .min(8, "Password is too short - should be 8 chars minimum.")
                             .matches(/^[a-zA-Z0-9!@#$%^&*]{6,16}$/, 
                             "password should contain atleast one number and one special character")
             }

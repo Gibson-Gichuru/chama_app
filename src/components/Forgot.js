@@ -38,10 +38,13 @@ const Forgot = ({changeIndex})=>{
 
             onSubmit:  async (values, {setErrors})=>{
                 handleLoading(true)
-                await axios.post(
-                    "api/auth/request/password_reset",
+                await axios.get(
+                    "api/auth/password_reset",
                     {
-                        email:values.email
+                        params:{
+                            email:values.email,
+                            remote_url:document.baseURI
+                        }
                     }
                 ).then(({response})=>{
                     
