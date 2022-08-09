@@ -39,19 +39,18 @@ const Forgot = ({changeIndex})=>{
             onSubmit:  async (values, {setErrors})=>{
                 handleLoading(true)
                 await axios.get(
-                    "api/auth/password_reset",
+                    "api/auth/reset_password",
                     {
                         params:{
                             email:values.email,
                             remote_url:document.baseURI
                         }
                     }
-                ).then(({response})=>{
-                    
-                    const message = {...response.data}
+                ).then(({data})=>{
+    
                     handlePushAlert({
                         id:uuid(),
-                        message:message.message,
+                        message:data.message,
                         severity:"success"
                     })
 

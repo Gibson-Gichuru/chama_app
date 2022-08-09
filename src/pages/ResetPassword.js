@@ -32,7 +32,7 @@ const ResetPassword = ()=>{
 
     return (
         <MainContainer>
-            {valid?(<ResetPasswordForm/>):(
+            {valid?(<ResetPasswordForm token={userToken}/>):(
                 <Box>
                     <Typography>Token Expired</Typography>
                 </Box>

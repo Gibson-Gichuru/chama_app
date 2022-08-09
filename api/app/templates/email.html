@@ -100,7 +100,7 @@
                                 <td>
                                   <table role="presentation" width="auto" align="center" border="0" cellspacing="0" cellpadding="0" class="button__table" style="margin: 0 auto;">
                                     <tr>
-                                      <td align="center" class="button__cell" style="background-color: #2097E4; border-radius: 3px; padding: 6px 12px;" bgcolor="#2097E4"><a href="{{'{0}account/confirm/{1}'.format(host_name, token)}}" class="button__link" style="background-color: #2097E4; color: #FFFFFF; text-decoration: none; display: inline-block;"><span class="button__text" style="color: #FFFFFF; text-decoration: none;">Activate Account</span></a></td>
+                                      <td align="center" class="button__cell" style="background-color: #2097E4; border-radius: 3px; padding: 6px 12px;" bgcolor="#2097E4"><a href="{{'{0}/{1}'.format(host_name, token)}}" class="button__link" style="background-color: #2097E4; color: #FFFFFF; text-decoration: none; display: inline-block;"><span class="button__text" style="color: #FFFFFF; text-decoration: none;">Activate Account</span></a></td>
                                     </tr>
                                   </table>
                                 </td>
@@ -108,7 +108,7 @@
                             </table>
                           </div>
                           <p class="card--text text p" style="display: block; margin: 14px 0; font-size: 16px; color: #212120; font-family: 'Poppins'; line-height: 2;">Alternatively you could copy the link below to your browser</p>
-                          <p class="a">{{'{0}account/confirm/{1}'.format(host_name, token)}}</p>
+                          <p class="a">{{'{0}/{1}'.format(host_name, token)}}</p>
                         </div>
                         <div class="card--footer" style="margin-top: 1rem;">
                           <p class="card--small text p" style="display: block; margin: 14px 0; font-family: 'Poppins'; line-height: 2; color: #E33232; font-size: .75rem;">replies to this email are not monitored.</p>

@@ -19,8 +19,9 @@ import {green} from "@mui/material/colors";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 
-const ResetPasswordForm = ()=>{
+const ResetPasswordForm = ({token})=>{
 
     // states
 
@@ -32,6 +33,10 @@ const ResetPasswordForm = ()=>{
     const [loading, setLoading] = useState(false)
 
     const handleLoading = (state)=> setLoading(loading=> loading=state)
+
+    const {handlePushAlert} = useAlert()
+
+    const navigate = useNavigate()
     // formik 
 
     const formik = useFormik({
@@ -60,6 +65,33 @@ const ResetPasswordForm = ()=>{
 
         onSubmit: async (values)=>{
             // handle logic
+            handleLoading(true)
+            await axios.post(
+                "/api/auth/reset_password",
+                {
+                    token:token,
+                    password:values.confirmPassword
+                }
+            ).then(
+                ({data})=>{
+                    handlePushAlert({
+                        id:uuid(),
+                        message:data.message,
+                        severity:"success"
+                    })
+                    handleLoading(false)
+                    navigate("/", {replace:true})
+                }
+            ).catch(
+                ()=>{
+                    handlePushAlert({
+                        id:uuid(),
+                        message:"Unable to make request, try again later",
+                        severity:"error"
+                    })
+                    handleLoading(false)
+                }
+            )
         }
     })
 
