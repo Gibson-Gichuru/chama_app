@@ -1,17 +1,17 @@
 import { useAuth } from "../context/AuthContext";
 import Main from "../components/MainContainer";
 import Forms from "../components/Forms";
+import {checkIsExpired} from "../utilities/AppUtils";
 const Protected = ({children})=>{
 
-    const {access , isExpired} = useAuth()
+    const {access} = useAuth()
 
 
-    if( access && !isExpired){
+    if( access && !checkIsExpired(access)){
 
         return <>{children}</>
     }
-    
     return <Main><Forms/></Main>
 }
 
-export default Protected
+export default Protected 

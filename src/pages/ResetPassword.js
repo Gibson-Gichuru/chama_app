@@ -1,8 +1,7 @@
 import MainContainer from "../components/MainContainer";
 import {useState, useEffect} from "react";
 import {useParams} from "react-router-dom";
-import dayjs from "dayjs";
-import jwtDecode from "jwt-decode";
+import {checkIsExpired} from "../utilities/AppUtils";
 import {
     LinearProgress,
 } from "@mui/material";
@@ -18,18 +17,10 @@ const ResetPassword = ()=>{
     const CustomError = lazy(()=>import("../components/CustomErrors"))
     useEffect(()=>{
 
-        try{
-            const token_info = jwtDecode(userToken)
-            if(dayjs.unix(token_info.exp).diff(dayjs()) < 1){
-                handleValid(false)
-            }
-            else{
-                handleValid(true)
-            }
-        }catch(error){
+        if(checkIsExpired(userToken)){
             handleValid(false)
-    
         }
+        handleValid(true)
     })
 
     return (
