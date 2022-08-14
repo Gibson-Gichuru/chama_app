@@ -49,10 +49,8 @@ const ConfirmAccount= ()=>{
             })
 
             navigate("/", {replace:true})
-        }else{
-            handleConfirmAccount()
         }
-        navigate("/", {replace:true})  
+        handleConfirmAccount()
     })
 
     return (

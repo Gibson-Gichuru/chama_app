@@ -13,5 +13,13 @@ const Protected = ({children})=>{
     }
     return <Main><Forms/></Main>
 }
+export const Hidden = ({children})=>{
+    const {access} =useAuth()
 
+    if (access && !checkIsExpired(access)){
+        return<>{children}</>
+    }
+
+    return null
+}
 export default Protected 
