@@ -10,7 +10,7 @@ const Main = ({children})=>{
 
         <Box>
              <Notifications/> 
-            <Container sx={{py:3}} maxWidth="lg">
+            <Container sx={{py:3,marginTop:7}} maxWidth="lg">
                {children}
             </Container>
         </Box>
