@@ -20,6 +20,7 @@ import { GridContainer, GridItem } from "../components/Containers";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
 import {homeTabItems} from "../data/navdata";
+import { green, red } from '@mui/material/colors'
 
 import {useState} from "react";
 
@@ -83,44 +84,53 @@ const Home = ()=>{
                     </TabList>
                
             </GridItem>
-            <GridItem xs={12} md={5} sx={{display:"flex", flexDirection:"column",width:"90%", justifySelf:"center"}}>
-                <Box sx={{display:"flex"}}>
-                    <Card variant="outlined" sx={{maxWidth:400}}>
+            <GridItem 
+            xs={12} md={5} 
+            sx={{display:"flex", flexDirection:"column",width:"90%",alignItems:"center", justifySelf:"center",px:1}}>
+                <Box sx={{display:"flex", width:"100%"}}>
+                    <Card variant="outlined" sx={{maxWidth:{sm:550}, width:"100%", mx:"auto"}}>
                         <CardHeader 
                         title="Account Info"
-                        subheader="Savings"
+                        subheader={`As at ${new Date().toLocaleTimeString()}`}
                         action={
-                            <Tooltip title="more action">
+                            <Tooltip>
                                 <IconButton>
                                     <MoreVertIcon/>
                                 </IconButton>
                             </Tooltip>
                         }/>
                         <CardContent>
-                            <Typography variant="body1">
-                                2000
-                            </Typography>
+                            <Box sx={{display:"flex", alignItem:"center", justifyContent:"space-between",px:2}}>
+                                <Box sx={{color:green[500]}}>
+                                    <Typography variant="subtitle1">Savings</Typography>
+                                    <Typography variant="h5">ksh 2000</Typography>
+                                </Box>
+                                <Box sx={{color:red[500]}}>
+                                    <Typography variant="subtitle1">Loan</Typography>
+                                    <Typography variant="h5">ksh 200</Typography>
+                                </Box>
+                            </Box>
                         </CardContent>
                     </Card>
                 </Box>
-                <Box>
-                    {homeTabItems.map((item,index)=>(<TabPanel value={index.toString()}>{item.panelUi}</TabPanel>))}
-                </Box>
+                
+                {homeTabItems.map((item,index)=>(<TabPanel sx={{p:0, width:"100%"}} value={index.toString()}>{item.panelUi}</TabPanel>))}
             </GridItem>
             <GridItem md={3} sx={{display:{xs:"none", md:"block"}}}>
-                <Box sx={{height:"100vh"}}>
-                <List sx={{height:"100%"}}>
-                        {sampleMessages.map((item, index)=>(
-                            <ListItem key={index}>
-                                <ListItemAvatar>
-                                    <Avatar>
-                                        <NotificationsRoundedIcon/>
-                                    </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText primary={item.title} secondary={item.date}/>
-                            </ListItem>
-                        ))}
-                </List>
+                <Box sx={{height:"80vh"}}>
+                    <Typography variant="subtitle1">Notifications updates</Typography>
+                    <List sx={{height:"100%",}}>
+                            {sampleMessages.map((item, index)=>(
+                                <ListItem key={index}>
+                                    <ListItemAvatar>
+                                        <Avatar>
+                                            <NotificationsRoundedIcon/>
+                                        </Avatar>
+                                    </ListItemAvatar>
+                                    <ListItemText primary={item.title} secondary={item.date}/>
+                                </ListItem>
+                            ))}
+                    </List>
                 </Box>
             </GridItem>
             </TabContext>
