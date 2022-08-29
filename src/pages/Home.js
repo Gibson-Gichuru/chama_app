@@ -10,8 +10,11 @@ import {
     List,
     ListItem,
     ListItemText,
-    ListItemAvatar
+    ListItemAvatar,
+    Paper
 } from "@mui/material";
+
+
 import Avatar from '@mui/material/Avatar';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
@@ -23,6 +26,8 @@ import {homeTabItems} from "../data/navdata";
 import { green, red } from '@mui/material/colors'
 
 import {useState} from "react";
+import {sampleMessages} from "../utilities/DammyData";
+
 
 const Home = ()=>{
 
@@ -30,43 +35,7 @@ const Home = ()=>{
 
     const handleTabChange = (event, currentTab)=> setTab(currentTab)
 
-    const sampleMessages = [
-        {
-            title:"Deposit",
-            body:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore",
-            date:new Date().toLocaleString()
-        },
-        {
-            title:"Loan",
-            body:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore",
-            date:new Date().toLocaleString()
-        }, 
-        {
-            title:"Deposit",
-            body:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore",
-            date:new Date().toLocaleString()
-        }, 
-        {
-            title:"Loan",
-            body:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore",
-            date:new Date().toLocaleString()
-        }, 
-        {
-            title:"AccountAction",
-            body:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore",
-            date:new Date().toLocaleString()
-        }, 
-        {
-            title:"Notification",
-            body:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore",
-            date:new Date().toLocaleString()
-        }, 
-        {
-            title:"Loan",
-            body:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore",
-            date:new Date().toLocaleString()
-        },      
-    ]
+    
     return (
         <GridContainer sx={{py:3, marginTop:7}} justifyContent="space-around">
             <TabContext value={tab}>
@@ -86,14 +55,14 @@ const Home = ()=>{
             </GridItem>
             <GridItem 
             xs={12} md={5} 
-            sx={{display:"flex", flexDirection:"column",width:"90%",alignItems:"center", justifySelf:"center",px:1}}>
+            sx={{display:"flex", flexDirection:"column",width:"90%",alignItems:"center", justifySelf:"center"}}>
                 <Box sx={{display:"flex", width:"100%"}}>
                     <Card variant="outlined" sx={{maxWidth:{sm:550}, width:"100%", mx:"auto"}}>
                         <CardHeader 
                         title="Account Info"
                         subheader={`As at ${new Date().toLocaleTimeString()}`}
                         action={
-                            <Tooltip>
+                            <Tooltip title="Action">
                                 <IconButton>
                                     <MoreVertIcon/>
                                 </IconButton>
@@ -117,8 +86,17 @@ const Home = ()=>{
                 {homeTabItems.map((item,index)=>(<TabPanel sx={{p:0, width:"100%"}} value={index.toString()}>{item.panelUi}</TabPanel>))}
             </GridItem>
             <GridItem md={3} sx={{display:{xs:"none", md:"block"}}}>
-                <Box sx={{height:"80vh"}}>
-                    <Typography variant="subtitle1">Notifications updates</Typography>
+                <Paper variant="outlined" style={{maxHeight:"80vh", overflow:"auto", position:"relative"}}>
+                    <Paper 
+                    sx={{
+                        display:"flex",
+                        justifyContent:"center",
+                        position:"sticky", 
+                        top:0, zIndex: 10,
+                        background:"#FFF",
+                        p:1, borderRadius:0}}>                         
+                            <Typography>Notifications</Typography>
+                        </Paper>
                     <List sx={{height:"100%",}}>
                             {sampleMessages.map((item, index)=>(
                                 <ListItem key={index}>
@@ -131,7 +109,7 @@ const Home = ()=>{
                                 </ListItem>
                             ))}
                     </List>
-                </Box>
+                </Paper>
             </GridItem>
             </TabContext>
         </GridContainer>
