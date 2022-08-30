@@ -26,7 +26,7 @@ import {homeTabItems} from "../data/navdata";
 import { green, red } from '@mui/material/colors'
 
 import {useState} from "react";
-import {sampleMessages} from "../utilities/DammyData";
+import {sampleMessages} from "../data/DammyData";
 
 
 const Home = ()=>{
@@ -53,11 +53,10 @@ const Home = ()=>{
                     </TabList>
                
             </GridItem>
-            <GridItem 
-            xs={12} md={5} 
+            <GridItem xs={12} sm={7} md={5} 
             sx={{display:"flex", flexDirection:"column",width:"90%",alignItems:"center", justifySelf:"center"}}>
                 <Box sx={{display:"flex", width:"100%"}}>
-                    <Card variant="outlined" sx={{maxWidth:{sm:550}, width:"100%", mx:"auto"}}>
+                    <Card variant="outlined" sx={{maxWidth:{sm:550,}, width:"100%", mx:"auto"}}>
                         <CardHeader 
                         title="Account Info"
                         subheader={`As at ${new Date().toLocaleTimeString()}`}
@@ -85,7 +84,7 @@ const Home = ()=>{
                 
                 {homeTabItems.map((item,index)=>(<TabPanel sx={{p:0, width:"100%"}} value={index.toString()}>{item.panelUi}</TabPanel>))}
             </GridItem>
-            <GridItem md={3} sx={{display:{xs:"none", md:"block"}}}>
+            <GridItem sm={4} md={3}  sx={{display:{xs:"none", sm:"block"}}}>
                 <Paper variant="outlined" style={{maxHeight:"80vh", overflow:"auto", position:"relative"}}>
                     <Paper 
                     sx={{

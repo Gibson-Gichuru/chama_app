@@ -3,18 +3,23 @@ import {
     Typography,
     TextField,
     Button,
-    Paper,
     InputAdornment,
     IconButton,
     CircularProgress,
 } from "@mui/material";
+
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+
+import TabContent from "./TabContent";
+
 import {v4 as uuid} from "uuid";
+
 import {useState} from "react";
 import {green} from "@mui/material/colors";
 import {useAlert} from "../context/AlertProvider";
 import {useFormik} from "formik";
+
 import * as Yup from "yup";
 function Account() {
 
@@ -29,6 +34,7 @@ function Account() {
 
   let formGroup = {display:"flex", gap:1, justifyContent:"space-between"}
 
+  
   const formik = useFormik(
 
     {
@@ -58,10 +64,11 @@ function Account() {
     }
 
   )
+
   return (
-    <Box sx={{my:3,display:"flex", flexDirection:"column",width:"100%"}}> 
-      <Paper variant="outlined" style={{maxHeight: 320, overflow:"auto",maxWidth:550, width:"100%", margin:"auto"}}>
-        <Typography variant ="h5" sx={{p:2, mb:2}}>User Account Details</Typography>
+
+    <TabContent>
+      <Typography variant ="h5" sx={{p:2, mb:2}}>User Account Details</Typography>
         <form onSubmit={formik.handleSubmit}>
 
           <Box sx = {{display:"flex", flexDirection:"column", gap:1, px:1}}>
@@ -124,8 +131,7 @@ function Account() {
           </Box>
 
         </form>
-      </Paper>
-    </Box>
+    </TabContent>
   )
 }
 

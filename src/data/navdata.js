@@ -4,8 +4,9 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import Transactions from "../components/Transactions";
 import Account from "../components/Account";
-import PublicLedger from "../components/PublicLedger";
 import Settings from "../components/Settings";
+
+import {table_data} from "./DammyData";
 export const navigationLinks = [
     {
         title:"Contact",
@@ -32,12 +33,12 @@ export const homeTabItems =[
      {
         title:"transactions",
         avatorIcon:<AccountBalanceWalletIcon/>,
-        panelUi:<Transactions/>
+        panelUi:<Transactions table_data = {table_data}/>
     },
     {
         title:"public legder",
         avatorIcon:<MenuBookIcon/>,
-        panelUi:<PublicLedger/>
+        panelUi:<Transactions table_data = {table_data}/>
     },
     {
         title:"account",

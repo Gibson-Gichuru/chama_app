@@ -4,18 +4,20 @@ import {
     List,
     ListItem,
     ListItemText,
-    Paper
-} from "@mui/material"
+} from "@mui/material";
+
 import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
+
+import TabContent from "./TabContent";
+
 import { green, red } from '@mui/material/colors'
-import {table_data} from "../utilities/DammyData";
 
 
-function Transactions() {
+
+function Transactions({table_data}) {
   return (
-    <Box marginTop={2} sx={{display:"flex", flexDirection:"column",width:"100%"}}> 
-      <Paper variant="outlined" style={{maxHeight: 320, overflow:"auto",maxWidth:550, width:"100%", margin:"auto"}}>
-        <List sx={{height:"100%"}} >
+    <TabContent>
+      <List sx={{height:"100%"}} >
             {table_data.map((item, index)=>(
               <ListItem divider button dense key={index} alignItems="flex-start">
               <ListItemText sx={{color:item.type === "service"? red[500]:green[500]}} 
@@ -37,8 +39,7 @@ function Transactions() {
 
             ))}
         </List>
-      </Paper>
-    </Box>
+    </TabContent>
   )
 }
 

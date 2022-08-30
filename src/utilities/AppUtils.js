@@ -1,5 +1,8 @@
 import dayjs from "dayjs";
 import jwtDecode from "jwt-decode";
+
+import {TextField} from "@mui/material";
+
 export function checkIsExpired(token){
 
     try{
@@ -12,4 +15,18 @@ export function checkIsExpired(token){
     }
 
     return false
+}
+
+export function generateFormFields(fields){
+
+    let formFields = {}
+
+    fields.map((field)=>{
+
+        let formField = <TextField {...field.common}/>
+
+        formFields[field.name]= formField
+    })
+
+    return formFields
 }
