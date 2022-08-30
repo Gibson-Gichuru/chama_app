@@ -60,7 +60,7 @@ const Nav = ()=> {
     return (
         <>
             <CssBaseline />
-            <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+            <AppBar position="fixed" elevation={0}>
                 <Container maxWidth="lg">
                     <Toolbar component="nav">
                         <Typography variant="h5" sx={{ letterSpacing:2, fontWeight:700,}}>Chama App</Typography>

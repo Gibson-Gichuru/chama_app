@@ -11,7 +11,7 @@ import {
     ListItem,
     ListItemText,
     ListItemAvatar,
-    Paper
+    Paper,
 } from "@mui/material";
 
 
@@ -37,7 +37,7 @@ const Home = ()=>{
 
     
     return (
-        <GridContainer sx={{py:3, marginTop:7}} justifyContent="space-around">
+        <GridContainer sx={{py:3, px:1, marginTop:7}} justifyContent="space-around">
             <TabContext value={tab}>
             <GridItem md={3} sx={{display:{xs:"none", md:"block"}}}>
                 
@@ -111,6 +111,25 @@ const Home = ()=>{
                     </List>
                 </Paper>
             </GridItem>
+                            
+                <Box 
+                sx={{ display:{xs:"flex",md:"none"}, 
+                justifyContent:"center",
+                position:"fixed", 
+                width:"100%", 
+                bottom:0, 
+                mt:1,
+                zIndex: (theme)=> theme.zIndex.appBar,
+                background: (theme)=> theme.palette.primary.main}}>
+                    <TabList textColor="secondary" onChange={handleTabChange}>
+                            {homeTabItems.map((item,index)=>(
+                                <Tab value={index.toString()}
+                                icon={item.avatorIcon}
+                                sx={{display:"flex", justifyContent:"center", alignItems:"center"}}
+                                />
+                            ))}
+                        </TabList>
+                </Box>
             </TabContext>
         </GridContainer>
     )

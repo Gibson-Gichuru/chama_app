@@ -5,17 +5,22 @@ import "./app.css"
 import {AuthContextProvider} from "./context/AuthContext";
 import { AlertContextProvider } from "./context/AlertProvider"; 
 import {BrowserRouter as Router} from "react-router-dom";
+import { ThemeProvider } from '@mui/material';
+import {theme} from "./themes/theme";
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 
 root.render(
   <React.StrictMode>
-    <Router>
-      <AuthContextProvider>
-        <AlertContextProvider>
-          <App/>
-        </AlertContextProvider>
-      </AuthContextProvider>
-    </Router>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <AuthContextProvider>
+          <AlertContextProvider>
+            <App/>
+          </AlertContextProvider>
+        </AuthContextProvider>
+      </Router>
+    </ThemeProvider>  
   </React.StrictMode>
 );
 
