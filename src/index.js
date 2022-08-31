@@ -4,6 +4,7 @@ import App from './App';
 import "./app.css"
 import {AuthContextProvider} from "./context/AuthContext";
 import { AlertContextProvider } from "./context/AlertProvider"; 
+import { DialogContextProvider } from './context/DialogProvider';
 import {BrowserRouter as Router} from "react-router-dom";
 import { ThemeProvider } from '@mui/material';
 import {theme} from "./themes/theme";
@@ -16,7 +17,9 @@ root.render(
       <Router>
         <AuthContextProvider>
           <AlertContextProvider>
-            <App/>
+            <DialogContextProvider>
+              <App/>
+            </DialogContextProvider>
           </AlertContextProvider>
         </AuthContextProvider>
       </Router>

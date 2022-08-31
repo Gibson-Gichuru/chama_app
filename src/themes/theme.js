@@ -33,7 +33,7 @@ export const theme = createTheme({
                 })
 
             }
-        }
+        },
 
     },
 

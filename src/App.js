@@ -1,4 +1,5 @@
 import Nav from "./components/Navigation";
+import DialogPop from "./components/DialogPop";
 import Protected from "./components/Protected";
 import Home from "./pages/Home";
 import ResetPassword from "./pages/ResetPassword";
@@ -27,6 +28,7 @@ function App() {
             <Route path={`${item.title.toLowerCase()}`} element={<NavItem item={item}/>}/>
           ))}
         </Routes>
+        <DialogPop/>
       </Box>
   );
 }
