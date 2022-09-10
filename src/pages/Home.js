@@ -24,7 +24,6 @@ import TabPanel from '@mui/lab/TabPanel';
 import { GridContainer, GridItem } from "../components/Containers";
 import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
 import {homeTabItems} from "../data/navdata";
-import { green, red } from '@mui/material/colors'
 import {useState} from "react";
 import {sampleMessages} from "../data/DammyData";
 
@@ -107,17 +106,17 @@ const Home = ()=>{
                         subheader={`As at ${new Date().toLocaleTimeString()}`}/>
                         <CardContent>
                             <Box sx={{display:"flex", alignItem:"center", justifyContent:"space-between",px:2}}>
-                                <Box sx={{color:green[500]}}>
+                                <Box>
                                     <Typography variant="subtitle1">Savings</Typography>
                                     <Typography variant="h5">ksh 2000</Typography>
                                 </Box>
-                                <Box sx={{color:red[500]}}>
+                                <Box>
                                     <Typography variant="subtitle1">Loan</Typography>
                                     <Typography variant="h5">ksh 200</Typography>
                                 </Box>
                             </Box>
                         </CardContent>
-                        <CardActions>
+                        <CardActions sx={{justifyContent:"space-evenly"}}>
                             <Button onClick={handleDepositCash} variant="outlined" size="small">Make A Deposit</Button>
                             <Button onClick={handleRequestLoan} variant="outlined" color="error" size="small">Request Loan</Button>
                         </CardActions>

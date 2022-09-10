@@ -20,7 +20,7 @@ function App() {
       <Box>
         <Nav/>
         <Routes>
-          <Route path="/" element={<Home/>}/>
+          <Route path="/" element={<Protected><Home/></Protected>}/>
           <Route path="/reset/password/:userToken" element={<ResetPassword/>}/>
           <Route path="/account/confirm/:userToken" element={<ConfirmAccount/>}/>
           <Route path="*" element={<Navigate to="/" replace/>}/>
