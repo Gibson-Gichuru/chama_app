@@ -39,7 +39,10 @@ const Home = ()=>{
     // tabs state
     const [tab, setTab] = useState("0")
 
-    const handleTabChange = (currentTab)=> setTab(currentTab);
+    const handleTabChange = (event, currentTab)=>{
+    
+        setTab(currentTab);
+    }
 
 
     function handleDepositCash (){
@@ -81,7 +84,7 @@ const Home = ()=>{
   
     return (
         <GridContainer sx={{py:3, px:1, marginTop:7}} justifyContent="space-around">
-            <TabContext value={tab}>
+            <TabContext value={tab} >
             <GridItem md={3} sx={{display:{xs:"none", md:"block"}}}>
                 
                     <TabList orientation="vertical" onChange={handleTabChange}>
