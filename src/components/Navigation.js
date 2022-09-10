@@ -33,6 +33,8 @@ const Nav = ()=> {
 
     const [anchorElement, setAchorElement] = useState(null);
 
+    const openMenu = Boolean(anchorElement);
+
     const handleOpenMenu = (event)=>setAchorElement(event.currentTarget);
 
     const handleCloseMenu = ()=>setAchorElement(null);
@@ -74,13 +76,28 @@ const Nav = ()=> {
                         <Hidden>
                             <Box sx={{ ml:"auto",display:"flex", justifyContent:"space-around"}}>
                                 <Tooltip title="User Account">
-                                    <IconButton size="large" color="inherit" onClick ={handleOpenMenu}><AccountCircleIcon/></IconButton>
+                                    <IconButton 
+                                    id="menu-popup"
+                                    aria-controls={openMenu ? 'menu' : undefined}
+                                    aria-expanded={openMenu ? 'true' : undefined}
+                                    size="large" 
+                                    color="inherit" 
+                                    aria-haspopup="true"
+                                    onClick ={handleOpenMenu}>
+                                        <AccountCircleIcon/>
+                                    </IconButton>
                                 </Tooltip>
                                 <Tooltip title="notifications">
                                     <IconButton size="large" color="inherit"><NotificationsRoundedIcon/></IconButton> 
                                 </Tooltip>                                      
                             </Box>
-                            <Menu anchorEl={anchorElement} open={Boolean(anchorElement)} onClose={handleCloseMenu}>
+                            <Menu 
+                            id="menu"
+                            anchorEl={anchorElement} 
+                            open={Boolean(anchorElement)} 
+                            onClose={handleCloseMenu} MenuListProps={{
+                                'aria-labelledby': 'menu-popup',
+                            }}>
                                     {profileMenuItems.map((item, index)=>(
                                         <MenuItem key={index} onClick={()=>handleMenuItemClicked(item)}>{item.title}</MenuItem>
                                     ))}
