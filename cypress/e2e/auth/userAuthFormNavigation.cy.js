@@ -4,10 +4,9 @@ describe("Tests user switching available Auth forms", ()=>{
 
     // visit the website
 
-    cy.visit("http://localhost:3000")
-
-    
-
+    it("should test auth form switching flow", ()=>{
+        cy.visit("http://localhost:3000")
+    })
 
 })
 
