@@ -95,7 +95,7 @@ const Signup = ({changeIndex})=>{
 
             <CardHeader title="Join us"/>
             <CardContent>
-                <form onSubmit={formik.handleSubmit}>
+                <form onSubmit={formik.handleSubmit} data-testid="testRegisterForm">
                     <Box sx={{ display:"flex", flexDirection:"column", gap:2}}>
                         <TextField autoComplete="off" id="username" type="text" placeholder="johnDoe" label="Username"
                         value={formik.values.username}
@@ -149,7 +149,8 @@ const Signup = ({changeIndex})=>{
                         sx={{display:"flex", flexDirection:"column", justifyContent:"space-around", alignItems:"center"}}>
                             <Typography variant="body2" component="div">
                                 Have an Account?
-                                <Button variant="text" size="small"onClick={()=>changeIndex(0)}>Log in</Button>
+                                <Button variant="text" size="small"onClick={()=>changeIndex(0)}
+                                data-testid="testBackToLoginForm">Log in</Button>
                             </Typography>
                         </Box>
                     </Box>

@@ -83,7 +83,7 @@ const Forgot = ({changeIndex})=>{
         <Card variant="outlined" sx={{ maxWidth:375, width:"90%", mx:"auto"}}>
             <CardHeader title="Forgot Passswrd"/>
             <CardContent>
-                <form onSubmit={formik.handleSubmit}>
+                <form onSubmit={formik.handleSubmit} data-testid="testForgotPasswordForm">
                     <Box sx={{display:"flex", flexDirection:"column", gap:2}}>
                         <TextField id="email" type="email" value={formik.values.email} label="Email Address"
                         placeholder="Enter your account email address"

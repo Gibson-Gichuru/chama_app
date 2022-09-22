@@ -5,6 +5,8 @@ on:
     branches:
       - development
 
+      - Interface
+
   pull_request:
 
     branches:

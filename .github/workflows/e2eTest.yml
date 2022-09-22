@@ -8,6 +8,8 @@ on:
 
       - deployment
 
+      - Interface
+
   pull_request:
 
     branches:
@@ -39,5 +41,5 @@ jobs:
         with:
 
           browser: ${{matrix.browser_type}}
-          
+
 

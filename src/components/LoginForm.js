@@ -136,7 +136,7 @@ const LoginForm = ({changeIndex}) =>{
            <Card variant="outlined" sx={{maxWidth:375, width:"90%", mx:"auto"}}>
             <CardHeader title="Login"/>
             <CardContent>
-                <form onSubmit={formik.handleSubmit} >
+                <form onSubmit={formik.handleSubmit} data-testid="testLoginForm">
                     <Box sx={{display:"flex",flexDirection:"column", gap:2}}>
                         <TextField autoComplete="off" id="email" type="email" placeholder="example@mail.com" label="Email Address" 
                         value={formik.values.email}
@@ -176,9 +176,9 @@ const LoginForm = ({changeIndex}) =>{
                         <Box component="div" sx={{ display:"flex", flexDirection:"column" ,justifyContent:"space-around", alignItems:"center"}}>
                             <Typography variant="body2" component="div">
                                 Don't have an account?
-                                <Button variant="text" size="small" onClick={()=>changeIndex(1)}>Sign Up</Button>
+                                <Button data-testid="testRegisterButton" variant="text" size="small" onClick={()=>changeIndex(1)}>Sign Up</Button>
                             </Typography>
-                            <Button variant="text"size="small" onClick={()=>changeIndex(2)}>Forgot password</Button>
+                            <Button data-testid="testForgotPassword" variant="text"size="small" onClick={()=>changeIndex(2)}>Forgot password</Button>
                         </Box>
                     </Box>
                 </form>
