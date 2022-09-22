@@ -11,12 +11,10 @@ import * as Yup from "yup";
 
 describe("<FormTextField> component testing",  ()=>{
 
+    let wrapper;
 
-    it("Errors out on invalid user input", async ()=>{
-
-        // render an email form input in a formik component
-
-        render(<Formik
+    beforeEach(()=> wrapper = render(
+        <Formik
                 initialValues={{email:""}}
                 validationSchema={
                     Yup.object({
@@ -32,14 +30,16 @@ describe("<FormTextField> component testing",  ()=>{
                         testid:"emailTestId",
                         value:formik.values.email,
                         onChange:formik.handleChange,
-                        errors: formik.touched.email && Boolean(formik.errors.email),
+                        error: formik.touched.email && Boolean(formik.errors.email),
                         helperText: formik.touched.email && formik.errors.email,
                         extras:{...formik.getFieldProps('email')}
                     }
                     return <FormTextField properties = {properties}/>
                 }}
-            </Formik>)
-        
+            </Formik>))
+
+
+    it("Errors out on invalid user input", async ()=>{
         
         // get the textfield and type in it
 
@@ -55,5 +55,19 @@ describe("<FormTextField> component testing",  ()=>{
             expect(errorContainer.innerHTML).toContain("Invalid")
         })
         
+    })
+
+    it("Errors out when a user blurs on an input that requires input", async ()=>{
+
+        let textField = screen.getByTestId('emailTestId')
+
+        fireEvent.blur(textField)
+
+        const errorContainer = await screen.findByText("Required!")
+
+        await waitFor(()=>{
+
+            expect(errorContainer.innerHTML).toContain("Required!")
+        })
     })
 })

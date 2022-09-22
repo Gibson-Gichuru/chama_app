@@ -12,7 +12,7 @@ export default function FormTextField({properties}){
         inputProps={{"data-testid":properties.testid}}
         value={properties.value}
         onChange={properties.onChange}
-        errors={properties.errors}
+        error={properties.error}
         helperText={properties.helperText}
         {...properties.extras}/>
     )
