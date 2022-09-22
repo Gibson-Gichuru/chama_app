@@ -1,0 +1,43 @@
+name: Application E2E Testing
+
+on:
+
+  push:
+
+    branches:
+
+      - deployment
+
+  pull_request:
+
+    branches:
+
+      - deployment
+
+
+jobs:
+
+  E2E-Testing:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+
+      matrix:
+
+        browser_type: [firefox, chrome, edge]
+
+    steps:
+
+      - name: Checking out the repository
+        uses: actions/checkout@v2
+
+      - name: Running cypress E2E tests
+
+        uses: cypress-io/github-action@v2
+
+        with:
+
+          browser: ${{matrix.browser_type}}
+          
+
