@@ -7,32 +7,23 @@ import {
     Box,
 
 } from "@mui/material";
+
 import CloseIcon from '@mui/icons-material/Close';
 
-import {useAlert} from "../context/AlertProvider";
-import {useState, useEffect} from "react";
+import { connect } from 'react-redux'
 
-const Notifications = ()=>{
+import {deleteAlert} from "../redux/Alert/AlertActions";
 
-    const {alerts,handlePopAlert} = useAlert()
+const Notifications = ({alerts, show,handlePopAlert})=>{
 
-    const [show, setShow] = useState(false)
-
-
-    useEffect(
-        ()=>{
-            if(alerts.length > 0){
-                setShow(true)
-            }
-        },[alerts]
-    )
     
     return (
         <Stack sx={{width:"100%"}} spacing={2}>
-            {alerts.map(alert=>(
+            {alerts.map((alert,index)=>(
                 <Collapse in={show}>
                     <Alert 
-                    key={alert.id} 
+                    data-testid="alertMessageContainer"
+                    key={index} 
                     severity={alert.severity}
                     action ={
                         alert.action?<Box>
@@ -63,4 +54,13 @@ const Notifications = ()=>{
 
 }
 
-export default Notifications
+const mapStateToProp = state=>{
+
+    return {
+
+        alerts: state.alerts.availableAlerts,
+        show: state.alerts.availableAlerts.length > 0 ? true:false,
+    }
+}
+
+export default connect(mapStateToProp)(Notifications)
