@@ -19,25 +19,16 @@ jobs:
 
     runs-on: ubunut-latest
 
-    strategy:
-
-      matrix:
-
-        node_version: [14.X, 15.X]
-
     steps:
 
       - name: Checking out the repository
 
         uses: actions/checkout@v2
 
-      - name: Using node version ${{matrix.node_verison}}
+      - name: Setting up node environment
 
         uses: actions/setup-node@v2
 
-        with:
-
-          node_version: ${{matrix.node_version}}
 
       - name: npm ci, build and test
 
