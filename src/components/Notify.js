@@ -34,6 +34,7 @@ const Notifications = ({alerts, show,handlePopAlert})=>{
                             aria-label="close" 
                             color="inherit" 
                             size="small" 
+                            data-testid="dismissTestButton"
                             onClick={()=>handlePopAlert(alert.id)}>
                                 <CloseIcon fontSize="inherit" />
                             </IconButton>
@@ -42,6 +43,7 @@ const Notifications = ({alerts, show,handlePopAlert})=>{
                         aria-label="close" 
                         color="inherit" 
                         size="small" 
+                        data-testid="dismissTestButton"
                         onClick={()=>handlePopAlert(alert.id)}>
                              <CloseIcon fontSize="inherit" />
                         </IconButton>
@@ -64,4 +66,12 @@ const mapStateToProp = state=>{
     }
 }
 
-export default connect(mapStateToProp)(Notifications)
+const mapDispatchToProp = dispatch=>{
+
+    return {
+
+        handlePopAlert: (alertId)=>dispatch(deleteAlert(alertId)),
+    }
+}
+
+export default connect(mapStateToProp, mapDispatchToProp)(Notifications)

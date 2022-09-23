@@ -59,5 +59,27 @@ describe("<Notification> component Test", ()=>{
         })
     })
 
+    it("Should delete action from store if user dismiss the alert component",  async()=>{
+
+
+        // push an alert
+
+        store.dispatch(addAlert(alert))
+
+        const dismissButton = await screen.findByTestId("dismissTestButton")
+
+        fireEvent.click(dismissButton)
+
+        const state = store.getState()
+
+        const availableAlerts = state.alerts.availableAlerts.filter(alrt=> alrt.id === alert.id)
+
+        await waitFor(()=>{
+
+            expect(availableAlerts.length).toEqual(0)
+        })
+
+    })
+
 
 })
