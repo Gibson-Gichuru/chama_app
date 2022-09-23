@@ -23,12 +23,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    strategy:
-
-      matrix:
-
-        browser_type: [firefox, chrome, edge]
-
     steps:
 
       - name: Checking out the repository
@@ -40,6 +34,8 @@ jobs:
 
         with:
 
-          browser: ${{matrix.browser_type}}
+          start : npm start
+
+
 
 
