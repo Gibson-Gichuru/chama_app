@@ -1,4 +1,4 @@
-import {render, screen, waitFor} from "@testing-library/react"
+import {render, screen, waitFor, fireEvent} from "@testing-library/react"
 import "@testing-library/jest-dom"
 
 import {Provider} from "react-redux";
@@ -20,7 +20,7 @@ describe("<Notification> component Test", ()=>{
         <Notifications/>
     </Provider>))
 
-    const alert = {id: 1, message:alertMessage, action:jest.fn()}
+    const alert = {id: 1, message:alertMessage, action:{callback:jest.fn()}}
 
     afterEach(()=>store.dispatch(deleteAlert(alert.id)))
 
@@ -41,6 +41,22 @@ describe("<Notification> component Test", ()=>{
             expect(alertMessageContainer.innerHTML).toContain(alertMessage);
         })
 
+    })
+
+    it("Should test that the action function passed to an alert is called on button press", async ()=>{
+
+        store.dispatch(addAlert(alert))
+
+        const actionButton = await screen.findByTestId("actionTestButton")
+        
+        fireEvent.click(actionButton)
+
+        // assert that the alert action was called
+
+        await waitFor(()=>{
+
+            expect(alert.action.callback).toBeCalled()
+        })
     })
 
 

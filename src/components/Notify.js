@@ -28,6 +28,7 @@ const Notifications = ({alerts, show,handlePopAlert})=>{
                     action ={
                         alert.action?<Box>
                             <Button variant="text" color="inherit"
+                            data-testid="actionTestButton"
                             onClick={()=> alert.action.callback()}>Send</Button>
                             <IconButton 
                             aria-label="close" 
