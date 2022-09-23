@@ -3,7 +3,7 @@
 import {render, screen, fireEvent, waitFor} from "@testing-library/react";
 import "@testing-library/jest-dom";
 
-import FormTextField from "../components/Inputs/FormTextField";
+import FormTextField from "../../components/Inputs/FormTextField";
 
 import {Formik} from "formik";
 

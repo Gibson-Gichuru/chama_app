@@ -21,7 +21,9 @@ import { green } from '@mui/material/colors';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-import { v4 as uuid} from "uuid"
+import { v4 as uuid} from "uuid";
+
+import FormTextField from "./Inputs/FormTextField";
 
 const LoginForm = ({changeIndex}) =>{
 
@@ -129,6 +131,41 @@ const LoginForm = ({changeIndex}) =>{
         }
     })
 
+    const formElements = {
+
+        email:{
+            id:"email",
+            name:"email",
+            label:"Email Address",
+            placeholder:"example@mail.com",
+            value:formik.values.email,
+            onChange:formik.handleChange,
+            error:formik.touched.email && Boolean(formik.errors.email),
+            helperText: formik.touched.email && formik.errors.email,
+            extras:{...formik.getFieldProps('email')},
+            fieldEndAdornment:{}
+        },
+
+        password:{
+            id:"password",
+            name:"password",
+            label:"Password",
+            placeholder:"Enter Your Password",
+            value:formik.values.password,
+            onChange:formik.handleChange,
+            error:formik.touched.password && Boolean(formik.errors.password),
+            helperText: formik.touched.password && formik.errors.email,
+            extras:{...formik.getFieldProps('password')},
+            fieldEndAdornment:{
+                endAdornment:<InputAdornment position="end">
+                                <IconButton arial-label="toggle password visibility" onClick={handleShowPassword} onMouseDown={handleDownPassword} edge="end">
+                                    { showPassword ?<VisibilityOff/>:<Visibility/>}
+                                </IconButton>
+                            </InputAdornment>,
+            }
+        }
+    }
+
 
     return (
 
@@ -138,6 +175,9 @@ const LoginForm = ({changeIndex}) =>{
             <CardContent>
                 <form onSubmit={formik.handleSubmit} data-testid="testLoginForm">
                     <Box sx={{display:"flex",flexDirection:"column", gap:2}}>
+
+                        {/* <FormTextField properties={formElements["email"]}/>
+                        <FormTextField properties={formElements["password"]}/> */}
                         <TextField autoComplete="off" id="email" type="email" placeholder="example@mail.com" label="Email Address" 
                         value={formik.values.email}
                         onChange={formik.handleChange}
