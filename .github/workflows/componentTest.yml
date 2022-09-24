@@ -29,13 +29,14 @@ jobs:
 
         uses: actions/setup-node@v2
 
+        with:
 
-      - name: npm ci, build and test
+          node_version: 16
 
-        run: |
+      - name: Install all dependencies
 
-            npm ci
+        run: npm install
 
-            npm run build --if-present
+      - name: Run Component Unit Tests
 
-            npm test
+        run: npm run test
