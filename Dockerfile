@@ -11,9 +11,9 @@ COPY ./src ./src
 COPY ./public ./public
 
 
-RUN npm install
+RUN yarn install
 
-RUN npm run build
+RUN yarn run build
 
 
 FROM nginx:stable-alpine
