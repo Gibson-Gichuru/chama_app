@@ -35,7 +35,7 @@ jobs:
 
       - name: Install all dependencies
 
-        run: npm install
+        run: npm install --legacy-peer-deps
 
       - name: Run Component Unit Tests
 
