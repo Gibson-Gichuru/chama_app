@@ -35,8 +35,8 @@ jobs:
 
       - name: Install all dependencies
 
-        run: npm install --legacy-peer-deps
+        run: yarn install
 
       - name: Run Component Unit Tests
 
-        run: npm run test
+        run: yarn test

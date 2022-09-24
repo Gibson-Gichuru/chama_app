@@ -8,6 +8,10 @@ import { DialogContextProvider } from './context/DialogProvider';
 import {BrowserRouter as Router} from "react-router-dom";
 import { ThemeProvider } from '@mui/material';
 import {theme} from "./themes/theme";
+
+import {Provider} from "react-redux";
+
+import store from "./redux/store"
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 
@@ -16,11 +20,13 @@ root.render(
     <ThemeProvider theme={theme}>
       <Router>
         <AuthContextProvider>
+          <Provider store= {store}>
           <AlertContextProvider>
             <DialogContextProvider>
               <App/>
             </DialogContextProvider>
           </AlertContextProvider>
+          </Provider>
         </AuthContextProvider>
       </Router>
     </ThemeProvider>  

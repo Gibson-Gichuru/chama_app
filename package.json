@@ -1,34 +1,30 @@
 {
-  "name": "chama_app",
+  "name": "chama-app",
   "version": "0.1.0",
   "private": true,
+  "proxy":"http://localhost:5000",
   "dependencies": {
-    "@emotion/react": "^11.9.3",
-    "@emotion/styled": "^11.9.3",
-    "@mui/icons-material": "^5.8.4",
-    "@mui/lab": "^5.0.0-alpha.95",
-    "@mui/material": "^5.9.1",
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.2.0",
-    "@testing-library/user-event": "^13.5.0",
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@mui/material": "^5.10.5",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^13.0.0",
+    "@testing-library/user-event": "^13.2.1",
     "axios": "^0.27.2",
-    "cypress": "^10.8.0",
-    "dayjs": "^1.11.3",
+    "dayjs": "^1.11.5",
     "formik": "^2.2.9",
     "jwt-decode": "^3.1.2",
-    "react": "^18.1.0",
+    "react": "^18.2.0",
     "react-dayjs": "^0.3.2",
-    "react-dom": "^18.1.0",
-    "react-notifications-component": "^4.0.1",
+    "react-dom": "^18.2.0",
     "react-query": "^3.39.2",
     "react-redux": "^8.0.4",
-    "react-router-dom": "^6.3.0",
+    "react-router-dom": "^6.4.1",
     "react-scripts": "5.0.1",
-    "react-window": "^1.8.7",
     "redux": "^4.2.0",
-    "socket.io-client": "^4.5.1",
+    "socket.io-client": "^4.5.2",
     "uuidv4": "^6.2.13",
-    "web-vitals": "^2.1.4",
+    "web-vitals": "^2.1.0",
     "yup": "^0.32.11"
   },
   "scripts": {
@@ -56,5 +52,9 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:5000"
+  "devDependencies": {
+    "cypress": "^10.8.0",
+    "msw": "^0.47.3"
+  }
+  
 }
