@@ -1,8 +1,11 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios"
-import { useAuth } from "../context/AuthContext";
-import { useAlert } from "../context/AlertProvider";
+
+import {addAlert} from "../redux/Alert/AlertActions";
+import {loginUser} from "../redux/User/UserActions";
+
+import {connect} from "react-redux";
 import {useState} from "react";
 import {
     Typography,
@@ -25,13 +28,18 @@ import { v4 as uuid} from "uuid";
 
 import FormTextField from "./Inputs/FormTextField";
 
-const LoginForm = ({changeIndex}) =>{
+const LoginForm = ({changeIndex, handlePushAlert, logIn}) =>{
+
+    // TODO USE REACT-QUERY TO HANDLE IS LOANDING FUCTIONALITY
 
     const [isLoading, setIsLoading] = useState(false)
+
     const handleIsLoading = (status)=>setIsLoading(isLoading => isLoading = status)
 
     const [showPassword, setShowPassword] = useState(false)
+
     const handleShowPassword = ()=>setShowPassword(!showPassword)
+
     const handleDownPassword = (e)=>{
         e.preventDefault()
     }
@@ -65,8 +73,6 @@ const LoginForm = ({changeIndex}) =>{
         })
         
     }
-    const {logIn} = useAuth()
-    const {handlePushAlert} = useAlert()
     const formik = useFormik({
 
         initialValues: {
@@ -86,6 +92,9 @@ const LoginForm = ({changeIndex}) =>{
         ),
 
         onSubmit: async (values, {setErrors}) => {
+
+            // TODO CHANGING THE  STATE AT THIS POINT WILL NOT BE NECESSARY AS REACT-QUERY WILL KEEP TRACK OF THE REQUEST STATUS
+
             handleIsLoading(true)
             await axios.get(
                 "api/auth/login",
@@ -98,75 +107,51 @@ const LoginForm = ({changeIndex}) =>{
             ).then(data=>{
                 // setup the logged in user and redirect to the home page
                 let tokens = data.data.tokens
+                
                 logIn(tokens.refresh, tokens.access)
-                handleIsLoading(false)
-            }).catch(({response})=>{
 
-                const errors = {...response.data}
-                switch (errors.code) {
-                    case 403:
-                        handlePushAlert({
-                            id:uuid(),
-                            message:response.data.description,
-                            severity:"warning",
-                            action:{
-                                callback:handleRequestActivationLink
-                            }
-                        })
-                        break;
-                    case 401:
-                        setErrors({email:errors.description, password:errors.description})
-                        break;
-                    default:
-                        handlePushAlert({
-                            id:uuid(),
-                            message:"Unable to Connect,Try again later",
-                            severity:"error"
-                        })
-                        break;
-                }
+                handleIsLoading(false)
+            }).catch((response)=>{
+
+                console.log(response)
+
+                // const errors = {...response.data}
+
+                // // {description:"some error message"}
+
+                // switch (response.status) {
+
+                //     case 403:
+                        
+                //         handlePushAlert({
+                //             id:uuid(),
+                //             message:response.data.description,
+                //             severity:"warning",
+                //             action:{
+                //                 callback:handleRequestActivationLink
+                //             }
+                //         })
+                //         break;
+                //     case 401:
+                //         setErrors({email:errors.description, password:errors.description})
+                //         break;
+                //     default:
+                //         handlePushAlert({
+                //             id:uuid(),
+                //             message:"Unable to Connect,Try again later",
+                //             severity:"error"
+                //         })
+
+                //         console.log(error)
+                //         break;
+                // }
                
                 handleIsLoading(false)
             })
         }
     })
 
-    const formElements = {
-
-        email:{
-            id:"email",
-            name:"email",
-            label:"Email Address",
-            placeholder:"example@mail.com",
-            value:formik.values.email,
-            onChange:formik.handleChange,
-            error:formik.touched.email && Boolean(formik.errors.email),
-            helperText: formik.touched.email && formik.errors.email,
-            extras:{...formik.getFieldProps('email')},
-            fieldEndAdornment:{}
-        },
-
-        password:{
-            id:"password",
-            name:"password",
-            label:"Password",
-            placeholder:"Enter Your Password",
-            value:formik.values.password,
-            onChange:formik.handleChange,
-            error:formik.touched.password && Boolean(formik.errors.password),
-            helperText: formik.touched.password && formik.errors.email,
-            extras:{...formik.getFieldProps('password')},
-            fieldEndAdornment:{
-                endAdornment:<InputAdornment position="end">
-                                <IconButton arial-label="toggle password visibility" onClick={handleShowPassword} onMouseDown={handleDownPassword} edge="end">
-                                    { showPassword ?<VisibilityOff/>:<Visibility/>}
-                                </IconButton>
-                            </InputAdornment>,
-            }
-        }
-    }
-
-
+   
     return (
 
         <>  
@@ -183,6 +168,7 @@ const LoginForm = ({changeIndex}) =>{
                         onChange={formik.handleChange}
                         error={formik.touched.email && Boolean(formik.errors.email)}
                         helperText={formik.touched.email && formik.errors.email}
+                        inputProps={{"data-testid":"emailTestInput"}}
                         {...formik.getFieldProps('email')}/>
 
                         <TextField autoComplete="off" id="password" type= {showPassword? "text": "password"} placeholder="password" label="Password"
@@ -190,6 +176,7 @@ const LoginForm = ({changeIndex}) =>{
                         onChange={formik.handleChange}
                         error={formik.touched.password && Boolean(formik.errors.password)}
                         helperText={formik.touched.password && formik.errors.password}
+                        inputProps={{"data-testid":"passwordTestInput"}}
                         {...formik.getFieldProps('password')}
                         InputProps={{
                             endAdornment:<InputAdornment position="end">
@@ -199,7 +186,9 @@ const LoginForm = ({changeIndex}) =>{
                             </InputAdornment>,
                         }}/>
                         <Box sx = {{ position:"relative"}}>
-                            <Button variant="contained" type="submit" disabled={isLoading} sx={{ width:"100%"}}>Login</Button>
+                            {/* TODO INSTADE OF USING A COMPONENT MANAGED STATE, USE FORMIK ISSUBMITING FLAG */}
+                            <Button 
+                            data-testid="userLoginButton" variant="contained" type="submit" disabled={isLoading} sx={{ width:"100%"}}>Login</Button>
                             {
                                 isLoading && (
                                     <CircularProgress size={24} sx = {{
@@ -228,4 +217,14 @@ const LoginForm = ({changeIndex}) =>{
     )
 }
 
-export default LoginForm;
+
+const mapDispatchToProp = dispatch=>{
+
+    return {
+
+        handlePushAlert: (alert)=> dispatch(addAlert(alert)),
+        logIn: (tokens)=> dispatch(loginUser(tokens))
+    }
+}
+
+export default connect(undefined, mapDispatchToProp)(LoginForm);

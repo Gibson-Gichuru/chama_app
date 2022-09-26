@@ -10,10 +10,10 @@ describe("Tests message store functionality", ()=>{
     beforeEach(()=> message = {id:1,text:"some testing message", read:false})
 
 
-    it("Should save a message to the store", ()=>{
+    it("Should save a message to the store", async()=>{
 
        
-        store.dispatch(addMessage(message))
+        await store.dispatch(addMessage(message))
 
         const state = store.getState()
 
@@ -26,9 +26,9 @@ describe("Tests message store functionality", ()=>{
 
     })
 
-    it("Should enable a message to be marked as read", ()=>{
+    it("Should enable a message to be marked as read", async ()=>{
 
-        store.dispatch(markMessageRead(1))
+        await store.dispatch(markMessageRead(1))
 
         const state = store.getState()
         
@@ -37,9 +37,9 @@ describe("Tests message store functionality", ()=>{
         expect(availableMessages[0].read).toBeTruthy()
     })
 
-    it("Should enable a message to be deleted", ()=>{
+    it("Should enable a message to be deleted", async ()=>{
 
-        store.dispatch(deleteMessage(1))
+        await store.dispatch(deleteMessage(1))
 
         const state = store.getState()
 
