@@ -104,8 +104,11 @@ const LoginForm = ({changeIndex, handlePushAlert, logIn}) =>{
                         password:values.password
                     }
                 }
-            ).then(data=>{
-                // Log the user in
+            ).then(({data})=>{
+                
+                logIn(data)
+
+
             }).catch(({response})=>{
 
                 // The form only handles 403 error
