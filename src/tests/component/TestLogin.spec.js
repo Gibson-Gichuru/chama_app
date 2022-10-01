@@ -14,6 +14,7 @@ import {render, screen, fireEvent, waitFor} from "@testing-library/react";
 import "@testing-library/jest-dom";
 
 import LoginForm from "../../components/LoginForm";
+import { ADD_ALERT } from "../../redux/Alert/AlertTypes";
 
 const mockStore = configureStore([]);
 
@@ -121,7 +122,6 @@ describe("<LoginForm> component testing", ()=>{
 
     })
 
-
     it("The Form Fields should error out on Error 401", async ()=>{
 
         const error = "Invalid username or password";
@@ -172,6 +172,69 @@ describe("<LoginForm> component testing", ()=>{
             }
         )
 
+    })
+
+
+    it("Pushes an alert to the store on Server error", async()=>{
+
+        // define a handler 
+
+        const error = "Something weird happend";
+
+        server.use(
+            rest.get("api/auth/login", (req, res, ctx)=>{
+
+                return res.once(
+                    ctx.status(500),
+                    ctx.json({
+                        error:error
+                    })
+                )
+            })
+        )
+
+        // get the Dom elements
+
+        const elements = getDOMElements();
+
+        // type user email
+
+        fireEvent.change(
+            elements.emailInput,
+            {
+                target:{
+                    value:email
+                }
+            }
+        )
+
+        // type user password
+
+        fireEvent.change(
+            elements.passwordInput,
+            {
+                target:{
+                    value:password
+                }
+            }
+        )
+
+
+        // click on the login button
+
+        fireEvent.click(elements.loginButton)
+
+
+        await waitFor(
+            ()=>{
+
+                const actions = store.getActions()
+
+                const performedActions = actions.filter(action=>action.type === ADD_ALERT)
+
+                expect(performedActions.length).toEqual(1)
+            }
+        )
     })
 })
 
