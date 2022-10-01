@@ -1,189 +1,131 @@
-import {render, screen, waitFor, fireEvent} from "@testing-library/react";
-import "@testing-library/jest-dom";
-
-import {setupServer} from "msw/node";
-
 import {rest} from "msw";
+import {setupServer} from "msw/node";
+import store from "../../redux/store";
 
 import LoginForm from "../../components/LoginForm";
 
-import "@testing-library/jest-dom";
-
 import {Provider} from "react-redux";
 
-import store from "../../redux/store";
+import {render, screen, fireEvent, waitFor} from "@testing-library/react";
 
-import {deleteAlert} from "../../redux/Alert/AlertActions";
-
-describe("<Login/> Component Testing", ()=>{
-    
-    let wrapper;
+import "@testing-library/jest-dom";
 
 
-    const email = "testing@interface.com";
-
-    const password = "Passd@1234";
-
-    const error = "invalid username or password"
 
 
-    const base_url = " http://localhost/"
-    
-    const server = setupServer(
-        rest.get("api/auth/login", (req,res, ctx)=>{
+const server = setupServer(
 
-            return res(
-                ctx.status(200),
-                ctx.json({
-                    tokens:{
-                        refresh:"some refresh token",
-                        access:"some access token"
-                    }
-                })
+    rest.get("api/auth/login", (req, res, ctx)=>{
+
+        return res(
+            ctx.json({
+                tokens:{
+                    refresh:"some refresh token",
+                    acces:"some access token"
+                }
+            })
             )
         })
-    )
+        )
+        
+        beforeAll(
+    ()=>server.listen()
+)
+
+afterAll(
+    ()=>server.close()
+)
+
+beforeEach(
+
     
-    const handleSetIndex = jest.fn()
+    ()=>{
 
-    beforeEach(async ()=> {
+        render(
+            <Provider store={store}>
+                <LoginForm changeIndex={jest.fn()}/>
+            </Provider>
+        )
+    }
+)
 
-        await waitFor(()=>{
+afterEach(
+    ()=>{
 
-            wrapper = render(
-                <Provider store={store}>
-                    <LoginForm changeIndex= {handleSetIndex}/>
-                </Provider>
-            )
-        })
+        server.resetHandlers()
+    }
+)
 
+
+// TESTS
+
+describe("<LoginForm> component testing", ()=>{
+
+    it("The Form Fields should error out on Error 401", async ()=>{
+
+
+        const error = "Invalid username or password";
+
+        server.use(
+
+            rest.get("api/auth/login", (req, res, ctx)=>{
+
+                return res.once(
+                    ctx.status(403),
+                    ctx.json({error:error})
+                )
+            })
+        )
+
+        const email = "testing@test.com";
+        const password = "Passw@1234";
+        // get DOM ELEMENTS
+        const emailInput = screen.getByRole(
+            "textbox",
+            {
+                name:"Email Address"
+            }
+        )
+
+        const passwordInput = screen.getByTestId("passwordTestInput")
+
+        const loginButton = screen.getByRole(
+            "button",
+            {
+                name:"Login"
+            }
+        )
+
+        // FIRE EVENTS
+
+        fireEvent.change(
+            emailInput,
+            {
+                target:{
+                    value:email
+                }
+            }
+        )
+
+        fireEvent.change(
+            passwordInput,
+            {
+                target:{
+                    value:password
+                }
+            }
+        )
         
-
-        // get all the elements
-
-        const emailInput = screen.getByRole("textbox", {
-            name: "Email Address"
-        });
-
-        const passwordInput = screen.getByTestId("passwordTestInput");
-
-        const loginButton = screen.getByRole("button", {name:"Login"});
-
-
-        // perform some actions to the given elements
-        
-         //  Type user Email
-
-        fireEvent.change(emailInput, {target:{
-            value:email
-        }})
-
-        // Type user Password
-
-        fireEvent.change(passwordInput, {target:{
-            value:password
-        }})
-
-        // click on the login button
-
         fireEvent.click(loginButton)
 
-    })
+        const errorContainer = await screen.findAllByText(error)
 
-    beforeAll(()=>{server.listen()})
+        await waitFor(
+            ()=>{
 
-    afterEach(()=>server.resetHandlers())
-
-    afterAll(()=>{server.close()})
-
-
-
-    it("Input Elements Should Error Out on 401 http code return from server", async ()=>{
-        // use this event handlers
-
-        server.use(
-            rest.get("api/auth/login", (req, res, ctx)=>{
-
-                return res(
-                    ctx.status(401),
-                    ctx.json({description:error})
-                )
-            })
+                expect(errorContainer.length).toEqual(2)
+            }
         )
-
-        // get error containers
-
-        const ErrorContainer = await screen.findByText(error)
-
-
-        await waitFor(()=>{
-
-            expect(ErrorContainer).toBeInTheDocument()
-            
-        })
-
-    })
-
-    it("Should push Error alert to store on 500 error code return from server", async ()=>{
-
-        server.use(
-            rest.get("api/auth/login", (req, res, ctx)=>{
-
-                return res(
-
-                    ctx.status(500)
-                )
-            })
-        )
-
-
-        const state = store.getState()
-
-        const error500 = state.alerts.availableAlerts.filter(
-            alert=> alert.message === "Unable to Connect,Try again later")
-        
-        await waitFor(()=>{
-
-            expect(error500.length).toEqual(1)
-        })
-
-        // clean up thestate of the error
-
-        error500.map(async error=> await store.dispatch(deleteAlert(error.id)))
-
-    })
-
-    it("Should push Error Alert to store on 403 error return from the  server", async ()=>{
-
-        const message = "unauthorised"
-
-        server.use(
-            rest.get("api/auth/login", (req, res, ctx)=>{
-
-                return res(
-                    ctx.status(403),
-                    ctx.json({
-                        description:message
-                    })
-                )
-            })
-        )
-
-
-
-        const state = store.getState()
-
-        const error403 = state.alerts.availableAlerts.filter(
-            alert=> alert.message === message)
-        
-        await waitFor(()=>{
-
-            expect(error403 .length).toEqual(1)
-        })
-
-        // clean up thestate of the error
-
-        error403.map(async error=> await store.dispatch(deleteAlert(error.id)))
 
     })
 })

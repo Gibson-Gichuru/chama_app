@@ -12,7 +12,7 @@ const userReducer = (state = initialState, action)=>{
         case LOGIN_USER: return {
 
             ...state,
-            tokens: {...state.tokens, action.payload}
+            tokens: {...state.tokens, ...action.payload}
         }
 
         default: return state

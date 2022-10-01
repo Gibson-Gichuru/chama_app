@@ -105,48 +105,35 @@ const LoginForm = ({changeIndex, handlePushAlert, logIn}) =>{
                     }
                 }
             ).then(data=>{
-                // setup the logged in user and redirect to the home page
-                let tokens = data.data.tokens
-                
-                logIn(tokens.refresh, tokens.access)
+                // Log the user in
+            }).catch(({response})=>{
 
-                handleIsLoading(false)
-            }).catch((response)=>{
+                // The form only handles 403 error
 
-                console.log(response)
+                // any other error would be displayed on the alert notification component
+                switch(response.status){
 
-                // const errors = {...response.data}
+                    case 403:
 
-                // // {description:"some error message"}
+                        setErrors(
+                            {
+                                email:response.data.error,
+                                password:response.data.error
+                            }
+                        )
 
-                // switch (response.status) {
+                        break;
 
-                //     case 403:
-                        
-                //         handlePushAlert({
-                //             id:uuid(),
-                //             message:response.data.description,
-                //             severity:"warning",
-                //             action:{
-                //                 callback:handleRequestActivationLink
-                //             }
-                //         })
-                //         break;
-                //     case 401:
-                //         setErrors({email:errors.description, password:errors.description})
-                //         break;
-                //     default:
-                //         handlePushAlert({
-                //             id:uuid(),
-                //             message:"Unable to Connect,Try again later",
-                //             severity:"error"
-                //         })
-
-                //         console.log(error)
-                //         break;
-                // }
-               
-                handleIsLoading(false)
+                    default:
+                       
+                        handlePushAlert(
+                            {
+                                ...response.data,
+                                id:uuid()
+                            }
+                        )
+                        break;
+                }
             })
         }
     })
@@ -171,7 +158,8 @@ const LoginForm = ({changeIndex, handlePushAlert, logIn}) =>{
                         inputProps={{"data-testid":"emailTestInput"}}
                         {...formik.getFieldProps('email')}/>
 
-                        <TextField autoComplete="off" id="password" type= {showPassword? "text": "password"} placeholder="password" label="Password"
+                        <TextField autoComplete="off" id="password" type= {showPassword? "text": "password"} placeholder="password" 
+                        label="Password"
                         value={formik.values.password}
                         onChange={formik.handleChange}
                         error={formik.touched.password && Boolean(formik.errors.password)}
@@ -216,6 +204,7 @@ const LoginForm = ({changeIndex, handlePushAlert, logIn}) =>{
         </>
     )
 }
+
 
 
 const mapDispatchToProp = dispatch=>{
