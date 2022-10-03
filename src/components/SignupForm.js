@@ -20,6 +20,10 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { v4 as uuid} from "uuid";
 
+import {connect} from "react-redux";
+
+import { addAlert } from "../redux/Alert/AlertActions";
+
 
 const Signup = ({changeIndex, handlePushAlert})=>{
 
@@ -65,10 +69,10 @@ const Signup = ({changeIndex, handlePushAlert})=>{
                     remote_url:document.baseURI,
                 }
             ).then(
-                response=>{
+                (response)=>{
                     handlePushAlert({
                         id:uuid(),
-                        message:`Account created! Account activation link sent to ${formik.values.email}`,
+                        message:`${response.data.message} ${formik.values.email}`,
                         severity:"success"
                     })
                     handleLoading(false)
@@ -159,4 +163,11 @@ const Signup = ({changeIndex, handlePushAlert})=>{
     )
 }
 
-export default Signup
+const mapDispatchToProp = dispatch=>{
+
+    return {
+        handlePushAlert: alert=>dispatch(addAlert(alert)),   
+    }
+}
+
+export default connect(undefined,mapDispatchToProp)(Signup)

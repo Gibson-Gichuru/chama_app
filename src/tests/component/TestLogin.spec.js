@@ -236,6 +236,48 @@ describe("<LoginForm> component testing", ()=>{
             }
         )
     })
+
+
+    it("Should save user tokens to the session storage", ()=>{
+
+        // perform a valid user login
+
+        // get DOM elements
+
+        const elements = getDOMElements()
+
+        // fire events
+
+        // input user email
+
+        fireEvent.change(
+            elements.emailInput,
+            {
+                target:{
+                    value:email
+                }
+            }
+        )
+
+        fireEvent.change(
+            elements.passwordInput,
+            {
+                target:{
+                    value:password
+                }
+            }
+        )
+
+        fireEvent.click(elements.loginButton)
+
+        // interact with the browser session storage object
+
+
+
+
+        // aassert that the tokens were stored on the session storage
+
+    })
 })
 
 
