@@ -28,6 +28,9 @@ import { v4 as uuid} from "uuid";
 
 import FormTextField from "./Inputs/FormTextField";
 
+import {useQuery} from "react-query";
+
+
 const LoginForm = ({changeIndex, handlePushAlert, logIn}) =>{
 
     // TODO USE REACT-QUERY TO HANDLE IS LOANDING FUCTIONALITY
@@ -73,6 +76,7 @@ const LoginForm = ({changeIndex, handlePushAlert, logIn}) =>{
         })
         
     }
+
     const formik = useFormik({
 
         initialValues: {
@@ -98,12 +102,13 @@ const LoginForm = ({changeIndex, handlePushAlert, logIn}) =>{
             handleIsLoading(true)
             await axios.get(
                 "api/auth/login",
-                {
-                    auth:{
-                        username:values.email,
-                        password:values.password
-                    }
+            {
+                auth:{
+                    username:values.email,
+                    password:values.password
                 }
+            }
+               
             ).then(({data})=>{
                 
                 logIn(data)

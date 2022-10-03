@@ -2,7 +2,6 @@ import { useFormik } from "formik";
 import * as Yup from 'yup';
 import axios from "axios";
 import {useState} from "react";
-import { useAlert } from "../context/AlertProvider";
 import {
     Typography,
     TextField,
@@ -22,9 +21,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { v4 as uuid} from "uuid";
 
 
-const Signup = ({changeIndex})=>{
-
-    const {handlePushAlert} = useAlert()
+const Signup = ({changeIndex, handlePushAlert})=>{
 
     const [loading, setLoading] = useState(false)
     const handleLoading = (state)=> setLoading(loading => loading = state)
