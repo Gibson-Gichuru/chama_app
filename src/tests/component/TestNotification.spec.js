@@ -24,7 +24,7 @@ describe("<Notification> component Test", ()=>{
 
     afterEach(async()=> await store.dispatch(deleteAlert(alert.id)))
 
-    it("Should clearRender The alert once the an alert has been pushed to store", async()=>{
+    it("Should Render The alert once the an alert has been pushed to store", async()=>{
 
         // push alert to store 
 

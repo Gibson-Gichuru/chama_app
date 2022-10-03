@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import "./app.css"
 import {AuthContextProvider} from "./context/AuthContext";
-import { AlertContextProvider } from "./context/AlertProvider"; 
 import { DialogContextProvider } from './context/DialogProvider';
 import {BrowserRouter as Router} from "react-router-dom";
 import {QueryClientProvider, QueryClient} from "react-query";
@@ -24,11 +23,9 @@ root.render(
         <AuthContextProvider>
           <Provider store= {store}>
             <QueryClientProvider client={client}>
-            <AlertContextProvider>
               <DialogContextProvider>
                 <App/>
               </DialogContextProvider>
-            </AlertContextProvider>
             </QueryClientProvider>
           </Provider>
         </AuthContextProvider>
