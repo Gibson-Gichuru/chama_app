@@ -6,6 +6,7 @@ import {AuthContextProvider} from "./context/AuthContext";
 import { AlertContextProvider } from "./context/AlertProvider"; 
 import { DialogContextProvider } from './context/DialogProvider';
 import {BrowserRouter as Router} from "react-router-dom";
+import {QueryClientProvider, QueryClient} from "react-query";
 import { ThemeProvider } from '@mui/material';
 import {theme} from "./themes/theme";
 
@@ -14,6 +15,7 @@ import {Provider} from "react-redux";
 import store from "./redux/store"
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
+const client = new queryClient()
 
 root.render(
   <React.StrictMode>
@@ -21,11 +23,13 @@ root.render(
       <Router>
         <AuthContextProvider>
           <Provider store= {store}>
-          <AlertContextProvider>
-            <DialogContextProvider>
-              <App/>
-            </DialogContextProvider>
-          </AlertContextProvider>
+            <QueryClientProvider client={client}>
+            <AlertContextProvider>
+              <DialogContextProvider>
+                <App/>
+              </DialogContextProvider>
+            </AlertContextProvider>
+            </QueryClientProvider>
           </Provider>
         </AuthContextProvider>
       </Router>
