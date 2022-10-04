@@ -45,8 +45,6 @@ afterAll(
 )
 
 beforeEach(
-
-    
     ()=>{
 
         // create a mocked store with an empty object as theinitial state
@@ -72,49 +70,23 @@ afterEach(
 
 describe("<LoginForm> component testing", ()=>{
 
-    const email = "testing@test.com";
-    const password = "Passw@1234";
-
     it("Should login the user on a success form submit", async ()=>{
-
-
 
         // get  the form inputs 
 
         const elements = getDOMElements()
-        // user enters their email
-        fireEvent.change(
-            elements.emailInput,
-            {
-                target:{
-                    value:email
-                }
-            }
-        )
-
-        // user enters their password
-        
-        fireEvent.change(
-            elements.passwordInput,
-            {
-                target:{
-                    value:password
-                }
-            }
-        )
     
-        //  user clicks the login button
-
-        fireEvent.click(elements.loginButton)
-
-
         // confirm that the addUSer action was called
-
+        fireUserActions(elements)
+        
         await waitFor(
             ()=>{
+                // fireEvent.click(elements.loginButton)
+
                 const actions = store.getActions();
 
                 const performedActions = actions.filter(action=> action.type === LOGIN_USER)
+
                 expect(performedActions.length).toEqual(1)
 
             }
@@ -141,33 +113,16 @@ describe("<LoginForm> component testing", ()=>{
         // get DOM ELEMENTS
         
         const elements= getDOMElements();
-        // FIRE EVENTS
-
-        fireEvent.change(
-            elements.emailInput,
-            {
-                target:{
-                    value:email
-                }
-            }
-        )
-
-        fireEvent.change(
-            elements.passwordInput,
-            {
-                target:{
-                    value:password
-                }
-            }
-        )
         
-        fireEvent.click(elements.loginButton)
+        // fire user Actions
 
-        const errorContainer = await screen.findAllByText(error)
-
+        fireUserActions(elements)
+        
         await waitFor(
-            ()=>{
-
+            async ()=>{
+                
+                const errorContainer = await screen.findAllByText(error)
+                
                 expect(errorContainer.length).toEqual(2)
             }
         )
@@ -197,36 +152,14 @@ describe("<LoginForm> component testing", ()=>{
 
         const elements = getDOMElements();
 
-        // type user email
+        // fire user Actions
 
-        fireEvent.change(
-            elements.emailInput,
-            {
-                target:{
-                    value:email
-                }
-            }
-        )
+        fireUserActions(elements)
 
-        // type user password
-
-        fireEvent.change(
-            elements.passwordInput,
-            {
-                target:{
-                    value:password
-                }
-            }
-        )
-
-
-        // click on the login button
-
-        fireEvent.click(elements.loginButton)
-
-
+        
         await waitFor(
             ()=>{
+                
 
                 const actions = store.getActions()
 
@@ -235,48 +168,6 @@ describe("<LoginForm> component testing", ()=>{
                 expect(performedActions.length).toEqual(1)
             }
         )
-    })
-
-
-    it("Should save user tokens to the session storage", ()=>{
-
-        // perform a valid user login
-
-        // get DOM elements
-
-        const elements = getDOMElements()
-
-        // fire events
-
-        // input user email
-
-        fireEvent.change(
-            elements.emailInput,
-            {
-                target:{
-                    value:email
-                }
-            }
-        )
-
-        fireEvent.change(
-            elements.passwordInput,
-            {
-                target:{
-                    value:password
-                }
-            }
-        )
-
-        fireEvent.click(elements.loginButton)
-
-        // interact with the browser session storage object
-
-
-
-
-        // aassert that the tokens were stored on the session storage
-
     })
 })
 
@@ -301,4 +192,29 @@ function getDOMElements(){
 
     return {emailInput, passwordInput, loginButton}
 
+}
+
+function fireUserActions(elements){
+    const email = "testing@test.com";
+    const password = "Passw@1234";
+
+    fireEvent.change(
+        elements.emailInput,
+        {
+            target:{
+                value:email
+            }
+        }
+    )
+
+    fireEvent.change(
+        elements.passwordInput,
+        {
+            target:{
+                value:password
+            }
+        }
+    )
+
+    fireEvent.click(elements.loginButton)
 }
