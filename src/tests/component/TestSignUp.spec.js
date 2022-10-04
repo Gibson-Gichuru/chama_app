@@ -8,7 +8,9 @@ import {setupServer} from "msw/node";
 import Signup from "../../components/SignupForm";
 
 import configureStore from "redux-mock-store";
+
 import { ADD_ALERT } from "../../redux/Alert/AlertTypes";
+
 import {Provider} from "react-redux";
 // mock server object
 

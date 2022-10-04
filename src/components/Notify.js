@@ -20,10 +20,9 @@ const Notifications = ({alerts, show,handlePopAlert})=>{
     return (
         <Stack sx={{width:"100%"}} spacing={2}>
             {alerts.map((alert,index)=>(
-                <Collapse in={show}>
+                <Collapse in={show} key={index}>
                     <Alert 
                     data-testid="alertMessageContainer"
-                    key={index} 
                     severity={alert.severity}
                     action ={
                         alert.action?<Box>

@@ -22,59 +22,64 @@ describe("<Notification> component Test", ()=>{
 
     const alert = {id: 1, message:alertMessage, action:{callback:jest.fn()}}
 
-    afterEach(async()=> await store.dispatch(deleteAlert(alert.id)))
+    // afterEach(async()=> await store.dispatch(deleteAlert(alert.id)))
 
     it("Should Render The alert once the an alert has been pushed to store", async()=>{
 
-        // push alert to store 
+        /*
+            Updating the store will update the state of the component 
+            which will happpen outside the React's call stack
 
-        await store.dispatch(addAlert(alert))
+            we could wait for the component to update then assert the results
 
-        // get an element from the DOM that holds the alert Message
+        */ 
 
-        const alertMessageContainer = await screen.findByTestId("alertMessageContainer")
+       
+       await waitFor(
+            async ()=>{
+                
+                store.dispatch(addAlert(alert))
 
-        // assert that the allertContainer have the given Alert Message
+                const alertMessageContainer = await screen.findByTestId("alertMessageContainer")
 
-        await waitFor(()=>{
-            
-            expect(alertMessageContainer.innerHTML).toContain(alertMessage);
-        })
+                expect(alertMessageContainer.innerHTML).toContain(alertMessage);
+
+                // clean up 
+
+                store.dispatch(deleteAlert(alert.id))
+            }
+        )
 
     })
 
     it("Should test that the action function passed to an alert is called on button press", async ()=>{
 
-        await store.dispatch(addAlert(alert))
-
-        const actionButton = await screen.findByTestId("actionTestButton")
         
-        fireEvent.click(actionButton)
+        await waitFor( async ()=>{
 
-        // assert that the alert action was called
+            store.dispatch(addAlert(alert))
 
-        await waitFor(()=>{
+            const actionButton = await screen.findByTestId("actionTestButton")
+
+            fireEvent.click(actionButton)
 
             expect(alert.action.callback).toBeCalled()
         })
     })
 
     it("Should delete action from store if user dismiss the alert component",  async()=>{
+        
+        await waitFor(async ()=>{
 
-
-        // push an alert
-
-        await store.dispatch(addAlert(alert))
-
-        const dismissButton = await screen.findByTestId("dismissTestButton")
-
-        fireEvent.click(dismissButton)
-
-        const state = store.getState()
-
-        const availableAlerts = state.alerts.availableAlerts.filter(alrt=> alrt.id === alert.id)
-
-        await waitFor(()=>{
+            store.dispatch(addAlert(alert))
+    
+            const dismissButton = await screen.findByTestId("dismissTestButton")
+    
+            fireEvent.click(dismissButton)
+    
+            const state = store.getState()
+    
+            const availableAlerts = state.alerts.availableAlerts.filter(alrt=> alrt.id === alert.id)
 
             expect(availableAlerts.length).toEqual(0)
         })
