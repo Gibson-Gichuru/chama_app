@@ -14,14 +14,13 @@ import {
     IconButton,
 } from "@mui/material";
 import {v4 as uuid} from "uuid";
-import {useAlert} from "../context/AlertProvider";
 import {green} from "@mui/material/colors";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
-const ResetPasswordForm = ({token})=>{
+const ResetPasswordForm = ({token, handlePushAlert})=>{
 
     // states
 
@@ -33,8 +32,6 @@ const ResetPasswordForm = ({token})=>{
     const [loading, setLoading] = useState(false)
 
     const handleLoading = (state)=> setLoading(loading=> loading=state)
-
-    const {handlePushAlert} = useAlert()
 
     const navigate = useNavigate()
     // formik 
@@ -104,7 +101,7 @@ const ResetPasswordForm = ({token})=>{
                     <form onSubmit={formik.handleSubmit}>
                         <Box sx={{display:"flex", flexDirection:"column", gap:2}}>
                             <TextField autoComplete="off" id="password" type={showPassword? "text":"password"} label="Password"
-                            placeholder="Enter Ypur new Password"
+                            placeholder="Enter Your New Password"
                             value={formik.values.password}
                             onChange={formik.handleChange}
                             error={formik.touched.password && Boolean(formik.errors.password)}
