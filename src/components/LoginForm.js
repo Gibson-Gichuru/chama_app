@@ -20,16 +20,13 @@ import {
     IconButton,
 
 } from "@mui/material";
-import { green } from '@mui/material/colors';
+
+import { LoadingButton } from '@mui/lab';
+
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import { v4 as uuid} from "uuid";
-
-import FormTextField from "./Inputs/FormTextField";
-
-import {useQuery} from "react-query";
-
 
 const LoginForm = ({changeIndex, handlePushAlert, logIn}) =>{
 
@@ -115,15 +112,26 @@ const LoginForm = ({changeIndex, handlePushAlert, logIn}) =>{
                 // any other error would be displayed on the alert notification component
                 switch(response.status){
 
-                    case 403:
+                    case 401:
 
                         setErrors(
                             {
-                                email:response.data.error,
-                                password:response.data.error
+                                email:response.data.description,
+                                password:response.data.description
                             }
                         )
 
+                        break;
+
+                    case 403:
+                        handlePushAlert(
+                            {
+                                ...response.data,
+                                id:uuid(),
+                                severity:"error",
+                                action:handleRequestActivationLink,
+                            }
+                        )
                         break;
 
                     default:
@@ -131,7 +139,8 @@ const LoginForm = ({changeIndex, handlePushAlert, logIn}) =>{
                         handlePushAlert(
                             {
                                 ...response.data,
-                                id:uuid()
+                                id:uuid(),
+                                severity:"error"
                             }
                         )
                         break;
@@ -175,23 +184,10 @@ const LoginForm = ({changeIndex, handlePushAlert, logIn}) =>{
                                 </IconButton>
                             </InputAdornment>,
                         }}/>
-                        <Box sx = {{ position:"relative"}}>
-                            {/* TODO INSTADE OF USING A COMPONENT MANAGED STATE, USE FORMIK ISSUBMITING FLAG */}
-                            <Button 
-                            data-testid="userLoginButton" variant="contained" type="submit" disabled={formik.isSubmitting} sx={{ width:"100%"}}>Login</Button>
-                            {
-                                formik.isSubmitting && (
-                                    <CircularProgress size={24} sx = {{
-                                        color:green[500],
-                                        position: 'absolute',
-                                        top: '50%',
-                                        left: '50%',
-                                        marginTop: '-12px',
-                                        marginLeft: '-12px',
-                                    }}/>
-                                )
-                            }
-                        </Box>
+
+                        <LoadingButton variant="contained" type="submit" loading={formik.isSubmitting}
+                        loadingIndicator={<CircularProgress size={24}/>}>Login</LoadingButton>
+                        
                         <Box component="div" sx={{ display:"flex", flexDirection:"column" ,justifyContent:"space-around", alignItems:"center"}}>
                             <Typography variant="body2" component="div">
                                 Don't have an account?

@@ -12,12 +12,11 @@ import {
 
 } from "@mui/material";
 import { v4 as uuid} from "uuid";
-import {green} from "@mui/material/colors";
 
 import {addAlert} from "../redux/Alert/AlertActions";
 
 import {connect} from "react-redux"; 
-
+import { LoadingButton } from '@mui/lab';
 const Forgot = ({changeIndex,handlePushAlert})=>{
 
 
@@ -54,9 +53,9 @@ const Forgot = ({changeIndex,handlePushAlert})=>{
                 }).catch(({response})=>{
                     
                     switch (response.status) {
-                        case 401:
+                        case 404:
                             setErrors({
-                                email:response.data.error
+                                email:response.data.description
                             })
                             break;
                         default:
@@ -84,23 +83,11 @@ const Forgot = ({changeIndex,handlePushAlert})=>{
                         onChange={formik.handleChange}
                         error={formik.touched.email && Boolean(formik.errors.email)}
                         helperText={formik.touched.email && formik.errors.email}/>
-                        <Box sx={{ position:"relative"}}>
-                            <Button variant="contained" disabled={formik.isSubmitting} type="submit" sx={{width:"100%"}}>Send Reset Request</Button>
-                            {
-                                formik.isSubmitting && (
-                                    <CircularProgress
-                                    size = {24}
-                                    sx={{
-                                        color:green[500],
-                                        position:"absolute",
-                                        top:"50%",
-                                        left:"50%",
-                                        marginTop:"-12px",
-                                        marginLeft:"-12px"
-                                    }}/>
-                                )
-                            }
-                        </Box>
+
+                        <LoadingButton variant="contained" type="submit" disabled={formik.isSubmitting}
+                        loading={formik.isSubmitting}
+                        loadingIndicator={<CircularProgress size={24}/>}>Login</LoadingButton>
+                        
                         <Box 
                         component="div" 
                         sx={{ display:"flex", flexDirection:"column",justifyContent:"space-around", alignItems:"center"}}>

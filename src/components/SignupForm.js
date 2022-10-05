@@ -15,7 +15,8 @@ import {
     IconButton
 
 } from "@mui/material";
-import { green } from '@mui/material/colors';
+import { LoadingButton } from '@mui/lab';
+
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { v4 as uuid} from "uuid";
@@ -26,9 +27,6 @@ import { addAlert } from "../redux/Alert/AlertActions";
 
 
 const Signup = ({changeIndex, handlePushAlert})=>{
-
-    const [loading, setLoading] = useState(false)
-    const handleLoading = (state)=> setLoading(loading => loading = state)
 
     const [showPassword, setShowPassword] = useState(false)
     const handleShowPassword = ()=> setShowPassword(!showPassword)
@@ -59,7 +57,6 @@ const Signup = ({changeIndex, handlePushAlert})=>{
 
         onSubmit : async (values, {setErrors}) =>{
 
-            handleLoading(true)
             await axios.post(
                 "api/auth/register",
                 {
@@ -75,13 +72,11 @@ const Signup = ({changeIndex, handlePushAlert})=>{
                         message:`${response.data.message} ${formik.values.email}`,
                         severity:"success"
                     })
-                    handleLoading(false)
                     changeIndex(0)
                 }
             ).catch(({ response })=>{
                     const errors = {...response.data.errors}
                     setErrors(errors)
-                    handleLoading(false)
                 }
 
             )
@@ -130,21 +125,10 @@ const Signup = ({changeIndex, handlePushAlert})=>{
                         onChange={formik.handleChange}
                         error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
                         helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}/>
-                        <Box sx = {{ position:"relative"}}>
-                            <Button variant="contained" disabled= {loading} type="submit" sx={{width:"100%"}}>Sign Up</Button>
-                            {
-                                 loading && (
-                                    <CircularProgress size={24} sx = {{
-                                        color:green[500],
-                                        position: 'absolute',
-                                        top: '50%',
-                                        left: '50%',
-                                        marginTop: '-12px',
-                                        marginLeft: '-12px',
-                                    }}/>
-                                )
-                            }
-                        </Box>
+
+                        <LoadingButton variant="contained" type="submit" loading={formik.isSubmitting}
+                        loadingIndicator={<CircularProgress size={24}/>}>Login</LoadingButton>
+                        
                         <Box 
                         component="div" 
                         sx={{display:"flex", flexDirection:"column", justifyContent:"space-around", alignItems:"center"}}>

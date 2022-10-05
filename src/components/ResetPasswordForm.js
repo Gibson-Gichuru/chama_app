@@ -3,7 +3,6 @@ import {useFormik} from "formik";
 import axios from "axios";
 
 import {
-    Button,
     Box,
     Card,
     CardContent,
@@ -13,8 +12,9 @@ import {
     InputAdornment,
     IconButton,
 } from "@mui/material";
+import { LoadingButton } from '@mui/lab';
+
 import {v4 as uuid} from "uuid";
-import {green} from "@mui/material/colors";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {useState} from "react";
@@ -27,11 +27,6 @@ const ResetPasswordForm = ({token, handlePushAlert})=>{
     const [showPassword, setShowPassword] = useState(false)
     const handleShowPassword = ()=> setShowPassword(!showPassword)
 
-    // loading state
-
-    const [loading, setLoading] = useState(false)
-
-    const handleLoading = (state)=> setLoading(loading=> loading=state)
 
     const navigate = useNavigate()
     // formik 
@@ -61,8 +56,7 @@ const ResetPasswordForm = ({token, handlePushAlert})=>{
         // handle on submit event
 
         onSubmit: async (values)=>{
-            // handle logic
-            handleLoading(true)
+           
             await axios.post(
                 "/api/auth/reset_password",
                 {
@@ -76,7 +70,6 @@ const ResetPasswordForm = ({token, handlePushAlert})=>{
                         message:data.message,
                         severity:"success"
                     })
-                    handleLoading(false)
                     navigate("/", {replace:true})
                 }
             ).catch(
@@ -86,7 +79,6 @@ const ResetPasswordForm = ({token, handlePushAlert})=>{
                         message:"Unable to make request, try again later",
                         severity:"error"
                     })
-                    handleLoading(false)
                 }
             )
         }
@@ -123,21 +115,8 @@ const ResetPasswordForm = ({token, handlePushAlert})=>{
                             helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
                             {...formik.getFieldProps('confirmPassword')}/>
 
-                            <Box sx={{position:"relative"}}>    
-                                <Button variant="contained" disabled={loading} type="submit" sx={{width:"100%"}}>Reset Password</Button>
-                            </Box>
-                            {
-                                loading && (
-                                    <CircularProgress size={24} sx={{
-                                        color:green[500],
-                                        position:"absolute",
-                                        top:"50%",
-                                        left:"50%",
-                                        marginTop:"-12px",
-                                        marginLeft:"-12px"
-                                    }}/>
-                                )
-                            }
+                            <LoadingButton variant="contained" type="submit" loading={formik.isSubmitting}
+                            loadingIndicator={<CircularProgress size={24}/>}>Login</LoadingButton>
                         </Box>
                     </form>
                 </CardContent>
