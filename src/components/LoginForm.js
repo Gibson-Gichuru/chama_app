@@ -35,9 +35,6 @@ const LoginForm = ({changeIndex, handlePushAlert, logIn}) =>{
 
     // TODO USE REACT-QUERY TO HANDLE IS LOANDING FUCTIONALITY
 
-    const [isLoading, setIsLoading] = useState(false)
-
-    const handleIsLoading = (status)=>setIsLoading(isLoading => isLoading = status)
 
     const [showPassword, setShowPassword] = useState(false)
 
@@ -97,9 +94,6 @@ const LoginForm = ({changeIndex, handlePushAlert, logIn}) =>{
 
         onSubmit: async (values, {setErrors}) => {
 
-            // TODO CHANGING THE  STATE AT THIS POINT WILL NOT BE NECESSARY AS REACT-QUERY WILL KEEP TRACK OF THE REQUEST STATUS
-
-            handleIsLoading(true)
             await axios.get(
                 "api/auth/login",
             {
@@ -184,9 +178,9 @@ const LoginForm = ({changeIndex, handlePushAlert, logIn}) =>{
                         <Box sx = {{ position:"relative"}}>
                             {/* TODO INSTADE OF USING A COMPONENT MANAGED STATE, USE FORMIK ISSUBMITING FLAG */}
                             <Button 
-                            data-testid="userLoginButton" variant="contained" type="submit" disabled={isLoading} sx={{ width:"100%"}}>Login</Button>
+                            data-testid="userLoginButton" variant="contained" type="submit" disabled={formik.isSubmitting} sx={{ width:"100%"}}>Login</Button>
                             {
-                                isLoading && (
+                                formik.isSubmitting && (
                                     <CircularProgress size={24} sx = {{
                                         color:green[500],
                                         position: 'absolute',
