@@ -1,17 +1,14 @@
 import {useEffect} from "react";
-import {useAlert} from "../context/AlertProvider";
 import {useParams, useNavigate} from "react-router-dom";
 import {v4 as uuid} from "uuid";
 import axios from "axios";
 import { checkIsExpired } from "../utilities/AppUtils";
 
-const ConfirmAccount= ()=>{
+const ConfirmAccount= ({handlePushAlert})=>{
 
     // get the user token from the url
 
     const {userToken} = useParams();
-
-    const {handlePushAlert} = useAlert()
 
     const navigate = useNavigate()
 
