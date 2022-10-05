@@ -68,7 +68,7 @@ describe("<Forgot> component  tests", ()=>{
 
     })
 
-    it("Errors out on 401 server error", async()=>{
+    it("Errors out on 404 server error", async()=>{
 
         const error= "Email not registered"
 
@@ -76,8 +76,8 @@ describe("<Forgot> component  tests", ()=>{
             rest.get("api/auth/reset_password", (req,res,ctx)=>{
 
                 return res.once(
-                    ctx.status(401),
-                    ctx.json({error})
+                    ctx.status(404),
+                    ctx.json({description:error})
                 )
             })
         )
