@@ -20,18 +20,18 @@ const mockStore = configureStore([]);
 
 const store = mockStore({});
 
+const userTokens = {
+    refresh:"some refresh token",
+    access:"some access token"
+}
+
 const server = setupServer(
 
     rest.get("api/auth/login", (req, res, ctx)=>{
 
         return res(
             ctx.status(200),
-            ctx.json({
-                tokens:{
-                    refresh:"some refresh token",
-                    acces:"some access token"
-                }
-            })
+            ctx.json({tokens:userTokens})
             )
         })
         )
@@ -46,6 +46,19 @@ afterAll(
 
 beforeEach(
     ()=>{
+
+        // mocking the window sessionStorage
+
+        Object.defineProperty(
+            window, "sessionStorage",
+            {
+                value:{
+                    getItem: jest.fn(()=>null),
+                    setItem: jest.fn(()=>null)
+                },
+                writable:true
+            }
+        )
 
         // create a mocked store with an empty object as theinitial state
 
@@ -89,6 +102,10 @@ describe("<LoginForm> component testing", ()=>{
 
                 expect(performedActions.length).toEqual(1)
 
+                // expect(window.sessionStorage.setItem).toHaveBeenCalledWith(userTokens)
+
+                expect(window.sessionStorage.setItem).toHaveBeenCalled()
+
             }
         )
 
@@ -103,8 +120,8 @@ describe("<LoginForm> component testing", ()=>{
             rest.get("api/auth/login", (req, res, ctx)=>{
 
                 return res.once(
-                    ctx.status(403),
-                    ctx.json({error:error})
+                    ctx.status(401),
+                    ctx.json({description:error})
                 )
             })
         )
@@ -117,11 +134,11 @@ describe("<LoginForm> component testing", ()=>{
         // fire user Actions
 
         fireUserActions(elements)
+        const errorContainer = await screen.findAllByText(error)
         
         await waitFor(
             async ()=>{
                 
-                const errorContainer = await screen.findAllByText(error)
                 
                 expect(errorContainer.length).toEqual(2)
             }
