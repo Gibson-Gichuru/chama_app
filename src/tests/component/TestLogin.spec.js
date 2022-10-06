@@ -15,8 +15,11 @@ import "@testing-library/jest-dom";
 
 import LoginForm from "../../components/LoginForm";
 import { ADD_ALERT } from "../../redux/Alert/AlertTypes";
+import savetoSessionStorage from "../../redux/middleWares/SaveUser";
 
-const mockStore = configureStore([]);
+const mockStore = configureStore([
+    savetoSessionStorage
+]);
 
 const store = mockStore({});
 
