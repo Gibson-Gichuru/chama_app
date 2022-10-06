@@ -12,6 +12,10 @@ describe("User should be able to login in", ()=>{
         // test  that input error out on invalid user input
 
         formFieldsShouldErrorOutOnInvalidUserInput()
+
+        // show a alert
+
+        formInteractsWithTheAlertComponet()
     })    
 
 })
@@ -37,4 +41,21 @@ function formFieldsShouldErrorOutOnUserBlur(){
     cy.get('#password').focus().blur()
 
     cy.contains("required!")
+}
+
+function formInteractsWithTheAlertComponet(){
+
+    const email = "testing@e2e.com"
+    const password = "Test@1234"
+
+    cy.get("#email").clear().type(email)
+
+    cy.get("#password").clear().type(password)
+
+    cy.get('button[type="submit"]').click()
+
+
+    // assert that ther is a pop 
+
+    cy.get('[data-testid=alertMessageContainer]').should("exist")
 }

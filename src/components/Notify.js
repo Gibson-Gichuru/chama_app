@@ -18,10 +18,12 @@ const Notifications = ({alerts, show,handlePopAlert})=>{
 
     
     return (
-        <Stack sx={{width:"100%"}} spacing={2}>
+        <Stack sx={{width:"100%", maxWidth:350, position:"absolute", left:0,bottom:0}} spacing={2}>
+            <Collapse in={show} sx={{my:2}}>
             {alerts.map((alert,index)=>(
-                <Collapse in={show} key={index}>
                     <Alert 
+                    sx={{my:0.5}}
+                    key={index}
                     data-testid="alertMessageContainer"
                     severity={alert.severity}
                     action ={
@@ -48,9 +50,9 @@ const Notifications = ({alerts, show,handlePopAlert})=>{
                         </IconButton>
                         )
                     }>{alert.message}</Alert>
-                </Collapse>
-               
-            ))}
+                    
+                    ))}
+            </Collapse>
         </Stack>
     )
 
