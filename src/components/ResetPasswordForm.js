@@ -116,7 +116,7 @@ const ResetPasswordForm = ({token, handlePushAlert})=>{
                             {...formik.getFieldProps('confirmPassword')}/>
 
                             <LoadingButton variant="contained" type="submit" loading={formik.isSubmitting}
-                            loadingIndicator={<CircularProgress size={24}/>}>Login</LoadingButton>
+                            loadingIndicator={<CircularProgress size={24}/>}>Reset Password</LoadingButton>
                         </Box>
                     </form>
                 </CardContent>

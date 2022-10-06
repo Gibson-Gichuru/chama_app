@@ -86,7 +86,7 @@ const Forgot = ({changeIndex,handlePushAlert})=>{
 
                         <LoadingButton variant="contained" type="submit" disabled={formik.isSubmitting}
                         loading={formik.isSubmitting}
-                        loadingIndicator={<CircularProgress size={24}/>}>Login</LoadingButton>
+                        loadingIndicator={<CircularProgress size={24}/>}>Send Reset Request</LoadingButton>
                         
                         <Box 
                         component="div" 

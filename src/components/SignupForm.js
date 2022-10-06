@@ -127,7 +127,7 @@ const Signup = ({changeIndex, handlePushAlert})=>{
                         helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}/>
 
                         <LoadingButton variant="contained" type="submit" loading={formik.isSubmitting}
-                        loadingIndicator={<CircularProgress size={24}/>}>Login</LoadingButton>
+                        loadingIndicator={<CircularProgress size={24}/>}>Sign Up</LoadingButton>
                         
                         <Box 
                         component="div" 
@@ -135,7 +135,7 @@ const Signup = ({changeIndex, handlePushAlert})=>{
                             <Typography variant="body2" component="div">
                                 Have an Account?
                                 <Button variant="text" size="small"onClick={()=>changeIndex(0)}
-                                data-testid="testBackToLoginForm">Log in</Button>
+                                data-testid="testBackToLoginForm">Back to Login</Button>
                             </Typography>
                         </Box>
                     </Box>
