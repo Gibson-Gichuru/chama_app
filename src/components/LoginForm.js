@@ -123,7 +123,7 @@ const LoginForm = ({changeIndex, handlePushAlert, logIn}) =>{
 
                         break;
 
-                    case 403:
+                    case 403 || 404:
                         handlePushAlert(
                             {
                                 ...response.data,
@@ -138,7 +138,7 @@ const LoginForm = ({changeIndex, handlePushAlert, logIn}) =>{
                        
                         handlePushAlert(
                             {
-                                ...response.data,
+                                message:"Unable to serve your request at the moment. Try again later",
                                 id:uuid(),
                                 severity:"error"
                             }
