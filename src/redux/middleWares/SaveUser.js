@@ -1,18 +1,13 @@
 import {LOGIN_USER} from "../User/UserType";
-function savetoSessionStorage(storeApi){
 
-    return function wrapDispatch(next){
+const savetoSessionStorage = store=> next => action=>{
 
-        return function handleAction(action){
+    if(action.type === LOGIN_USER){
 
-            if(action.type ===LOGIN_USER){
-                // save to tokens to sessionStorage
-                window.sessionStorage.setItem("tokens",JSON.stringify(action.payload))
-            }
-
-            return next(action)
-        }
+        window.sessionStorage.setItem("tokens", JSON.stringify(action.payload))
     }
+
+    next(action)
 }
 
 
