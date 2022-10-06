@@ -7,6 +7,7 @@ const middleWaresEnhancer = applyMiddleware(
 )
 const store = createStore(
     rootReducer,
+    {},
     middleWaresEnhancer
 )
 
