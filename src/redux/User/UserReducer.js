@@ -1,8 +1,8 @@
-import {LOGIN_USER} from "./UserType"
+import {LOGIN_USER, LOGOUT_USER} from "./UserType"
 
 const initialState = {
-
-    tokens: {}
+    tokens: {},
+    loggedIn: false
 }
 
 const userReducer = (state = initialState, action)=>{
@@ -12,7 +12,14 @@ const userReducer = (state = initialState, action)=>{
         case LOGIN_USER: return {
 
             ...state,
-            tokens: {...state.tokens, ...action.payload}
+            tokens: {...state.tokens, ...action.payload},
+            loggedIn: true
+        }
+
+        case LOGOUT_USER: return {
+            ...state, 
+            tokens:{},
+            loggedIn:false
         }
 
         default: return state
