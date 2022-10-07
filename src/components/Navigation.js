@@ -21,12 +21,11 @@ import CssBaseline from '@mui/material/CssBaseline';
 import {Link as DomLink} from "react-router-dom";
 import { navigationLinks } from "../data/navdata";
 import {useState} from "react";
-import { useAuth } from "../context/AuthContext";
-import { Hidden } from "./Protected";
+import Hidden  from "./Hidden";
 
 const drawerWidth = 240;
 
-const Nav = ()=> {
+const Nav = ({logOut})=> {
 
     const [open, setOpen] = useState(false);
     const handleDrawer = ()=> setOpen(!open)
@@ -45,8 +44,6 @@ const Nav = ()=> {
             Item.action()
         }   
     }
-
-    const {logOut} = useAuth()
 
     const profileMenuItems = [
         {
