@@ -6,12 +6,11 @@ import {
     DialogActions,
     Button,
 } from "@mui/material";
-import {useDialog} from "../context/DialogProvider";
+import {connect} from "react-redux";
 
+import {closeDialog} from "../redux/Dialog/DialogActions"; 
 
-const DialogPop =({})=>{
-
-    const {PopState, PopClose, PopFeatures} = useDialog()
+const DialogPop =({PopState, PopClose, PopFeatures})=>{
 
     return (
         <Dialog open={PopState} onClose={()=>PopClose}>
@@ -29,4 +28,19 @@ const DialogPop =({})=>{
     )
 }
 
-export default DialogPop
+const mapStateToProp = state=>{
+
+    return {
+        PopState: state.dialog.open,
+        PopFeatures: state.dialog.features
+    }
+}
+
+const mapDispatchToProp = dispatch=>{
+
+    return {
+        PopClose: ()=> dispatch(closeDialog)
+    }
+}
+
+export default connect(mapStateToProp, mapDispatchToProp)(DialogPop)
