@@ -1,11 +1,10 @@
-import { useAuth } from "../context/AuthContext";
+
 import Main from "../components/MainContainer";
 import Forms from "../components/Forms";
 import {checkIsExpired} from "../utilities/AppUtils";
-const Protected = ({children})=>{
+import {connect} from "react-redux";
 
-    const {access} = useAuth()
-
+const Protected = ({children, access})=>{
 
     if( access && !checkIsExpired(access)){
 
@@ -13,13 +12,13 @@ const Protected = ({children})=>{
     }
     return <Main><Forms/></Main>
 }
-export const Hidden = ({children})=>{
-    const {access} =useAuth()
 
-    if (access && !checkIsExpired(access)){
-        return<>{children}</>
+const mapStateToProp = state=>{
+
+    return {
+
+        access: state.user.tokens.access,
     }
-
-    return null
 }
-export default Protected 
+
+export default connect(mapStateToProp)(Protected) 

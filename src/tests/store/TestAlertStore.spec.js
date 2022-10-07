@@ -7,7 +7,7 @@ describe("Testing Alert Store functionality", ()=>{
 
     beforeEach(()=> alert = {id: 1,text:"some alert message", action:jest.fn()})
 
-    it("Should test an alertt is stored", ()=>{
+    it("Should test an alert is stored", ()=>{
 
         store.dispatch(addAlert(alert))
 
