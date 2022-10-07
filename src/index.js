@@ -2,8 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import "./app.css"
-import {AuthContextProvider} from "./context/AuthContext";
-import { DialogContextProvider } from './context/DialogProvider';
 import {BrowserRouter as Router} from "react-router-dom";
 import {QueryClientProvider, QueryClient} from "react-query";
 import { ThemeProvider } from '@mui/material';
@@ -20,15 +18,11 @@ root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <Router>
-        <AuthContextProvider>
-          <Provider store= {store}>
-            <QueryClientProvider client={client}>
-              <DialogContextProvider>
-                <App/>
-              </DialogContextProvider>
-            </QueryClientProvider>
-          </Provider>
-        </AuthContextProvider>
+        <Provider store= {store}>
+          <QueryClientProvider client={client}>
+              <App/>
+          </QueryClientProvider>
+        </Provider>
       </Router>
     </ThemeProvider>  
   </React.StrictMode>
