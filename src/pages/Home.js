@@ -90,6 +90,7 @@ const Home = ()=>{
                     <TabList orientation="vertical" onChange={handleTabChange}>
                         {homeTabItems.map((item,index)=>(
                             <Tab value={index.toString()}
+                            key={index}
                             label={item.title}
                             icon={item.avatorIcon}
                             iconPosition="start"
@@ -126,7 +127,7 @@ const Home = ()=>{
                     </Card>
                 </Box>
                 
-                {homeTabItems.map((item,index)=>(<TabPanel sx={{p:0, width:"100%"}} value={index.toString()}>{item.panelUi}</TabPanel>))}
+                {homeTabItems.map((item,index)=>(<TabPanel key={index} sx={{p:0, width:"100%"}} value={index.toString()}>{item.panelUi}</TabPanel>))}
             </GridItem>
             <GridItem sm={4} md={3}  sx={{display:{xs:"none", sm:"block"}}}>
                 <Paper variant="outlined" style={{maxHeight:"80vh", overflow:"auto", position:"relative"}}>
