@@ -1,58 +1,53 @@
-import {useEffect} from "react";
-import {useParams, useNavigate} from "react-router-dom";
-import {v4 as uuid} from "uuid";
-import axios from "axios";
-import { checkIsExpired } from "../utilities/AppUtils";
+import{useQuery} from "react-query";
+import { useParams } from "react-router-dom";
+import {connect} from "react-redux";
+import {addAlert} from "../redux/Alert/AlertActions";
+import Main from "../components/MainContainer";
+import axios from "axios"
+import {
+    Typography,
+    Box,
+    CircularProgress,
+} from "@mui/material";
 
-const ConfirmAccount= ({handlePushAlert})=>{
 
-    // get the user token from the url
+const ConfirmAccount = ()=>{
 
-    const {userToken} = useParams();
+    const {token} = useParams()
 
-    const navigate = useNavigate()
+    const {isSuccess, isError} = useQuery(
+        "confirm",
+        async ()=> await axios.get(`api/auth/account/confirmation/${token}`),
+        {retry:false}
+    )
 
-    async function handleConfirmAccount(){
-
-        await axios.get(
-            `/api/auth/account/confirmation/${userToken}`
-        ).then(()=>{
-            handlePushAlert({
-                id:uuid(),
-                message:"Account now activated",
-                severity:"success"
-            })
-
-            navigate("/", {replace:true})
-
-        }).catch(()=>{
-            handlePushAlert({
-                id:uuid(),
-                message:"Invalid or expired token used",
-                severity:"error"
-            })
-        })
-
-        navigate("/", {replace:true})
+    const makeUi = component=>(
+        <Main>
+            <Box sx={{
+                width:"100vw", 
+                height:"80vh", 
+                display:"flex",
+                justifyContent:"center",
+                alignItems:"center"
+                }}>
+                {component}
+            </Box>
+        </Main>
+    )
+    
+    // TODO 
+    if(isSuccess){
+        return makeUi(<Typography variant="h5">Account Confirmed</Typography>)
     }
 
-    useEffect(()=>{
-
-        if(checkIsExpired(userToken)){
-            handlePushAlert({
-                id:uuid(),
-                message:"Invalid or expired token",
-                severity:"error"
-            })
-
-            navigate("/", {replace:true})
-        }
-        handleConfirmAccount()
-    })
-
-    return (
-        <></>
-    )
+    // TODO 
+    if(isError){
+        return makeUi(<Typography variant="h5">Invalid Token</Typography>)
+        
+    }
+    
+    return makeUi(<CircularProgress size={250} thickness={1}/>)
+    
 }
 
 export default ConfirmAccount
