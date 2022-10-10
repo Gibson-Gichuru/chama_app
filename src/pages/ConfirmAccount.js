@@ -1,7 +1,5 @@
 import{useQuery} from "react-query";
 import { useParams } from "react-router-dom";
-import {connect} from "react-redux";
-import {addAlert} from "../redux/Alert/AlertActions";
 import Main from "../components/MainContainer";
 import axios from "axios"
 import {
