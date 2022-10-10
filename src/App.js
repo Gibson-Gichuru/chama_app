@@ -1,8 +1,8 @@
 import Nav from "./components/Navigation";
 import DialogPop from "./components/DialogPop";
 import Protected from "./components/Protected";
+import ResetPasswordForm from "./components/ResetPasswordForm";
 import Home from "./pages/Home";
-import ResetPassword from "./pages/ResetPassword";
 import ConfirmAccount from "./pages/ConfirmAccount";
 import {Box} from "@mui/material";
 import NavItem from "./components/NavItem";
@@ -21,7 +21,7 @@ function App() {
         <Nav/>
         <Routes>
           <Route path="/" element={<Protected><Home/></Protected>}/>
-          <Route path="/reset/password/:userToken" element={<ResetPassword/>}/>
+          <Route path="/reset/password/:userToken" element={<ResetPasswordForm/>}/>
           <Route path="/account/confirm/:userToken" element={<ConfirmAccount/>}/>
           <Route path="*" element={<Navigate to="/" replace/>}/>
           {navigationLinks.map((item,index)=>(
