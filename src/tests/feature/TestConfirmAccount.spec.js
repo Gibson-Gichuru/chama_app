@@ -74,15 +74,7 @@ describe("User Account Confrmation Flow Tests", ()=>{
                     )
                 })
             )
-            render(
-                <MemoryRouter initialEntries={[`/account/confirm/${token}`]}>
-                    <QueryClientProvider client={client}>
-                        <Provider store={store}>
-                            <App/>
-                        </Provider>
-                    </QueryClientProvider>
-                </MemoryRouter>
-            )
+            render(renderApplication())
 
             
             const feedback = await screen.findByText("Invalid Token")
@@ -100,18 +92,23 @@ describe("User Account Confrmation Flow Tests", ()=>{
     it("Should display Account Confirmed UI in success Account confirmation", async ()=>{
         const token = "Some token"
 
-        render(
-            <MemoryRouter initialEntries={[`/account/confirm/${token}`]}>
-                <QueryClientProvider client={client}>
-                    <Provider store={store}>
-                        <App/>
-                    </Provider>
-                </QueryClientProvider>
-            </MemoryRouter>
-        )
+        render(renderApplication())
 
         const feedback = await screen.findByText("Account Confirmed")
 
         expect(feedback).toBeInTheDocument()
     })
 })
+
+function renderApplication(){
+
+    return (
+        <MemoryRouter initialEntries={[`/account/confirm/${token}`]}>
+            <QueryClientProvider client={client}>
+                <Provider store={store}>
+                    <App/>
+                </Provider>
+            </QueryClientProvider>
+        </MemoryRouter>
+    )
+}
