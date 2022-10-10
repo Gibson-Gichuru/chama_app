@@ -11,7 +11,22 @@ import {BrowserRouter} from "react-router-dom";
 
 const mockStore = configureStore([])
 
-const store = mockStore({})
+const store = mockStore({
+    user:{
+        tokens:{},
+        loggedIn:false
+    },
+    dialog:{
+        features:{
+
+        },
+        open:false
+    },
+    alerts:{
+        availableAlerts:[],
+    }
+})
+
 
 
 beforeEach(
