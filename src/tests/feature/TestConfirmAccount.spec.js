@@ -102,6 +102,8 @@ describe("User Account Confrmation Flow Tests", ()=>{
 
 function renderApplication(){
 
+    const token = "some token"
+
     return (
         <MemoryRouter initialEntries={[`/account/confirm/${token}`]}>
             <QueryClientProvider client={client}>
