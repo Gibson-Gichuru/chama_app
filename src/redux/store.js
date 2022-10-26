@@ -1,6 +1,7 @@
 import {createStore, applyMiddleware} from "redux";
 import rootReducer from "./rootReducer";
 import savetoSessionStorage from "./middleWares/SaveUser";
+import {composeWithDevTools} from "redux-devtools-extension"
 
 const middleWaresEnhancer = applyMiddleware(
     savetoSessionStorage
@@ -8,7 +9,7 @@ const middleWaresEnhancer = applyMiddleware(
 const store = createStore(
     rootReducer,
     {},
-    middleWaresEnhancer
+    composeWithDevTools(middleWaresEnhancer),  
 )
 
 

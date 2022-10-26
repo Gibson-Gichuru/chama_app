@@ -11,11 +11,11 @@ import {
 
 const ConfirmAccount = ()=>{
 
-    const {token} = useParams()
+    const {userToken} = useParams()
 
     const {isSuccess, isError} = useQuery(
         "confirm",
-        async ()=> await axios.get(`api/auth/account/confirmation/${token}`),
+        async ()=> await axios.get(`/api/auth/account/confirmation/${userToken}`),
         {retry:false}
     )
 

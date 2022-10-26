@@ -2,7 +2,8 @@ import {LOGIN_USER, LOGOUT_USER} from "./UserType"
 
 const initialState = {
     tokens: {},
-    loggedIn: false
+    loggedIn: false,
+    accountInfo:{}
 }
 
 const userReducer = (state = initialState, action)=>{
@@ -12,14 +13,16 @@ const userReducer = (state = initialState, action)=>{
         case LOGIN_USER: return {
 
             ...state,
-            tokens: {...state.tokens, ...action.payload},
-            loggedIn: true
+            tokens: {...state.tokens, ...action.payload.tokens},
+            loggedIn: true,
+            accountInfo:{...state.accountInfo}
         }
 
         case LOGOUT_USER: return {
             ...state, 
             tokens:{},
-            loggedIn:false
+            loggedIn:false,
+            accountInfo:{...state.accountInfo}
         }
 
         default: return state

@@ -125,6 +125,8 @@ describe("<SignupForm> component testing", ()=>{
 
                 // assert that an alert was pushed
 
+                
+
                 expect(performedActions.length).toEqual(1)
             }
         )

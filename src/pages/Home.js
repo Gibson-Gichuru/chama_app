@@ -27,14 +27,9 @@ import {homeTabItems} from "../data/navdata";
 import {useState} from "react";
 import {sampleMessages} from "../data/DammyData";
 
-import {useDialog} from "../context/DialogProvider";
 
+const Home = ({PopOpen, PopSetUp})=>{
 
-const Home = ()=>{
-
-    // Dialog state
-
-    const {PopOpen, PopSetUp} = useDialog();
 
     // tabs state
     const [tab, setTab] = useState("0")
@@ -167,5 +162,7 @@ const Home = ()=>{
         </GridContainer>
     )
 }
+
+
 
 export default Home

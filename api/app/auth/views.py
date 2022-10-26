@@ -77,13 +77,7 @@ class RegisterUser(MethodView):
 
         user.add(user)
 
-        return jsonify({
-            "message": {
-                "status": "success",
-                "text": "account created!"
-            }
-
-        }), 200
+        return jsonify({"message": "Account created"}), 200
 
 
 class Login(MethodView):
@@ -109,12 +103,6 @@ class Login(MethodView):
         )
 
         return jsonify({
-
-            "message": {
-                "status": "success",
-                "text": f"Login sucessful {current_user.username}"
-            },
-
             "tokens": {
                 "access": tokens[0],
                 "refresh": tokens[1]
@@ -164,10 +152,7 @@ class Tokens(MethodView):
         return jsonify(
 
             {
-                "message": {
-                    "status": "success",
-                    "text": "token generated"
-                },
+                "message": "Tokens generated",
 
                 "access": new_access_token
             }

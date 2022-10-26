@@ -59,9 +59,6 @@ class TestUserRegisterRoute(BaseTestConfig):
         # assert That we have a json data response
         self.assertIsNotNone(response_data)
 
-        # assert that the account creation was a success
-        self.assertEqual(response_data['message']['status'], "success")
-
         # confirm that  the user has been created
         self.assertIsNotNone(user)
 
