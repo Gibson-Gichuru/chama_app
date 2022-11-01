@@ -1,0 +1,42 @@
+name: Application Component unit testing
+
+on:
+  push:
+    branches:
+      - development
+
+      - Interface
+
+  pull_request:
+
+    branches:
+
+      - development
+
+jobs:
+
+  Component-Unit_Testing:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checking out the repository
+
+        uses: actions/checkout@v2
+
+      - name: Setting up node environment
+
+        uses: actions/setup-node@v2
+
+        with:
+
+          node_version: 16
+
+      - name: Install all dependencies
+
+        run: yarn install
+
+      - name: Run Component Unit Tests
+
+        run: yarn test

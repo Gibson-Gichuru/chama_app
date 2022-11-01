@@ -1,10 +1,15 @@
-import { Typography } from "@mui/material"
+import { 
+    Typography,
+    Box
+} from "@mui/material"
 
-export const NotFound = ()=>{
+const CustomErrors = ({message, children})=>{
 
     return (
-        <>
-            <Typography variant="h1">Welcome NotFound</Typography>
-        </>
+        <Box>
+            <Typography variant="body1">{message}</Typography>
+        </Box>
     )
 }
+
+export default CustomErrors

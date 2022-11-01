@@ -15,6 +15,10 @@
 /api/env
 __pycache__/
 
+# cypress downloads
+
+/cypress/downloads
+
 # sqlite files
 
 *.sqlite

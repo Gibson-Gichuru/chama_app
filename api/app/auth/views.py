@@ -200,7 +200,7 @@ class NewActivationLink(MethodView):
                 "email",
                 username=current_user.username,
                 token=current_user.generate_activation_token(),
-                host_name=request_data['remote_url']
+                host_name=f"{request_data['remote_url']}account/confirm"
             )
 
         return jsonify({
@@ -212,7 +212,9 @@ class ResetPassword(MethodView):
 
     def get(self):
 
-        user_email = request.args.get('email')
+        user_email = request.args.get("email")
+        
+        remote_url = request.args.get("remote_url")
 
         user = User.query.filter_by(email=user_email).first()
 
@@ -226,7 +228,7 @@ class ResetPassword(MethodView):
             "email",
             username=user.username,
             token=user.generate_password_reset_token(),
-            host_name=request.args.get('remote_url')
+            host_name=f"{remote_url}reset/password"
         )
 
         return jsonify({
@@ -257,5 +259,5 @@ class ResetPassword(MethodView):
         user.update()
 
         return jsonify({
-            "Message":"Password reset successful"
+            "message":"Password reset successful"
         }),200
