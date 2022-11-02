@@ -3,7 +3,6 @@ import {useFormik} from "formik";
 import axios from "axios";
 
 import {
-    Button,
     Box,
     Card,
     CardContent,
@@ -13,25 +12,23 @@ import {
     InputAdornment,
     IconButton,
 } from "@mui/material";
+import { LoadingButton } from '@mui/lab';
+
 import {v4 as uuid} from "uuid";
-import {useAlert} from "../context/AlertProvider";
-import {green} from "@mui/material/colors";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 
-const ResetPasswordForm = ()=>{
+const ResetPasswordForm = ({token, handlePushAlert})=>{
 
     // states
 
     const [showPassword, setShowPassword] = useState(false)
     const handleShowPassword = ()=> setShowPassword(!showPassword)
 
-    // loading state
 
-    const [loading, setLoading] = useState(false)
-
-    const handleLoading = (state)=> setLoading(loading=> loading=state)
+    const navigate = useNavigate()
     // formik 
 
     const formik = useFormik({
@@ -59,7 +56,31 @@ const ResetPasswordForm = ()=>{
         // handle on submit event
 
         onSubmit: async (values)=>{
-            // handle logic
+           
+            await axios.post(
+                "/api/auth/reset_password",
+                {
+                    token:token,
+                    password:values.confirmPassword
+                }
+            ).then(
+                ({data})=>{
+                    handlePushAlert({
+                        id:uuid(),
+                        message:data.message,
+                        severity:"success"
+                    })
+                    navigate("/", {replace:true})
+                }
+            ).catch(
+                ()=>{
+                    handlePushAlert({
+                        id:uuid(),
+                        message:"Unable to make request, try again later",
+                        severity:"error"
+                    })
+                }
+            )
         }
     })
 
@@ -72,7 +93,7 @@ const ResetPasswordForm = ()=>{
                     <form onSubmit={formik.handleSubmit}>
                         <Box sx={{display:"flex", flexDirection:"column", gap:2}}>
                             <TextField autoComplete="off" id="password" type={showPassword? "text":"password"} label="Password"
-                            placeholder="Enter Ypur new Password"
+                            placeholder="Enter Your New Password"
                             value={formik.values.password}
                             onChange={formik.handleChange}
                             error={formik.touched.password && Boolean(formik.errors.password)}
@@ -94,21 +115,8 @@ const ResetPasswordForm = ()=>{
                             helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
                             {...formik.getFieldProps('confirmPassword')}/>
 
-                            <Box sx={{position:"relative"}}>    
-                                <Button variant="contained" disabled={loading} type="submit" sx={{width:"100%"}}>Reset Password</Button>
-                            </Box>
-                            {
-                                loading && (
-                                    <CircularProgress size={24} sx={{
-                                        color:green[500],
-                                        position:"absolute",
-                                        top:"50%",
-                                        left:"50%",
-                                        marginTop:"-12px",
-                                        marginLeft:"-12px"
-                                    }}/>
-                                )
-                            }
+                            <LoadingButton variant="contained" type="submit" loading={formik.isSubmitting}
+                            loadingIndicator={<CircularProgress size={24}/>}>Reset Password</LoadingButton>
                         </Box>
                     </form>
                 </CardContent>

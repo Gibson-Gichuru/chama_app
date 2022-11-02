@@ -2,20 +2,29 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import "./app.css"
-import {AuthContextProvider} from "./context/AuthContext";
-import { AlertContextProvider } from "./context/AlertProvider"; 
 import {BrowserRouter as Router} from "react-router-dom";
+import {QueryClientProvider, QueryClient} from "react-query";
+import { ThemeProvider } from '@mui/material';
+import {theme} from "./themes/theme";
+
+import {Provider} from "react-redux";
+
+import store from "./redux/store"
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+const client = new QueryClient()
 
 root.render(
   <React.StrictMode>
-    <Router>
-      <AuthContextProvider>
-        <AlertContextProvider>
-          <App/>
-        </AlertContextProvider>
-      </AuthContextProvider>
-    </Router>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <Provider store= {store}>
+          <QueryClientProvider client={client}>
+              <App/>
+          </QueryClientProvider>
+        </Provider>
+      </Router>
+    </ThemeProvider>  
   </React.StrictMode>
 );
 

@@ -12,17 +12,13 @@ import {
 
 } from "@mui/material";
 import { v4 as uuid} from "uuid";
-import {useState} from "react";
-import {green} from "@mui/material/colors";
-import {useAlert} from "../context/AlertProvider";
 
-const Forgot = ({changeIndex})=>{
+import {addAlert} from "../redux/Alert/AlertActions";
 
-    const [loading, setLoading] = useState(false);
+import {connect} from "react-redux"; 
+import { LoadingButton } from '@mui/lab';
+const Forgot = ({changeIndex,handlePushAlert})=>{
 
-    const handleLoading = (state)=> setLoading(loading=> loading=state)
-
-    const {handlePushAlert} = useAlert()
 
     const formik = useFormik(
         {
@@ -37,33 +33,30 @@ const Forgot = ({changeIndex})=>{
             ),
 
             onSubmit:  async (values, {setErrors})=>{
-                handleLoading(true)
+                
                 await axios.get(
-                    "api/auth/password_reset",
+                    "api/auth/reset_password",
                     {
                         params:{
                             email:values.email,
                             remote_url:document.baseURI
                         }
                     }
-                ).then(({response})=>{
-                    
-                    const message = {...response.data}
+                ).then(({data})=>{
+
                     handlePushAlert({
                         id:uuid(),
-                        message:message.message,
+                        message:data.message,
                         severity:"success"
                     })
 
-                    handleLoading(false)
-
                 }).catch(({response})=>{
-
-                    const errors = {...response.data}
-
-                    switch (errors.code) {
-                        case 401:
-                            setErrors({errors})
+                    
+                    switch (response.status) {
+                        case 404:
+                            setErrors({
+                                email:response.data.description
+                            })
                             break;
                         default:
                             handlePushAlert({
@@ -73,7 +66,6 @@ const Forgot = ({changeIndex})=>{
                             })
                             break;
                     }
-                    handleLoading(false)
                 })
             }
         }
@@ -84,30 +76,18 @@ const Forgot = ({changeIndex})=>{
         <Card variant="outlined" sx={{ maxWidth:375, width:"90%", mx:"auto"}}>
             <CardHeader title="Forgot Passswrd"/>
             <CardContent>
-                <form onSubmit={formik.handleSubmit}>
+                <form onSubmit={formik.handleSubmit} data-testid="testForgotPasswordForm">
                     <Box sx={{display:"flex", flexDirection:"column", gap:2}}>
                         <TextField id="email" type="email" value={formik.values.email} label="Email Address"
                         placeholder="Enter your account email address"
                         onChange={formik.handleChange}
                         error={formik.touched.email && Boolean(formik.errors.email)}
                         helperText={formik.touched.email && formik.errors.email}/>
-                        <Box sx={{ position:"relative"}}>
-                            <Button variant="contained" disabled={loading} type="submit" sx={{width:"100%"}}>Send Reset Request</Button>
-                            {
-                                loading && (
-                                    <CircularProgress
-                                    size = {24}
-                                    sx={{
-                                        color:green[500],
-                                        position:"absolute",
-                                        top:"50%",
-                                        left:"50%",
-                                        marginTop:"-12px",
-                                        marginLeft:"-12px"
-                                    }}/>
-                                )
-                            }
-                        </Box>
+
+                        <LoadingButton variant="contained" type="submit" disabled={formik.isSubmitting}
+                        loading={formik.isSubmitting}
+                        loadingIndicator={<CircularProgress size={24}/>}>Send Reset Request</LoadingButton>
+                        
                         <Box 
                         component="div" 
                         sx={{ display:"flex", flexDirection:"column",justifyContent:"space-around", alignItems:"center"}}>
@@ -127,4 +107,11 @@ const Forgot = ({changeIndex})=>{
     )
 }
 
-export default Forgot
+const mapDispatchToProp = dispatch=>{
+
+    return {
+        handlePushAlert: alert=>dispatch(addAlert(alert)),   
+    }
+}
+
+export default connect(undefined, mapDispatchToProp)(Forgot)

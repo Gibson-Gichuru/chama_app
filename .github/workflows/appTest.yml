@@ -47,16 +47,3 @@ jobs:
 
         run: docker exec -i api-test flask test 
 
-  testingFrontEnd:
-
-    runs-on: ubuntu-latest
-
-    steps:
-
-      - name: Checking out the repository
-      
-        uses: actions/checkout@v2
-
-      - name: Setting up node js
-
-        run: echo "Nodejs will be set up Sooon!!"

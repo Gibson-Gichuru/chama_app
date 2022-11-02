@@ -3,58 +3,55 @@
 
 <div align="center">
 
-### <h3 align= "center">A Simple Chama Round-Table Implementation</h1>
+### <h3 align= "center">Application dependencies</h1>
 
 [![Python](https://img.shields.io/badge/Python-14354C?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
-[![PostGresql](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=whit)](https://www.postgresql.org/)
-[![Heroku](https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white)](https://www.heroku.com/)
-[![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](https://github.com/Gibson-Gichuru/Table-Banking-chama-/blob/main/LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/Gibson-Gichuru/Table-Banking-chama-)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/Gibson-Gichuru/Table-Banking-chama-)
+[![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)](https://flask.palletsprojects.com/)
+[![MUI](https://img.shields.io/badge/MUI-%230081CB.svg?style=for-the-badge&logo=mui&logoColor=white)](https://flask.palletsprojects.com/)
+[![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white)](https://flask.palletsprojects.com/)
+[![MariaDB](https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=mariadb&logoColor=white)](https://www.postgresql.org/)
+[![Github Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white))](https://github.com/Gibson-Gichuru)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/Gibson-Gichuru/chama_app)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/Gibson-Gichuru/chama_app)
 
 
 </div>
 
-## Features 🕹
+## Overview 
 
-- 100% Python Only (Flask).
+- Backend Services Writen in Python
+- Frontend written using React
 - Following Clean Architecture approach.
 - Following a test driven approach.(TDD)
-- Application developed using CI/CD pipeline
-
-## Under Development 🧰🚧
-
-- Some minor improvements are underway 🛠
+- Application developed using CI/CD pipeline (Github Actions)
 
 #
 
-#
+## Application Design Documents 
+
+- [Backend Design Document](https://lucid.app/lucidchart/649fe6a7-4d74-410b-871c-8d16429fa37f/edit?viewport_loc=-314%2C80%2C2220%2C1028%2C0_0&invitationId=inv_ab0d8a71-4862-443f-a674-205db8342743#)
+
+- [Frontend Design Document]()
 
 # FEATURES
 
-### &nbsp;  --->LOGIN , REGISTER
+### &nbsp;  ---> Account Services
 
-* Register new account
-* Login with existing account
-* Logout
-* Email User account activation
+- Register new account
+- Login with existing account
+- Logout
+- Email User account activation
 
-#### &nbsp; --->BOT
+#### &nbsp; ---> USSID support
 
-* Interactive Telegram Bot that offers various functionality
+* The application will support a ussid inteface to help users interact with their accounts
 
-#### &nbsp; --->MPESA
+#### &nbsp; ---> MPESA
 
-* Intergrated With Mpesa Daraja Api to offer both Member Payment(C2B payments) and Chama to members (B2C)
-* Scheduled (B2C) chama to members payment using redis workers
-
-
-
-#### &nbsp; --->MAINTAIN OWN ACCOUNT
-
-* Perform Simple Account Update Actions eg, password resets and Account Deactivation
-
+* Automated fund disbursement to the users Mpesa wallets
+* Secure fund collection Interface from the users Mpesa wallets
+* Request Loans
 
 
 ### Contributing and reporting issues 🤝
@@ -66,25 +63,5 @@ are welcome whether it's through bug reports or new pull requests.
 
 Please add an issue. I'll review it, add labels and reply within a few days.
 
-## See an issue you'd like to work on
+- [Github](https://github.com/Gibson-Gichuru/chama_app)
 
-Comment on the issue that you'd like to work on and I'll add the
-`claimed` label.  If you see the `claimed` label already on the issue you
-might want to ask the contributor if they'd like some help.
-
-## Documentation needs updating
-
-Go right ahead! Just submit a pull request when you're done.
-
-## Pull Requests
-
-I love pull requests from everyone:
-
-1. [Fork](https://github.com/Gibson-Gichuru/Table-Banking-chama-) this repository:
-
-
-## Let's have fun codding 🥳🥑
-
-[![ForTheBadge built-with-Python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://github.com/Gibson-Gichuru/Table-Banking-chama-)
-[![ForTheBadge built-with-love](http://ForTheBadge.com/images/badges/built-with-love.svg)](https://github.com/Gibson-Gichuru/Table-Banking-chama-)
-[![ForTheBadge built-by-developers](http://ForTheBadge.com/images/badges/built-by-developers.svg)](https://github.com/Gibson-Gichuru/Table-Banking-chama-)

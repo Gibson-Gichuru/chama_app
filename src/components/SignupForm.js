@@ -2,7 +2,6 @@ import { useFormik } from "formik";
 import * as Yup from 'yup';
 import axios from "axios";
 import {useState} from "react";
-import { useAlert } from "../context/AlertProvider";
 import {
     Typography,
     TextField,
@@ -16,18 +15,18 @@ import {
     IconButton
 
 } from "@mui/material";
-import { green } from '@mui/material/colors';
+import { LoadingButton } from '@mui/lab';
+
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { v4 as uuid} from "uuid";
 
+import {connect} from "react-redux";
 
-const Signup = ({changeIndex})=>{
+import { addAlert } from "../redux/Alert/AlertActions";
 
-    const {handlePushAlert} = useAlert()
 
-    const [loading, setLoading] = useState(false)
-    const handleLoading = (state)=> setLoading(loading => loading = state)
+const Signup = ({changeIndex, handlePushAlert})=>{
 
     const [showPassword, setShowPassword] = useState(false)
     const handleShowPassword = ()=> setShowPassword(!showPassword)
@@ -58,7 +57,6 @@ const Signup = ({changeIndex})=>{
 
         onSubmit : async (values, {setErrors}) =>{
 
-            handleLoading(true)
             await axios.post(
                 "api/auth/register",
                 {
@@ -68,19 +66,17 @@ const Signup = ({changeIndex})=>{
                     remote_url:document.baseURI,
                 }
             ).then(
-                response=>{
+                (response)=>{
                     handlePushAlert({
                         id:uuid(),
-                        message:`Account created! Account activation link sent to ${formik.values.email}`,
+                        message:`${response.data.message} ${formik.values.email}`,
                         severity:"success"
                     })
-                    handleLoading(false)
                     changeIndex(0)
                 }
             ).catch(({ response })=>{
                     const errors = {...response.data.errors}
                     setErrors(errors)
-                    handleLoading(false)
                 }
 
             )
@@ -95,7 +91,7 @@ const Signup = ({changeIndex})=>{
 
             <CardHeader title="Join us"/>
             <CardContent>
-                <form onSubmit={formik.handleSubmit}>
+                <form onSubmit={formik.handleSubmit} data-testid="testRegisterForm">
                     <Box sx={{ display:"flex", flexDirection:"column", gap:2}}>
                         <TextField autoComplete="off" id="username" type="text" placeholder="johnDoe" label="Username"
                         value={formik.values.username}
@@ -129,27 +125,17 @@ const Signup = ({changeIndex})=>{
                         onChange={formik.handleChange}
                         error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
                         helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}/>
-                        <Box sx = {{ position:"relative"}}>
-                            <Button variant="contained" disabled= {loading} type="submit" sx={{width:"100%"}}>Sign Up</Button>
-                            {
-                                 loading && (
-                                    <CircularProgress size={24} sx = {{
-                                        color:green[500],
-                                        position: 'absolute',
-                                        top: '50%',
-                                        left: '50%',
-                                        marginTop: '-12px',
-                                        marginLeft: '-12px',
-                                    }}/>
-                                )
-                            }
-                        </Box>
+
+                        <LoadingButton variant="contained" type="submit" loading={formik.isSubmitting}
+                        loadingIndicator={<CircularProgress size={24}/>}>Sign Up</LoadingButton>
+                        
                         <Box 
                         component="div" 
                         sx={{display:"flex", flexDirection:"column", justifyContent:"space-around", alignItems:"center"}}>
                             <Typography variant="body2" component="div">
                                 Have an Account?
-                                <Button variant="text" size="small"onClick={()=>changeIndex(0)}>Log in</Button>
+                                <Button variant="text" size="small"onClick={()=>changeIndex(0)}
+                                data-testid="testBackToLoginForm">Back to Login</Button>
                             </Typography>
                         </Box>
                     </Box>
@@ -161,4 +147,11 @@ const Signup = ({changeIndex})=>{
     )
 }
 
-export default Signup
+const mapDispatchToProp = dispatch=>{
+
+    return {
+        handlePushAlert: alert=>dispatch(addAlert(alert)),   
+    }
+}
+
+export default connect(undefined,mapDispatchToProp)(Signup)
